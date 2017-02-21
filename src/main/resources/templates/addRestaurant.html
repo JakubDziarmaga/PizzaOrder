@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:if="${actualUser} != null">
+		<p th:text="${actualUser.getUsername()}"></p>				<!--  SPRAWDZ WEB CONTTENT OBJECT Z PORADNIKA DO THYMELEAFA -->
+		<form th:action="@{/logout}" method="POST">
+			<input type="submit" value="Logout" />
+		</form>
+	</div>
+	
+		<span th:text="${restaurant.getOwnerId()}"></span>
+	
+
+	<h1>Form</h1>
+    	<form method="POST" th:object="${restaurant}">
+		<!-- <c:out value="${user}" /><br/>	 -->
+		Name:<input id="name" type="text" name="name" /><br /> 
+		City:<input id="city" type="text" name="city" /><br /> 
+		Address:<input id="adress" type="text" name="adress" /><br /> 
+		Phone:<input id="phone" type="number" name="phone" /><br /> 
+			<input type="submit" value="Add" />
+	</form>
+			
+	
+</body>
+</html>

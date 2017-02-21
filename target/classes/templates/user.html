@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:if="${actualUser} != null">
+		<p th:text="${actualUser.getUsername()}"></p>
+		<!--  SPRAWDZ WEB CONTTENT OBJECT Z PORADNIKA DO THYMELEAFA -->
+		<form th:action="@{/logout}" method="POST">
+			<input type="submit" value="Logout" />
+		</form>
+	</div>
+
+	<table>
+
+		<tr th:each="indent : ${indents}">
+			<td th:text="${indent.getId()}">1</td>
+			<td th:text="${indent.isPaid()}">1</td>
+			<td th:text="${indent.getMenu().price}"></td>
+			<td th:each="ingredients : ${indent.getMenu().getIngredients()}">
+				<p th:text="${ingredients.name}">1</p>
+			</td>
+			<td>
+				<div th:if="${!indent.isPaid()}">
+
+					<form th:action="@{'/indent/pay/'+${(indent.getId())}}"	method="GET">
+						<input type="submit" value="Pay" />
+					</form>
+					<form
+						th:action="@{'indent/delete/'+${(indent.getId())}}"	method="GET">
+						<input type="submit" value="Delete" />
+									
+					</form>
+					
+
+				</div>
+			</td>
+
+		</tr>
+	</table>
+
+</body>
+</html>

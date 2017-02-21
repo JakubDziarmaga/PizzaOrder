@@ -1,0 +1,28 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Form</h1>
+    	<form method="POST" th:object="${user}">
+		<!-- <c:out value="${user}" /><br/>	 -->
+		Username:<input id="username" type="text" name="username" /><br /> 
+		Password:<input id="password" type="password" name="password" /><br /> 
+		Mail:<input id="mail" type="email" name="mail" /><br /> 
+		Phone:<input id="phone" type="number" name="phone" /><br /> 
+		<!-- <select id="role">
+        <option  th:value="USER" th:text="User">User</option>
+        <option  th:value="RestaurantOwner" th:text="RestaurantOwner">RestaurantOwner</option>        
+        </select> -->
+        <select id="role" name="role">
+                <option value="USER">User</option>
+                <option value="RESTAURANT_OWNER">Restaurant owner</option>
+            </select>
+        <br /> 
+		<input type="submit" value="Register" />
+	</form>
+</body>
+</html>

@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div th:if="${actualUser} != null">
+		<p th:text="${actualUser.getUsername()}"></p>				<!--  SPRAWDZ WEB CONTTENT OBJECT Z PORADNIKA DO THYMELEAFA -->
+		<form th:action="@{/logout}" method="POST">
+			<input type="submit" value="Logout" />
+		</form>
+	</div>
+
+	<table>
+
+		<tr th:each="restaurant : ${restaurants}">
+			<td th:text="${restaurant.id}">1</td>
+			<td th:text="${restaurant.city}">1</td>
+			<td th:text="${restaurant.adress}">Text ...</td>
+			<td th:text="${restaurant.phone}">1</td>
+			<td th:text="${restaurant.name}">1</td>
+			<td><a th:href="@{'/restaurant/' + ${restaurant.id}}">view</a></td>
+		</tr>
+	</table>
+</body>
+</html>
