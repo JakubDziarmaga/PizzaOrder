@@ -56,7 +56,7 @@ public class UserController {
     	  User user = new User();        	  
           model.addAttribute("user", user);
 
-        return "index";
+        return "register";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
