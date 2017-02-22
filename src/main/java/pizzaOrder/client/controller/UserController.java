@@ -142,6 +142,8 @@ public class UserController {
     	NonActivatedUser user = template.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", NonActivatedUser.class,nonActivatedUserId);
     	template.postForObject("http://localhost:8080/users", user, NonActivatedUser.class);
     	template.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}",nonActivatedUserId);
+    	
+    	securityService.autologin(user.getUsername(), user.getPassword());
         return "redirect:/";
 
     }
