@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pizzaOrder.restService.model.users.User;
+import pizzaOrder.restSercive.model.temporaryUsers.NonActivatedUser;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.security.SecurityService;
 import pizzaOrder.security.UserService;
@@ -54,14 +55,14 @@ public class UserController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
 
-    	  User user = new User();        	  
+    	NonActivatedUser user = new NonActivatedUser();        	  
           model.addAttribute("user", user);
 
         return "register";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm) throws MessagingException {//, BindingResult bindingResult//, Model model
+    public String registration(@ModelAttribute("userForm") NonActivatedUser userForm) throws MessagingException {//, BindingResult bindingResult//, Model model
        
         
     	sendSimpleActivatingMail(userForm);
@@ -69,13 +70,21 @@ public class UserController {
         
         
         
-		userService.save(userForm);
+//		userService.save(userForm);
         
         
         System.out.println(userForm.getRole());
         
-//        RestTemplate template = new RestTemplate();
-//        template.postForObject("http://localhost:8080/users",userForm,User.class );
+        ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		mapper.registerModule(new Jackson2HalModule());
+
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+		converter.setObjectMapper(mapper);
+
+		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+        template.postForObject("http://localhost:8080/nonactivatedusers",userForm,NonActivatedUser.class );
         
         
         
@@ -84,12 +93,12 @@ public class UserController {
         System.out.println(userForm.getUsername());
         System.out.println(userForm.getPassword());
 
-        securityService.autologin(userForm.getUsername(), userForm.getPassword());
+//        securityService.autologin(userForm.getUsername(), userForm.getPassword());
         System.out.println("ddddd");
         return "redirect:/";
     }
     
-    public void sendSimpleActivatingMail(User user) throws MessagingException {
+    public void sendSimpleActivatingMail(NonActivatedUser user) throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
