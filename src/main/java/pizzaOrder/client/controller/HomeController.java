@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -32,10 +35,12 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 
 @Controller
 public class HomeController {
-
+	@Autowired
+	private JavaMailSender mailSender;
 	// TODO usuń 1 po testach
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showAllRestaurants(Model model) {
+//sendActivatingMail();
 
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -64,4 +69,22 @@ public class HomeController {
 		
 		return "home";
 	}
+//	private void sendActivatingMail(String userMail,String Us) {
+//		SimpleMailMessage message = new SimpleMailMessage();
+//		    	
+//		    	message.setFrom("pizza0rd3r@gmail.com");
+//		    	message.setTo("qqob3ftm.v2j@20mail.eu");
+//		    	message.setSubject("TEST");
+//		    	message.setText("testowa wiadomosc"); 
+//				
+//				
+//		//		FileSystemResource tonyPicture = new FileSystemResource("DS:/MVCC/aaaa/src/main/webapp/upload/tony.jpg");
+//		//		helper.addAttachment("profilePicture.jpg", tonyPicture);
+//				
+//				System.out.println("wysylanie wiadomosci");
+//				mailSender.send(message);
+//				System.out.println("wyslano wiadomosc");
+//	}
+	
+	
 }

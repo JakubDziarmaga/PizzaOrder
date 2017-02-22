@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,7 @@ public class UserController {
     private SecurityService securityService;
 
     @Autowired
-	JavaMailSender mailSender;
+	private JavaMailSender mailSender;
     
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -62,8 +63,14 @@ public class UserController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm) throws MessagingException {//, BindingResult bindingResult//, Model model
        
-        userService.save(userForm);
-        sendSimpleSpittleEmail(userForm.getMail());
+        
+    	sendSimpleActivatingMail(userForm);
+
+        
+        
+        
+		userService.save(userForm);
+        
         
         System.out.println(userForm.getRole());
         
@@ -82,17 +89,17 @@ public class UserController {
         return "redirect:/";
     }
     
-    public void sendSimpleSpittleEmail(String userMail) throws MessagingException {
+    public void sendSimpleActivatingMail(User user) throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
 		helper.setFrom("pizza0rd3r@gmail.com");
-		helper.setTo(userMail);
+		helper.setTo(user.getMail());
 		helper.setSubject("TEST");
-		helper.setText("testowa wiadomosc"); 
+		helper.setText("Witaj "+ user.getUsername()); 
 		
 		
-//		FileSystemResource tonyPicture = new FileSystemResource("D:/MVCC/aaaa/src/main/webapp/upload/tony.jpg");
+//		FileSystemResource tonyPicture = new FileSystemResource("");
 //		helper.addAttachment("profilePicture.jpg", tonyPicture);
 		
 		System.out.println("wysylanie wiadomosci");

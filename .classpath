@@ -60,5 +60,15 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/maven dependencies/mail-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jakub/.m2/repository/javax/mail/mail/1.4.7/mail-1.4.7.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.archivename" value="mail-1.4.7.jar"/>
+			<attribute name="maven.groupId" value="javax.mail"/>
+			<attribute name="maven.artifactId" value="mail"/>
+			<attribute name="maven.version" value="1.4.7"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
