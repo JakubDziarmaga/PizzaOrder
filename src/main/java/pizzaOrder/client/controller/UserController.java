@@ -1,5 +1,6 @@
 package pizzaOrder.client.controller;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,7 +66,13 @@ public class UserController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") NonActivatedUser userForm) throws MessagingException {//, BindingResult bindingResult//, Model model
        
-        
+    	 RestTemplate template = new RestTemplate();
+    	 URI nonActivatedUserUri = template.postForLocation("http://localhost:8080/nonactivatedusers",userForm,NonActivatedUser.class);
+//         template.postForObject("http://localhost:8080/nonactivatedusers",userForm,NonActivatedUser.class);
+         System.out.println(nonActivatedUserUri);
+         Long id =template.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
+         userForm.setId(id);
+         
     	sendSimpleActivatingMail(userForm);
 
         
@@ -74,17 +82,17 @@ public class UserController {
         
         
         System.out.println(userForm.getRole());
-        
-        ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Jackson2HalModule());
-
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-		converter.setObjectMapper(mapper);
-
-		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
-        template.postForObject("http://localhost:8080/nonactivatedusers",userForm,NonActivatedUser.class );
+//        
+//        ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		mapper.registerModule(new Jackson2HalModule());
+//
+//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+//		converter.setObjectMapper(mapper);
+//
+//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+       
         
         
         
@@ -105,7 +113,7 @@ public class UserController {
 		helper.setFrom("pizza0rd3r@gmail.com");
 		helper.setTo(user.getMail());
 		helper.setSubject("TEST");
-		helper.setText("Witaj "+ user.getUsername()); 
+		helper.setText("Hello  "+ user.getUsername()+". Here's your activation link: http://localhost:8080/activate/" + user.getId()); 
 		
 		
 //		FileSystemResource tonyPicture = new FileSystemResource("");
@@ -125,6 +133,17 @@ public class UserController {
             model.addAttribute("message", "You have been logged out successfully.");
 
         return "login";
+    }
+    
+    @RequestMapping(value = "/activate/{nonActivatedUserId}")
+    public String activateUser(Model model, @PathVariable("nonActivatedUserId") Long nonActivatedUserId){
+
+    	RestTemplate template = new RestTemplate();
+    	NonActivatedUser user = template.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", NonActivatedUser.class,nonActivatedUserId);
+    	template.postForObject("http://localhost:8080/users", user, NonActivatedUser.class);
+    	template.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}",nonActivatedUserId);
+        return "redirect:/";
+
     }
 
 

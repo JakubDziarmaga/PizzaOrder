@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
@@ -30,7 +32,8 @@ public class Indent// extends ResourceSupport
 	private boolean isPaid;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
-	@JsonBackReference
+//	@JsonBackReference
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "user")
 	@JoinColumn(name = "id_user")
 	private User user;
 	

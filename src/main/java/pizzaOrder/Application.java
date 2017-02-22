@@ -16,8 +16,8 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	 protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-	        config.exposeIdsFor(Restaurant.class);
-	    }
+//	 protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+//	        config.exposeIdsFor(Restaurant.class);
+//	    }
 
 }

@@ -17,7 +17,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import pizzaOrder.restService.model.indent.Indent;
 
@@ -38,7 +40,8 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
-	@JsonManagedReference
+//	@JsonManagedReference
+	@JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,property = "indent")
 	private List<Indent> indent;
 	
 
