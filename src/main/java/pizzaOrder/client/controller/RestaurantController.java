@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import pizzaOrder.client.exceptionHandler.RestaurantNotFoundException;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
@@ -58,8 +60,14 @@ public class RestaurantController {
 //		RestTemplate template = new RestTemplate();
 		System.out.println("A");
 		
+		try{
 		Restaurant restaurant = template.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class, id);
 		model.addAttribute("restaurant", restaurant);
+		}
+		catch(HttpClientErrorException e){
+			throw new RestaurantNotFoundException();
+		}
+	
 
 		System.out.println("B");
 
