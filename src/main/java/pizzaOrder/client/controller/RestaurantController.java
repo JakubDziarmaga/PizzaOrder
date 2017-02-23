@@ -48,19 +48,27 @@ public class RestaurantController {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.registerModule(new Jackson2HalModule());
-
+//
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
 		converter.setObjectMapper(mapper);
 
 		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 
+//		RestTemplate template = new RestTemplate();
+		System.out.println("A");
+		
 		Restaurant restaurant = template.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class, id);
 		model.addAttribute("restaurant", restaurant);
 
+		System.out.println("B");
+
+		
 		String menuUrl = template.getForObject("http://localhost:8080/restaurants/{id}", PagedResources.class, id)
 				.getLink("menu").getHref();
 		// System.out.println(menuUrl);
+
+		System.out.println("C");
 
 		List<Menu> menu = new ArrayList<Menu>(template.getForObject(menuUrl, PagedResources.class).getContent());
 		// System.out.println(menu);

@@ -104,12 +104,12 @@ public class Restaurant {
 		this.menu = menu;
 	}
 
-	public List<Indent> getIndent() {
-		return indent;
-	}
-
-	public void setIndent(List<Indent> indent) {
-		this.indent = indent;
-	}
+//	public List<Indent> getIndent() {
+//		return indent;
+//	}
+//
+//	public void setIndent(List<Indent> indent) {
+//		this.indent = indent;
+//	}
 
 }

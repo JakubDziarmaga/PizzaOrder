@@ -6,8 +6,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.jasper.tagplugins.jstl.core.Url;
@@ -107,7 +110,8 @@ public class IndentController {
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			menu.setIngredients(ingredients);
 			System.out.println(menu.getIngredients().toString());
-
+			System.out.println(indent.getDate());
+			
 			i++;
 		}
 		System.out.println(user.getIndent().get(0).getMenu());
@@ -153,6 +157,7 @@ public class IndentController {
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
 		Indent indent = new Indent();
+		indent.setDate(new Date());
 		URI newURI = template.postForLocation("http://localhost:8080/indents/", indent);
 		System.out.println(newURI);
 		

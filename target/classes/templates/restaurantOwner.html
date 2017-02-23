@@ -30,6 +30,7 @@
 			<td th:each="ingredient : ${indent.getMenu().getIngredients()}"> 
 				<p th:text="${ingredient.getName()}">1</p>
 			</td>
+			<td th:text="${indent.getFormatedDate()}"></td>			
 		</tr>
 	</table>
 	

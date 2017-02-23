@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import pizzaOrder.restService.model.indent.Indent;
 
 @Entity
-
+@JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class User {
 
 	@Id
@@ -41,7 +41,6 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 //	@JsonManagedReference
-	@JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,property = "indent")
 	private List<Indent> indent;
 	
 

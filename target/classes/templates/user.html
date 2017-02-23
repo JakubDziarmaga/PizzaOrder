@@ -16,25 +16,24 @@
 	<table>
 
 		<tr th:each="indent : ${indents}">
-			<td th:text="${indent.getId()}">1</td>
-			<td th:text="${indent.isPaid()}">1</td>
-			<td th:text="${indent.getMenu().price}"></td>
+			<td th:text="${indent.getId()}">indentId</td>
+			<td th:text="${indent.isPaid()}">indentIsPaid</td>
+			<td th:text="${indent.getMenu().price}">inentPrice</td>
 			<td th:each="ingredients : ${indent.getMenu().getIngredients()}">
-				<p th:text="${ingredients.name}">1</p>
+				<p th:text="${ingredients.name}">ingredientName</p>
 			</td>
 			<td>
-				<div th:if="${!indent.isPaid()}">
-
+				<div th:unless="${indent.isPaid()}">
 					<form th:action="@{'/indent/pay/'+${(indent.getId())}}"	method="GET">
 						<input type="submit" value="Pay" />
 					</form>
 					<form
 						th:action="@{'indent/delete/'+${(indent.getId())}}"	method="GET">
-						<input type="submit" value="Delete" />
-									
-					</form>
-					
-
+						<input type="submit" value="Delete" />									
+					</form>		
+				</div>
+				<div th:if="${indent.isPaid()}">
+								<p th:text="${indent.getFormatedDate()}">Date</p>
 				</div>
 			</td>
 

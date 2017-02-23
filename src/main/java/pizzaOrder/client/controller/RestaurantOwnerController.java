@@ -148,7 +148,8 @@ public class RestaurantOwnerController {
 			System.out.println(indent.isPaid());
 			System.out.println(indent.getUser().getUsername());
 			System.out.println(indent.getMenu().getPrice());
-			
+			System.out.println(indent.getDate());
+
 			payedIndents.add(indent);
 			
 		}

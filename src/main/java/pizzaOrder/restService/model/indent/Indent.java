@@ -1,5 +1,10 @@
 package pizzaOrder.restService.model.indent;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -32,8 +40,8 @@ public class Indent// extends ResourceSupport
 	private boolean isPaid;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
-//	@JsonBackReference
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "user")
+	@JsonBackReference
+//	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 	@JoinColumn(name = "id_user")
 	private User user;
 	
@@ -46,8 +54,15 @@ public class Indent// extends ResourceSupport
 	private Menu menu;
 	
 	
+	@Column(name = "date_time")
+    @Temporal(TemporalType.TIMESTAMP)
+	private Date dateTime;
 	
 	
+	public String getFormatedDate(){
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		return df.format(dateTime);
+	}
 	
 	
 	//
@@ -82,6 +97,12 @@ public class Indent// extends ResourceSupport
 	}
 	public void setMenu(Menu menu) {
 		this.menu = menu;
+	}
+	public Date getDate() {
+		return dateTime;
+	}
+	public void setDate(Date dateTime) {
+		this.dateTime = dateTime;
 	}	
 
 }

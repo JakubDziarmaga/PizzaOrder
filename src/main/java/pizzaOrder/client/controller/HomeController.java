@@ -1,9 +1,12 @@
 package pizzaOrder.client.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +45,8 @@ public class HomeController {
 	public String showAllRestaurants(Model model) {
 //sendActivatingMail();
 
-
+		System.out.println(new Date());
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.registerModule(new Jackson2HalModule());
