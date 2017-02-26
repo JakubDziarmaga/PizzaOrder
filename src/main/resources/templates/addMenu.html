@@ -7,7 +7,6 @@
 <body>
 	<div th:if="${actualUser} != null">
 		<p th:text="${actualUser.getUsername()}"></p>
-		<!--  SPRAWDZ WEB CONTTENT OBJECT Z PORADNIKA DO THYMELEAFA -->
 		<form th:action="@{/logout}" method="POST">
 			<input type="submit" value="Logout" />
 		</form>

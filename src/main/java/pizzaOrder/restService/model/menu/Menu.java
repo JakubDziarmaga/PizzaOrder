@@ -14,9 +14,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,7 +40,9 @@ public class Menu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_menu")
-	private Long id;				//tu powinien byc Long
+	private Long id;			
+	@Min(value=0,message = "Price can't be negative.")
+	@NotNull
 	private Double price;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_restaurant")
@@ -47,6 +53,8 @@ public class Menu {
     inverseJoinColumns = @JoinColumn(name = "id_ingredients", nullable = false))
 //	@JsonManagedReference
 	@Fetch(value = FetchMode.SELECT)
+//	@NotEmpty(message = "Please choose at least one ingredient.")
+	//TODO add after split program for client and server
 	private List<Ingredients> ingredients;
 
 	@OneToMany(mappedBy = "menu", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)

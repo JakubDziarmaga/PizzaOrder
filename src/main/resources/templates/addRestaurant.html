@@ -14,16 +14,45 @@
 	
 		<span th:text="${restaurant.getOwnerId()}"></span>
 	
-
+<!-- 
 	<h1>Form</h1>
     	<form method="POST" th:object="${restaurant}">
-		<!-- <c:out value="${user}" /><br/>	 -->
+		<c:out value="${user}" /><br/>	
 		Name:<input id="name" type="text" name="name" /><br /> 
 		City:<input id="city" type="text" name="city" /><br /> 
 		Address:<input id="adress" type="text" name="adress" /><br /> 
 		Phone:<input id="phone" type="number" name="phone" /><br /> 
 			<input type="submit" value="Add" />
 	</form>
+ -->	
+ 
+	 <form action="#" th:action="@{/addRestaurant}" th:object="${restaurant}" method="post">
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td><input type="text" th:field="*{name}" /></td>
+                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><input type="text" th:field="*{city}" /></td>
+                    <td th:if="${#fields.hasErrors('city')}" th:errors="*{city}">Password Error</td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td><input type="text" th:field="*{adress}" /></td>
+                    <td th:if="${#fields.hasErrors('adress')}" th:errors="*{adress}">Email Error</td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td><input type="number" th:field="*{phone}" /></td>
+                    <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</td>
+                </tr>
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </table>
+        </form>
 			
 	
 </body>

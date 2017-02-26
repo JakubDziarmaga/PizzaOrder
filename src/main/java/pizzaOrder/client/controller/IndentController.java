@@ -14,6 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.jasper.tagplugins.jstl.core.Url;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
@@ -34,6 +36,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,6 +44,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import pizzaOrder.client.exceptionHandler.IndentAlreadyPaid;
+import pizzaOrder.client.exceptionHandler.IndentNotFoundException;
+import pizzaOrder.client.exceptionHandler.MenuNotFoundException;
+import pizzaOrder.client.exceptionHandler.RestaurantNotFoundException;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
@@ -50,20 +57,28 @@ import pizzaOrder.restService.model.users.User;
 @Controller
 public class IndentController {
 
+	@Autowired
+	RestTemplate template;
+	
+	@Autowired
+	@Qualifier("configureHalObjectMapper")
+
+	ObjectMapper mapper;
+	
 	@RequestMapping("/user")
 	public String showUserData(Model model) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Jackson2HalModule());
-
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-		converter.setObjectMapper(mapper);
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		mapper.registerModule(new Jackson2HalModule());
+//
+//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+//		converter.setObjectMapper(mapper);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 
-		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 		User user = template.getForObject("http://localhost:8080/users/search/names?username={username}", User.class,
 				username);
 		model.addAttribute("user", user);
@@ -137,9 +152,15 @@ public class IndentController {
 	@RequestMapping(value = "/indent/pay/{id}", method = RequestMethod.GET)			//TODO check if actualUser is owner of this indent
 	public String payForIndent(@PathVariable("id") Long id) {
 		RestTemplate template = new RestTemplate();
+		try{
 		Indent indent = template.getForObject("http://localhost:8080/indents/{id}", Indent.class, id);
+		if(indent.isPaid()) throw new IndentAlreadyPaid(id);
 		indent.setPaid(true);
 		template.put("http://localhost:8080/indents/{id}", indent, id);
+		}
+		catch(HttpClientErrorException e){
+			throw new IndentNotFoundException(id);
+		}
 		return "redirect:/user";
 	}
 
@@ -164,25 +185,39 @@ public class IndentController {
 		
 		//TODO Delete magicnumbers
 		//TODO let only owner of indents delete indents
-		
+		try{
 		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/"+idRestaurant, reqHeaders);
 		template.exchange(newURI+"/restaurant",  HttpMethod.PUT, restaurantEntity, String.class);
-		
+		}
+		catch(HttpClientErrorException e){
+			throw new RestaurantNotFoundException(idRestaurant);
+		}
 		Long userLink=template.getForObject("http://localhost:8080/users/search/names?username={username}",Restaurant.class, username).getId();
 		System.out.println(userLink);
 		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/"+userLink, reqHeaders);		
 		template.exchange(newURI+"/user",  HttpMethod.PUT, userEntity, String.class);
 		
-		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/"+idMenu, reqHeaders);		
-		template.exchange(newURI+"/menu",  HttpMethod.PUT, menuEntity, String.class);
+		try{
+			HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/"+idMenu, reqHeaders);		
+			template.exchange(newURI+"/menu",  HttpMethod.PUT, menuEntity, String.class);
+		}
+		catch(HttpClientErrorException e){
+			throw new MenuNotFoundException(idMenu);
+		}
+		
 		
 		return "redirect:/user";
 	}
 	
 	@RequestMapping(value = "indent/delete/{idIndent}")
 	public String deleteIndent(@PathVariable("idIndent") Long idIndent){
-		RestTemplate template = new RestTemplate();
+		try{
+//		RestTemplate template = new RestTemplate();
 		template.delete("http://localhost:8080/indents/{idIndent}",idIndent);
+		}
+		catch(HttpClientErrorException e){
+			throw new IndentNotFoundException(idIndent);
+		}
 		return "redirect:/user";
 	}
 

@@ -6,23 +6,45 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<h1>Form</h1>
-    	<form method="POST" th:object="${user}">
-		<!-- <c:out value="${user}" /><br/>	 -->
-		Username:<input id="username" type="text" name="username" /><br /> 
-		Password:<input id="password" type="password" name="password" /><br /> 
-		Mail:<input id="mail" type="email" name="mail" /><br /> 
-		Phone:<input id="phone" type="number" name="phone" /><br /> 
-		<!-- <select id="role">
-        <option  th:value="USER" th:text="User">User</option>
-        <option  th:value="RestaurantOwner" th:text="RestaurantOwner">RestaurantOwner</option>        
-        </select> -->
-        <select id="role" name="role">
-                <option value="USER">User</option>
-                <option value="RESTAURANT_OWNER">Restaurant owner</option>
-            </select>
-        <br /> 
-		<input type="submit" value="Register" />
-	</form>
+ 
+ <form action="#" th:action="@{/registration}" th:object="${nonActivatedUser}" method="post">
+            <table>
+                <tr>
+                    <td>Username:</td>
+                    <td><input type="text" th:field="*{username}" /></td>
+                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" th:field="*{password}" /></td>
+                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="email" th:field="*{mail}" /></td>
+                    <td th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Email Error</td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td><input type="number" th:field="*{phone}" /></td>
+                    <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</td>
+                </tr>
+          		<tr>
+          			<td>Role:</td>
+          			<td>
+          			        <select id="role" name="role">
+          			            <option value=""></option>          			        
+                				<option value="USER">User</option>
+              					<option value="RESTAURANT_OWNER">Restaurant owner</option>
+            				</select>
+            		</td>
+            		<td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</td>
+          		</tr>         	   
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </table>
+        </form>
+	
 </body>
 </html>

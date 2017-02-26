@@ -2,6 +2,7 @@ package pizzaOrder.client.controller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.validation.Valid;
 
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceSupport;
@@ -30,8 +33,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,6 +44,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import pizzaOrder.client.exceptionHandler.RestaurantNotFoundException;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
@@ -46,6 +52,7 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
 
 @Controller
+@SessionAttributes({"actualUser","ingredients"})
 public class RestaurantOwnerController {
 
 	@RequestMapping("/restaurantowner")
@@ -66,6 +73,7 @@ public class RestaurantOwnerController {
 			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth
 					.getPrincipal();
 			model.addAttribute("actualUser", actualUser);
+			
 		}
 		
 		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
@@ -162,11 +170,11 @@ public class RestaurantOwnerController {
 	@RequestMapping(value = "/addRestaurant", method = RequestMethod.GET)
 	public String addRestaurant(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth.getPrincipal() != "anonymousUser") {
-			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth
-					.getPrincipal();
-			model.addAttribute("actualUser", actualUser);
-		}
+//		if (auth.getPrincipal() != "anonymousUser") {
+//			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth
+//					.getPrincipal();
+//			model.addAttribute("actualUser", actualUser);
+//		}
 		Restaurant restaurant = new Restaurant();
 		String username = auth.getName();
 		RestTemplate template = new RestTemplate();
@@ -179,17 +187,27 @@ public class RestaurantOwnerController {
 	}
 
 	@RequestMapping(value = "/addRestaurant", method = RequestMethod.POST)
-	public String registration(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult bindingResult,Model model) {
+//	public String registration(@ModelAttribute("restaurant") Restaurant restaurant, BindingResult bindingResult,Model model) {
+	public String registration(@Valid Restaurant restaurant, BindingResult bindingResult,Model model) {
 
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Jackson2HalModule());
+		if(bindingResult.hasErrors()){
+//			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) 
+//																			SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			model.addAttribute("actualUser", actualUser);
+			return "addRestaurant";
+    	}
 
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-		converter.setObjectMapper(mapper);
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		mapper.registerModule(new Jackson2HalModule());
+//
+//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+//		converter.setObjectMapper(mapper);
+//		
+//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 		
-		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+		RestTemplate template = new RestTemplate();
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
@@ -242,7 +260,16 @@ public class RestaurantOwnerController {
 	}
 	
 	@RequestMapping(value="/restaurantowner/{idRestaurant}/addmenu", method = RequestMethod.POST)
-	public String addMenu(@ModelAttribute("menu") Menu menu, BindingResult bindingResult,Model model,@PathVariable("idRestaurant") Long idRestaurant){
+//	public String addMenu(@ModelAttribute("menu") Menu menu, BindingResult bindingResult,Model model,@PathVariable("idRestaurant") Long idRestaurant){
+	public String addMenu(@Valid Menu menu, BindingResult bindingResult,Model model,@PathVariable("idRestaurant") Long idRestaurant ) throws URISyntaxException{
+
+		System.out.println(menu.getIngredients());
+		System.out.println(menu.getPrice());
+
+		if(bindingResult.hasErrors()){
+			return "addMenu";
+		}
+		
 		
 		System.out.println(menu.getPrice());
 		for(Ingredients i:menu.getIngredients()){
@@ -250,17 +277,28 @@ public class RestaurantOwnerController {
 			System.out.println("INGREDIENTS "+i.getName());
 		}
 
+		System.out.println("A");		
+
 		
 		RestTemplate template = new RestTemplate();
 		HttpHeaders reqHeaders = new HttpHeaders();
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
 		
-		URI newURI = template.postForLocation("http://localhost:8080/menu/", menu.getPrice());
+//		URI newURI = template.postForLocation("http://localhost:8080/menu/", menu.getId());
+		System.out.println(menu.getPrice());		
+		
+		URI newURI = template.postForLocation("http://localhost:8080/menu/",menu.getPrice());
+		
 		System.out.println(newURI);		
 		
+		try{
 		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/"+idRestaurant, reqHeaders);
 		template.exchange(newURI+"/restaurant",  HttpMethod.PUT, restaurantEntity, String.class);
+		}
+		catch(HttpClientErrorException e){
+			throw new RestaurantNotFoundException(idRestaurant);
+		}
 		
 		HttpEntity<String> ingredientsEntity;
 		

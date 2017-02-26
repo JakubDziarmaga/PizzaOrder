@@ -26,36 +26,37 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import aj.org.objectweb.asm.TypeReference;
+import javassist.compiler.ast.Visitor;
 import pizzaOrder.restService.model.restaurant.Restaurant;
 
 @Controller
+@SessionAttributes("test")
 public class HomeController {
 	@Autowired
-	private JavaMailSender mailSender;
-	// TODO usuń 1 po testach
+	RestTemplate template;
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showAllRestaurants(Model model) {
-//sendActivatingMail();
-
-		System.out.println(new Date());
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Jackson2HalModule());
-
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-		converter.setObjectMapper(mapper);
-
-		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		mapper.registerModule(new Jackson2HalModule());
+//
+//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+//		converter.setObjectMapper(mapper);
+//
+//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 
 		
 		List<Restaurant> restaurants = new ArrayList<Restaurant>(template.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent());
@@ -64,6 +65,7 @@ public class HomeController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
 
+		model.addAttribute("test","test1");
 
 		if (auth.getPrincipal() != "anonymousUser") {
 			User actualUser = (User) auth.getPrincipal();
@@ -73,22 +75,12 @@ public class HomeController {
 		
 		return "home";
 	}
-//	private void sendActivatingMail(String userMail,String Us) {
-//		SimpleMailMessage message = new SimpleMailMessage();
-//		    	
-//		    	message.setFrom("pizza0rd3r@gmail.com");
-//		    	message.setTo("qqob3ftm.v2j@20mail.eu");
-//		    	message.setSubject("TEST");
-//		    	message.setText("testowa wiadomosc"); 
-//				
-//				
-//		//		FileSystemResource tonyPicture = new FileSystemResource("DS:/MVCC/aaaa/src/main/webapp/upload/tony.jpg");
-//		//		helper.addAttachment("profilePicture.jpg", tonyPicture);
-//				
-//				System.out.println("wysylanie wiadomosci");
-//				mailSender.send(message);
-//				System.out.println("wyslano wiadomosc");
-//	}
 	
-	
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test(@ModelAttribute("test") String test){
+		System.out.println(test);
+		return "home";
+
+	}
 }
+

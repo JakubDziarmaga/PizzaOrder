@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedResources;
@@ -40,22 +42,25 @@ import pizzaOrder.restService.model.users.User;
 
 @Controller
 public class RestaurantController {
+	
+	@Autowired
+	RestTemplate template;
 
+	@Autowired
+	@Qualifier("configureHalObjectMapper")
+	ObjectMapper mapper;
+	
 	@RequestMapping(value = "/restaurant/{id}")
-	public String showRestaurantById(@PathVariable("id") Long id, Model model)
-			throws JsonParseException, JsonMappingException, IOException {
-		
-		
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Jackson2HalModule());
+	public String showRestaurantById(@PathVariable("id") Long id, Model model) throws JsonParseException, JsonMappingException, IOException {	
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		mapper.registerModule(new Jackson2HalModule());
 //
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-		converter.setObjectMapper(mapper);
-
-		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+//		converter.setObjectMapper(mapper);
+//
+//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 
 //		RestTemplate template = new RestTemplate();
 		System.out.println("A");
@@ -65,7 +70,7 @@ public class RestaurantController {
 		model.addAttribute("restaurant", restaurant);
 		}
 		catch(HttpClientErrorException e){
-			throw new RestaurantNotFoundException();
+			throw new RestaurantNotFoundException(id);
 		}
 	
 

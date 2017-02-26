@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -56,24 +58,37 @@ public class UserController {
     
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
-
-    	NonActivatedUser user = new NonActivatedUser();        	  
-          model.addAttribute("user", user);
+//    public String registration(NonActivatedUser user)//,Model model) {
+    
+    	NonActivatedUser nonActivatedUser = new NonActivatedUser();        	  
+        model.addAttribute("nonActivatedUser", nonActivatedUser);
 
         return "register";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") NonActivatedUser userForm) throws MessagingException {//, BindingResult bindingResult//, Model model
-       
+    public String registration//(@ModelAttribute("user") NonActivatedUser user,BindingResult bindingResult,Model model) 
+    (@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model)
+    		throws MessagingException {//, //, 
+    	
+System.out.println(bindingResult.getModel().values().toString());       
+    	System.out.println(bindingResult.getAllErrors().size());
+    	System.out.println(bindingResult.hasErrors());
+    	if(bindingResult.hasFieldErrors("username")) System.out.println("MAKARENA");
+    	if(bindingResult.hasErrors()){
+    		model.addAttribute("nonActivatedUser",nonActivatedUser);
+    		return "register";
+    	}
+
+    	
     	 RestTemplate template = new RestTemplate();
-    	 URI nonActivatedUserUri = template.postForLocation("http://localhost:8080/nonactivatedusers",userForm,NonActivatedUser.class);
+    	 URI nonActivatedUserUri = template.postForLocation("http://localhost:8080/nonactivatedusers",nonActivatedUser,NonActivatedUser.class);
 //         template.postForObject("http://localhost:8080/nonactivatedusers",userForm,NonActivatedUser.class);
          System.out.println(nonActivatedUserUri);
          Long id =template.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
-         userForm.setId(id);
+         nonActivatedUser.setId(id);
          
-    	sendSimpleActivatingMail(userForm);
+//    	sendSimpleActivatingMail(user);
 
         
         
@@ -81,7 +96,7 @@ public class UserController {
 //		userService.save(userForm);
         
         
-        System.out.println(userForm.getRole());
+        System.out.println(nonActivatedUser.getRole());
 //        
 //        ObjectMapper mapper = new ObjectMapper();
 //		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -98,8 +113,8 @@ public class UserController {
         
 
         //securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm()); BYLO TAK
-        System.out.println(userForm.getUsername());
-        System.out.println(userForm.getPassword());
+        System.out.println(nonActivatedUser.getUsername());
+        System.out.println(nonActivatedUser.getPassword());
 
 //        securityService.autologin(userForm.getUsername(), userForm.getPassword());
         System.out.println("ddddd");

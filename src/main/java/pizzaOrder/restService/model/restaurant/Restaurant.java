@@ -10,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -27,9 +30,18 @@ public class Restaurant {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_restaurant")
 	private Long id;
+	
+	@Size(min = 3, max = 30, message = "Please enter your name.")
 	private String name;
+	
+	@Size(min = 3, max = 20, message = "Please enter your city.")
 	private String city;
+	
+	@Size(min = 3, max = 30, message = "Please enter your address.")
 	private String adress;
+	
+	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")
+	@Max(value = 999999999, message="Phone number must have between 7 and 9 digits")
 	private int phone;
 	
 	@Column(name="id_owner")
