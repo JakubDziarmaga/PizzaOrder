@@ -27,8 +27,8 @@ import pizzaOrder.Application;
 @ContextConfiguration(classes = { Application.class })
 // @ContextConfiguration(locations = {"classpath:testContext.xml",
 // "classpath:exampleApplicationContext-web.xml"})
-
 @WebAppConfiguration
+//WORKS
 public class HomeControllerTest {
 
 	private MockMvc mockMvc;
@@ -56,12 +56,12 @@ public class HomeControllerTest {
 	@Test
 	public void showHomepageForAuthorisedUser() throws Exception{
 		mockMvc.perform(get("/")
-		   .with(user("zz").password("zz").roles("USER")))
-	   	   .andDo(print())
-		   .andExpect(status().isOk())
-		   .andExpect(view().name("home"))
-		   .andExpect(model().attributeExists("restaurants"))
-		   .andExpect(model().attributeExists("actualUser"));
+			   .with(user("test").password("test").roles("USER")))   	
+			   .andDo(print())
+			   .andExpect(status().isOk())
+			   .andExpect(view().name("home"))
+			   .andExpect(model().attributeExists("restaurants"))
+			   .andExpect(model().attributeExists("actualUser"));
 	}
 
 

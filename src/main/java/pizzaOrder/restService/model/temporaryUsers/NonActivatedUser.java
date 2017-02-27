@@ -1,4 +1,4 @@
-package pizzaOrder.restSercive.model.temporaryUsers;
+package pizzaOrder.restService.model.temporaryUsers;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class NonActivatedUser {
 	@Size(min = 6, max = 30, message = "Password length must be between 6 and 20.")
 	private String password;
 	
-	@NotBlank (message = "Please enter your email address.")
+	@NotBlank (message = "Please enter your email address.")//TODO make mail validation '...@...'
 	private String mail;
 	
 	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")

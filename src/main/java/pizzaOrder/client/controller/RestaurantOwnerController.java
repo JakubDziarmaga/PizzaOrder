@@ -15,6 +15,8 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.hal.Jackson2HalModule;
@@ -55,15 +57,22 @@ import pizzaOrder.restService.model.users.User;
 @SessionAttributes({"actualUser","ingredients"})
 public class RestaurantOwnerController {
 
+	@Autowired
+	private RestTemplate template;
+
+	@Autowired
+	@Qualifier("configureHalObjectMapper")
+	private ObjectMapper mapper;
+	
 	@RequestMapping("/restaurantowner")
 	public String findRestaurantByOwner(Model model) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Jackson2HalModule());
-
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-		converter.setObjectMapper(mapper);
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		mapper.registerModule(new Jackson2HalModule());
+//
+//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+//		converter.setObjectMapper(mapper);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
@@ -72,11 +81,10 @@ public class RestaurantOwnerController {
 		if (auth.getPrincipal() != "anonymousUser") {
 			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth
 					.getPrincipal();
-			model.addAttribute("actualUser", actualUser);
-			
+			model.addAttribute("actualUser", actualUser);	
 		}
 		
-		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 
 		Long userId = template
 				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username)
@@ -225,13 +233,13 @@ public class RestaurantOwnerController {
 	@RequestMapping(value="/restaurantowner/{idRestaurant}/addmenu", method = RequestMethod.GET) //TODO give access to owner of this restaurant, not all users
 	public String addMenu(Model model,@PathVariable("idRestaurant") Long idRestaurant){
 		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		mapper.registerModule(new Jackson2HalModule());
-
-		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-		converter.setObjectMapper(mapper);
+//		ObjectMapper mapper = new ObjectMapper();
+//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		mapper.registerModule(new Jackson2HalModule());
+//
+//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+//		converter.setObjectMapper(mapper);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.getPrincipal() != "anonymousUser") {
@@ -242,7 +250,7 @@ public class RestaurantOwnerController {
 		Menu menu = new Menu();
 		model.addAttribute("menu",menu);
 		
-		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 		List <Ingredients> ingredientsHal =new ArrayList<Ingredients>(template.getForObject("http://localhost:8080/ingredients", PagedResources.class).getContent());
 
 		

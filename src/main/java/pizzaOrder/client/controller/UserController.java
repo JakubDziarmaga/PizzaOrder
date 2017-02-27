@@ -38,8 +38,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pizzaOrder.restService.model.users.User;
-import pizzaOrder.restSercive.model.temporaryUsers.NonActivatedUser;
 import pizzaOrder.restService.model.indent.Indent;
+import pizzaOrder.restService.model.temporaryUsers.NonActivatedUser;
 import pizzaOrder.security.SecurityService;
 import pizzaOrder.security.UserService;
 
@@ -58,7 +58,6 @@ public class UserController {
     
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
-//    public String registration(NonActivatedUser user)//,Model model) {
     
     	NonActivatedUser nonActivatedUser = new NonActivatedUser();        	  
         model.addAttribute("nonActivatedUser", nonActivatedUser);
@@ -72,8 +71,7 @@ public class UserController {
     		throws MessagingException {//, //, 
     	
 System.out.println(bindingResult.getModel().values().toString());       
-    	System.out.println(bindingResult.getAllErrors().size());
-    	System.out.println(bindingResult.hasErrors());
+
     	if(bindingResult.hasFieldErrors("username")) System.out.println("MAKARENA");
     	if(bindingResult.hasErrors()){
     		model.addAttribute("nonActivatedUser",nonActivatedUser);
@@ -83,41 +81,13 @@ System.out.println(bindingResult.getModel().values().toString());
     	
     	 RestTemplate template = new RestTemplate();
     	 URI nonActivatedUserUri = template.postForLocation("http://localhost:8080/nonactivatedusers",nonActivatedUser,NonActivatedUser.class);
-//         template.postForObject("http://localhost:8080/nonactivatedusers",userForm,NonActivatedUser.class);
-         System.out.println(nonActivatedUserUri);
+
+
          Long id =template.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
          nonActivatedUser.setId(id);
          
 //    	sendSimpleActivatingMail(user);
 
-        
-        
-        
-//		userService.save(userForm);
-        
-        
-        System.out.println(nonActivatedUser.getRole());
-//        
-//        ObjectMapper mapper = new ObjectMapper();
-//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//		mapper.registerModule(new Jackson2HalModule());
-//
-//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-//		converter.setObjectMapper(mapper);
-//
-//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
-       
-        
-        
-        
-
-        //securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm()); BYLO TAK
-        System.out.println(nonActivatedUser.getUsername());
-        System.out.println(nonActivatedUser.getPassword());
-
-//        securityService.autologin(userForm.getUsername(), userForm.getPassword());
-        System.out.println("ddddd");
         return "redirect:/";
     }
     

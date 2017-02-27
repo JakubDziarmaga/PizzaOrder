@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class RestTemplateConfig {
+	
 	@Bean
 	public ObjectMapper configureHalObjectMapper(){
 		ObjectMapper mapper = new ObjectMapper();
@@ -33,6 +34,4 @@ public class RestTemplateConfig {
 
 		return new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 	}
-	
-	
 }

@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
-import pizzaOrder.restSercive.model.temporaryUsers.NonActivatedUser;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.temporaryUsers.NonActivatedUser;
 import pizzaOrder.restService.model.users.User;
 
 @Configuration

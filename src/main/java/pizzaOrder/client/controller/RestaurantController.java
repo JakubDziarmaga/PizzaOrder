@@ -44,27 +44,15 @@ import pizzaOrder.restService.model.users.User;
 public class RestaurantController {
 	
 	@Autowired
-	RestTemplate template;
+	private RestTemplate template;
 
 	@Autowired
 	@Qualifier("configureHalObjectMapper")
-	ObjectMapper mapper;
+	private ObjectMapper mapper;
 	
 	@RequestMapping(value = "/restaurant/{id}")
 	public String showRestaurantById(@PathVariable("id") Long id, Model model) throws JsonParseException, JsonMappingException, IOException {	
-//		ObjectMapper mapper = new ObjectMapper();
-//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//		mapper.registerModule(new Jackson2HalModule());
-//
-//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-//		converter.setObjectMapper(mapper);
-//
-//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
-
-//		RestTemplate template = new RestTemplate();
-		System.out.println("A");
-		
+	
 		try{
 		Restaurant restaurant = template.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class, id);
 		model.addAttribute("restaurant", restaurant);
@@ -72,70 +60,33 @@ public class RestaurantController {
 		catch(HttpClientErrorException e){
 			throw new RestaurantNotFoundException(id);
 		}
-	
-
-		System.out.println("B");
-
 		
-		String menuUrl = template.getForObject("http://localhost:8080/restaurants/{id}", PagedResources.class, id)
-				.getLink("menu").getHref();
-		// System.out.println(menuUrl);
-
-		System.out.println("C");
+		String menuUrl = template.getForObject("http://localhost:8080/restaurants/{id}", PagedResources.class, id).getLink("menu").getHref();
 
 		List<Menu> menu = new ArrayList<Menu>(template.getForObject(menuUrl, PagedResources.class).getContent());
-		// System.out.println(menu);
-		// System.out.println(menu.get(0));
 		model.addAttribute("menus", menu);
-		System.out.println(menu.size());
-
-		// System.out.println(mapper.convertValue(menu.get(0),
-		// PagedResources.class).getLink("ingredients"));
 
 		Map<Long,List<Ingredients>> ingredientsByMenu = new HashMap<Long,List<Ingredients>>();
 		
-		
-		
-		 List<Menu> pojos = mapper.convertValue(menu, new
-				 TypeReference<List<Menu>>() { });
-		System.out.println(pojos.get(0).getId());
+		List<Menu> pojos = mapper.convertValue(menu, new TypeReference<List<Menu>>() { });
 		
 		int i=0;
 		for(Menu pojo:pojos) {
-			String ingredientsUrl = mapper.convertValue(menu.get(i), PagedResources.class).getLink("ingredients")
-					.getHref();
-			List<Ingredients> ingredients = new ArrayList<Ingredients>(
-					template.getForObject(ingredientsUrl, PagedResources.class).getContent());
-			System.out.println(pojo.getId().getClass());
+			String ingredientsUrl = mapper.convertValue(menu.get(i), PagedResources.class).getLink("ingredients").getHref();
+			List<Ingredients> ingredients = new ArrayList<Ingredients>(template.getForObject(ingredientsUrl, PagedResources.class).getContent());
 			ingredientsByMenu.put(pojo.getId(),ingredients );
 			i++;
 		}
-		//		for (int i = 0; i < menu.size(); i++)
-		System.out.println(ingredientsByMenu);
-		System.out.println(ingredientsByMenu.get(1L));
-		
-		
-		// List<Ingredients> pojos = mapper.convertValue(ingredients, new
-		// TypeReference<List<Ingredients>>() { });
-		// System.out.println(pojos.get(0).getName());
+
 		model.addAttribute("ingredients", ingredientsByMenu);
-//		System.out.println(ingredientsByMenu.get(0));
-		System.out.println(pojos.get(0));
-		System.out.println(pojos.get(0).getIngredients());
-		
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth.getPrincipal() != "anonymousUser") {
+		//if (auth.getPrincipal() != "anonymousUser") {
 			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 			model.addAttribute("actualUser", actualUser);
-		}
-		
-		System.out.println(template.getForObject("http://localhost:8080/restaurants/{id}", PagedResources.class, id)
-				.getLink("self").getHref());
-		
+		//}
 
 		return "restaurant";
-//		return "redirect:/addindents";
 	}
 
 }

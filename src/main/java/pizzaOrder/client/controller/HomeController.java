@@ -41,46 +41,25 @@ import javassist.compiler.ast.Visitor;
 import pizzaOrder.restService.model.restaurant.Restaurant;
 
 @Controller
-@SessionAttributes("test")
 public class HomeController {
+	
 	@Autowired
-	RestTemplate template;
+	private RestTemplate template;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showAllRestaurants(Model model) {
-//		ObjectMapper mapper = new ObjectMapper();
-//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//		mapper.registerModule(new Jackson2HalModule());
-//
-//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-//		converter.setObjectMapper(mapper);
-//
-//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
 
-		
 		List<Restaurant> restaurants = new ArrayList<Restaurant>(template.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent());
 		model.addAttribute("restaurants", restaurants);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-
-		model.addAttribute("test","test1");
 
 		if (auth.getPrincipal() != "anonymousUser") {
 			User actualUser = (User) auth.getPrincipal();
 			model.addAttribute("actualUser", actualUser);
-			System.out.println(actualUser.getUsername());
 		}
 		
 		return "home";
-	}
-	
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(@ModelAttribute("test") String test){
-		System.out.println(test);
-		return "home";
-
 	}
 }
 

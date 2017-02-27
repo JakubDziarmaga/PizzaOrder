@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.net.URI;
 
@@ -64,15 +65,30 @@ public class UserControllerTest {
 				.param("password", "testPassword")
 				.param("mail", "testMail")
 				.param("role", "USER")
-				.param("phone", "4342")
-				.sessionAttr("userForm", new User()))
+				.param("phone", "1234567")
+				.sessionAttr("nonActivatedUser", new User()))
 				.andExpect(status().is3xxRedirection());
 	}
+	
+	@Test
+	public void postUserWithValidationErrors() throws Exception {	
+		
+		mockMvc.perform(post("/registration")
+				.param("username", "testuser")
+				.param("password", "testPassword")
+				.param("mail", "testMail")
+				.param("role", "USER")
+				.param("phone", "123456")
+				.sessionAttr("nonActivatedUser", new User()))
+				.andExpect(status().isOk())
+			    .andExpect(view().name("register"));
+	}
+	
 	@Test
 	public void goodLogin() throws Exception{
 		mockMvc.perform(post("/login")
-				.param("username", "testuser")
-				.param("password", "testPassword"))
+				.param("username", "test")
+				.param("password", "test"))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/"));
@@ -88,11 +104,12 @@ public class UserControllerTest {
 				.andExpect(redirectedUrl("/login?error"));
 	}
 	
-    @AfterClass
-	public static void deleteEntity() throws Exception{
-    	RestTemplate template = new RestTemplate();
-		Long userId = template.getForObject("http://localhost:8080/users/search/names?username=testuser", User.class).getId();
-		template.delete("http://localhost:8080/users/{userId}",userId);
-	}
+//	Entity isn't send to server
+//    @AfterClass
+//	public static void deleteEntity() throws Exception{
+//    	RestTemplate template = new RestTemplate();
+//		Long userId = template.getForObject("http://localhost:8080/users/search/names?username=testuser", User.class).getId();
+//		template.delete("http://localhost:8080/users/{userId}",userId);
+//	}
 
 }

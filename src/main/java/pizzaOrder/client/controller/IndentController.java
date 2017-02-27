@@ -58,57 +58,36 @@ import pizzaOrder.restService.model.users.User;
 public class IndentController {
 
 	@Autowired
-	RestTemplate template;
+	private RestTemplate template;
 	
 	@Autowired
 	@Qualifier("configureHalObjectMapper")
-
-	ObjectMapper mapper;
+	private ObjectMapper mapper;
 	
 	@RequestMapping("/user")
 	public String showUserData(Model model) {
-//		ObjectMapper mapper = new ObjectMapper();
-//		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//		mapper.registerModule(new Jackson2HalModule());
-//
-//		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-//		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
-//		converter.setObjectMapper(mapper);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 
-//		RestTemplate template = new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
-		User user = template.getForObject("http://localhost:8080/users/search/names?username={username}", User.class,
-				username);
+		User user = template.getForObject("http://localhost:8080/users/search/names?username={username}", User.class,username);
 		model.addAttribute("user", user);
 
-		String indentUrl = template.getForObject("http://localhost:8080/users/search/names?username={username}",
-				PagedResources.class, username).getLink("indent").getHref();
-		List<Indent> indentsHal = new ArrayList<Indent>(
-				template.getForObject(indentUrl, PagedResources.class).getContent());
+		String indentUrl = template.getForObject("http://localhost:8080/users/search/names?username={username}",PagedResources.class, username).getLink("indent").getHref();
+		List<Indent> indentsHal = new ArrayList<Indent>(template.getForObject(indentUrl, PagedResources.class).getContent());
+		
 		if(indentsHal.size()==0)
 			return "user";
 
-		System.out.println(indentsHal.getClass().toString());
-		List<Indent> indents = mapper.convertValue(indentsHal, new TypeReference<List<Indent>>() {
-		});
+		List<Indent> indents = mapper.convertValue(indentsHal, new TypeReference<List<Indent>>() {});
 		user.setIndent(indents);
 
-		System.out.println(user.getIndent().get(0).getMenu());
-		System.out.println(user.getIndent().get(0).isPaid());
+
 
 		int i = 0;
 		for (Indent indent : indents) {
 			String menuUrl = mapper.convertValue(indentsHal.get(i), PagedResources.class).getLink("menu").getHref();
-			System.out.println(menuUrl);
-			// List<Menu> menuHal = new
-			// ArrayList<Menu>(template.getForObject(menuUrl,
-			// PagedResources.class).getContent());
-			// System.out.println(menuHal.size());
-			//
-			// Menu menu = mapper.convertValue(menuHal, new
-			// TypeReference<Menu>() { });
+			
 			Menu menu = template.getForObject(menuUrl, Menu.class);
 			System.out.println(menu.getPrice());
 
@@ -129,21 +108,12 @@ public class IndentController {
 			
 			i++;
 		}
-		System.out.println(user.getIndent().get(0).getMenu());
-		System.out.println(user.getIndent().get(0).isPaid());
 
-		System.out.println(indents);
-		System.out.println(indents.get(0).isPaid());
 		model.addAttribute("indents", indents);
 
 		if (auth.getPrincipal() != "anonymousUser") {
-			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth
-					.getPrincipal();
+			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 			model.addAttribute("actualUser", actualUser);
-
-			System.out.println(actualUser.getAuthorities().getClass());
-			if(actualUser.getAuthorities().toString().equals("[RESTAURANT_OWNER]"))
-				System.out.println("DZIALALAALALALAL");
 		}
 
 		return "user";
@@ -177,33 +147,40 @@ public class IndentController {
 		HttpHeaders reqHeaders = new HttpHeaders();
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
-		Indent indent = new Indent();
-		indent.setDate(new Date());
-		URI newURI = template.postForLocation("http://localhost:8080/indents/", indent);
-		System.out.println(newURI);
 		
 		
 		//TODO Delete magicnumbers
 		//TODO let only owner of indents delete indents
 		try{
-		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/"+idRestaurant, reqHeaders);
-		template.exchange(newURI+"/restaurant",  HttpMethod.PUT, restaurantEntity, String.class);
+		template.getForObject("http://localhost:8080/restaurants/{idRestaurant}", Restaurant.class,idRestaurant);
 		}
 		catch(HttpClientErrorException e){
 			throw new RestaurantNotFoundException(idRestaurant);
 		}
+		Indent indent = new Indent();
+		indent.setDate(new Date());
+		URI newURI = template.postForLocation("http://localhost:8080/indents/", indent);
+		
+		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/"+idRestaurant, reqHeaders);
+
+		
+		template.exchange(newURI+"/restaurant",  HttpMethod.PUT, restaurantEntity, String.class);
+//		}
+//		catch(HttpClientErrorException e){
+//			throw new RestaurantNotFoundException(idRestaurant);
+//		}
 		Long userLink=template.getForObject("http://localhost:8080/users/search/names?username={username}",Restaurant.class, username).getId();
-		System.out.println(userLink);
 		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/"+userLink, reqHeaders);		
 		template.exchange(newURI+"/user",  HttpMethod.PUT, userEntity, String.class);
 		
 		try{
-			HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/"+idMenu, reqHeaders);		
-			template.exchange(newURI+"/menu",  HttpMethod.PUT, menuEntity, String.class);
+			template.getForObject("http://localhost:8080/restaurants/{idMenu}", Restaurant.class,idMenu);
 		}
 		catch(HttpClientErrorException e){
 			throw new MenuNotFoundException(idMenu);
 		}
+		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/"+idMenu, reqHeaders);		
+		template.exchange(newURI+"/menu",  HttpMethod.PUT, menuEntity, String.class);
 		
 		
 		return "redirect:/user";
@@ -212,7 +189,7 @@ public class IndentController {
 	@RequestMapping(value = "indent/delete/{idIndent}")
 	public String deleteIndent(@PathVariable("idIndent") Long idIndent){
 		try{
-//		RestTemplate template = new RestTemplate();
+		RestTemplate template = new RestTemplate();
 		template.delete("http://localhost:8080/indents/{idIndent}",idIndent);
 		}
 		catch(HttpClientErrorException e){

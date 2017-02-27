@@ -3,6 +3,7 @@ package unit.client.controller;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,16 +43,15 @@ public class RestaurantControllerTest {
 	
 	@Test
 	public void showRestaurantPage() throws Exception{
-	mockMvc.perform(get("/restaurant/1")
-		   .with(user("zz").password("zz").roles("USER")))
-		   .andDo(print())
-		   .andExpect(status().isOk())
-		   .andExpect(model().attributeExists("restaurant"))
-		   .andExpect(model().attributeExists("menus"))
-		   .andExpect(model().attributeExists("ingredients"))
-		   .andExpect(model().attributeExists("actualUser"))
-		   .andExpect(view().name("restaurant"));
-
+		mockMvc.perform(get("/restaurant/1")
+			   .with(user("zz").password("zz").roles("USER")))
+			   .andDo(print())
+			   .andExpect(status().isOk())
+			   .andExpect(model().attributeExists("restaurant"))
+			   .andExpect(model().attributeExists("menus"))
+			   .andExpect(model().attributeExists("ingredients"))
+			   .andExpect(model().attributeExists("actualUser"))
+			   .andExpect(view().name("restaurant"));
 	}
 	
 	@Test
@@ -60,7 +60,17 @@ public class RestaurantControllerTest {
 			   .andDo(print())
 			   .andExpect(status().is3xxRedirection())
 		   	   .andExpect(redirectedUrl("http://localhost/login"));
-
+	}
+	
+	@Test
+	public void redirectToHomePageWhenRestaurantDoesntExist() throws Exception{
+		mockMvc.perform(get("/restaurant/99999")
+			   .with(user("zz").password("zz").roles("USER")))
+			   .andDo(print())
+			   .andExpect(status().is3xxRedirection())
+			   .andExpect(redirectedUrl("/"))
+			   .andExpect(flash().attributeExists("error"))
+			   .andExpect(flash().attributeCount(1));
 	}
 	
 }

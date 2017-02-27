@@ -108,7 +108,7 @@ public class RestaurantOwnerControllerTest {
 				   .with(user("testRestaurantOwner").password("testRestaurantOwner").roles("RESTAURANT_OWNER")))
 				   .andDo(print())
 				   .andExpect(model().attributeExists("restaurant"))
-				   .andExpect(model().attributeExists("actualUser"))
+//				   .andExpect(model().attributeExists("actualUser"))
 				   .andExpect(view().name("addRestaurant"))
 				   .andExpect(status().isOk());
 
@@ -121,11 +121,14 @@ public class RestaurantOwnerControllerTest {
 				.param("name", "testName")
 				.param("city", "testCity")
 				.param("adress", "testAdress")
-				.param("phone", "1234")
+				.param("phone", "1234567")
 				.sessionAttr("restaurant", new Restaurant()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/restaurantowner"));
 	}
+	
+//	@Test
+//	public void test3.5PostNewRestaurantoutValidation() throws Exception{
 	
 	@Test
 	public void test5ShowAddMenuPage() throws Exception{

@@ -1,4 +1,4 @@
-package pizzaOrder.restSercive.model.temporaryUsers;
+package pizzaOrder.restService.model.temporaryUsers;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
