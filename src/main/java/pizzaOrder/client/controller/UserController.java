@@ -66,27 +66,20 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration//(@ModelAttribute("user") NonActivatedUser user,BindingResult bindingResult,Model model) 
-    (@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model)
-    		throws MessagingException {//, //, 
+    public String registration(@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model){
     	
-System.out.println(bindingResult.getModel().values().toString());       
-
-    	if(bindingResult.hasFieldErrors("username")) System.out.println("MAKARENA");
     	if(bindingResult.hasErrors()){
     		model.addAttribute("nonActivatedUser",nonActivatedUser);
     		return "register";
     	}
-
     	
     	 RestTemplate template = new RestTemplate();
+    	 
     	 URI nonActivatedUserUri = template.postForLocation("http://localhost:8080/nonactivatedusers",nonActivatedUser,NonActivatedUser.class);
-
-
          Long id =template.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
          nonActivatedUser.setId(id);
          
-//    	sendSimpleActivatingMail(user);
+//    	sendSimpleActivatingMail(user);			//TODO uncomment 
 
         return "redirect:/";
     }
@@ -97,25 +90,19 @@ System.out.println(bindingResult.getModel().values().toString());
 
 		helper.setFrom("pizza0rd3r@gmail.com");
 		helper.setTo(user.getMail());
-		helper.setSubject("TEST");
+		helper.setSubject("PizzaOrder");
 		helper.setText("Hello  "+ user.getUsername()+". Here's your activation link: http://localhost:8080/activate/" + user.getId()); 
 		
-		
-//		FileSystemResource tonyPicture = new FileSystemResource("");
-//		helper.addAttachment("profilePicture.jpg", tonyPicture);
-		
-		System.out.println("wysylanie wiadomosci");
 		mailSender.send(message);
-		System.out.println("wyslano wiadomosc");
 	}
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
+   
+//        if (logout != null)
+//            model.addAttribute("message", "You have been logged out successfully.");
 
         return "login";
     }

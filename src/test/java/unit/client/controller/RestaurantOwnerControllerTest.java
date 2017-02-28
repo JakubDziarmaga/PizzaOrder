@@ -165,8 +165,7 @@ public class RestaurantOwnerControllerTest {
 				   .andDo(print())
 				   .andExpect(model().attributeExists("actualUser"))
 				   .andExpect(model().attributeExists("restaurant"))
-				   .andExpect(model().attributeExists("menus"))
-				   .andExpect(model().attributeExists("ingredients"))
+				   .andExpect(model().attributeExists("menu"))
 				   .andExpect(model().attributeExists("indents"))
 			       .andExpect(view().name("restaurantOwner"))
 			       .andExpect(status().isOk());

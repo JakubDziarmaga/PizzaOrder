@@ -48,8 +48,7 @@ public class RestaurantControllerTest {
 			   .andDo(print())
 			   .andExpect(status().isOk())
 			   .andExpect(model().attributeExists("restaurant"))
-			   .andExpect(model().attributeExists("menus"))
-			   .andExpect(model().attributeExists("ingredients"))
+			   .andExpect(model().attributeExists("menu"))
 			   .andExpect(model().attributeExists("actualUser"))
 			   .andExpect(view().name("restaurant"));
 	}

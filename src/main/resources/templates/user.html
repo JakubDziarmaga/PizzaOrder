@@ -20,7 +20,7 @@
 		<tr th:each="indent : ${indents}">
 			<td th:text="${indent.getId()}">indentId</td>
 			<td th:text="${indent.isPaid()}">indentIsPaid</td>
-			<td th:text="${indent.getMenu().price}">inentPrice</td>
+			<td th:text="${indent.getMenu().getPrice()}">inentPrice</td>
 			<td th:each="ingredients : ${indent.getMenu().getIngredients()}">
 				<p th:text="${ingredients.name}">ingredientName</p>
 			</td>

@@ -38,12 +38,12 @@
 	 -->
 	<table>
 		
-		<tr th:each="menu : ${menus}">
+		<tr th:each="menu : ${menu}">
 			<td th:text="${menu.id}">1</td>
 			<td th:text="${menu.price}"></td>
 			<!-- <td th:text="${ingredients.get(new Long(1))}"></td> -->
-			<td th:each="ingredients : ${ingredients.get(new Long(menu.id))}"> <!--  nie wyswietla sie bo to integer -->
-				<p th:text="${ingredients.name}">1</p>
+			<td th:each="ingredients : ${menu.getIngredients()}">
+				<p th:text="${ingredients.name}">ingredientName</p>
 			</td>
 			<td>
 			<div th:if = "${actualUser.getAuthorities().toString().equals('[USER]')}">

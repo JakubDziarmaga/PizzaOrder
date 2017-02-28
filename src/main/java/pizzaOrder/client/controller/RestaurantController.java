@@ -3,6 +3,7 @@ package pizzaOrder.client.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pizzaOrder.client.exceptionHandler.RestaurantNotFoundException;
+import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
@@ -42,51 +44,44 @@ import pizzaOrder.restService.model.users.User;
 
 @Controller
 public class RestaurantController {
-	
+
 	@Autowired
 	private RestTemplate template;
 
 	@Autowired
 	@Qualifier("configureHalObjectMapper")
 	private ObjectMapper mapper;
-	
+
 	@RequestMapping(value = "/restaurant/{id}")
-	public String showRestaurantById(@PathVariable("id") Long id, Model model) throws JsonParseException, JsonMappingException, IOException {	
-	
-		try{
-		Restaurant restaurant = template.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class, id);
-		model.addAttribute("restaurant", restaurant);
-		}
-		catch(HttpClientErrorException e){
+	public String showRestaurantById(@PathVariable("id") Long id, Model model){
+
+		try {
+			Restaurant restaurant = template.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class,id);
+			model.addAttribute("restaurant", restaurant);
+		} catch (HttpClientErrorException e) {
 			throw new RestaurantNotFoundException(id);
 		}
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		model.addAttribute("actualUser", actualUser);
+
 		String menuUrl = template.getForObject("http://localhost:8080/restaurants/{id}", PagedResources.class, id).getLink("menu").getHref();
 
-		List<Menu> menu = new ArrayList<Menu>(template.getForObject(menuUrl, PagedResources.class).getContent());
-		model.addAttribute("menus", menu);
+		Collection<?> menuHal = template.getForObject(menuUrl, PagedResources.class).getContent();
 
-		Map<Long,List<Ingredients>> ingredientsByMenu = new HashMap<Long,List<Ingredients>>();
-		
-		List<Menu> pojos = mapper.convertValue(menu, new TypeReference<List<Menu>>() { });
-		
-		int i=0;
-		for(Menu pojo:pojos) {
-			String ingredientsUrl = mapper.convertValue(menu.get(i), PagedResources.class).getLink("ingredients").getHref();
-			List<Ingredients> ingredients = new ArrayList<Ingredients>(template.getForObject(ingredientsUrl, PagedResources.class).getContent());
-			ingredientsByMenu.put(pojo.getId(),ingredients );
-			i++;
+		if (menuHal.size() == 0)	return "restaurant";
+
+		List<Menu> menu = mapper.convertValue(menuHal, new TypeReference<List<Menu>>() {});
+
+		for (Menu m : menu) {
+			Collection<?> ingredientsHal = template.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class, m.getId()).getContent();
+			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
+			m.setIngredients(ingredients);
 		}
 
-		model.addAttribute("ingredients", ingredientsByMenu);
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		//if (auth.getPrincipal() != "anonymousUser") {
-			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-			model.addAttribute("actualUser", actualUser);
-		//}
+		model.addAttribute("menu", menu);
 
 		return "restaurant";
 	}
-
 }

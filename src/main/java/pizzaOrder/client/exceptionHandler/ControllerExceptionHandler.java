@@ -42,5 +42,11 @@ public class ControllerExceptionHandler {
 		redirectAttributes.addFlashAttribute("error","Indent already paid");
 		return "redirect:/";
 	}
-
+	
+	@ExceptionHandler(NotPermittedException.class)
+	public String notPermittedException(RedirectAttributes redirectAttributes){
+		log.info("You have no permission");
+		redirectAttributes.addFlashAttribute("error","You have no permission");
+		return "redirect:/";
+	}
 }

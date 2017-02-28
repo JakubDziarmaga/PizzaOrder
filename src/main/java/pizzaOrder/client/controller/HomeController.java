@@ -53,7 +53,6 @@ public class HomeController {
 		model.addAttribute("restaurants", restaurants);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 		if (auth.getPrincipal() != "anonymousUser") {
 			User actualUser = (User) auth.getPrincipal();
 			model.addAttribute("actualUser", actualUser);
