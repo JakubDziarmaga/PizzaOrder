@@ -1,4 +1,4 @@
-package pizzaOrder.restService.model.temporaryUsers;
+package pizzaOrder.restService.model.nonActivatedUsers;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,5 +11,5 @@ import pizzaOrder.restService.model.users.User;
 public interface NonActivatedUserRepository extends JpaRepository<NonActivatedUser, Long> {
 
 	@RestResource(path = "names")
-	public User findByUsername(@Param("username") String username);
+	public NonActivatedUser findByUsername(@Param("username") String username);
 }

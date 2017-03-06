@@ -37,8 +37,8 @@ public class Restaurant {
 	@Size(min = 3, max = 20, message = "Please enter your city.")
 	private String city;
 	
-	@Size(min = 3, max = 30, message = "Please enter your address.")
-	private String adress;
+	@Size(min = 3, max = 30, message = "Please enter your address.")//TODO change to address
+	private String address;
 	
 	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")
 	@Max(value = 999999999, message="Phone number must have between 7 and 9 digits")
@@ -84,12 +84,12 @@ public class Restaurant {
 		this.city = city;
 	}
 
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String adress) {
+		this.address = adress;
 	}
 
 	public int getPhone() {

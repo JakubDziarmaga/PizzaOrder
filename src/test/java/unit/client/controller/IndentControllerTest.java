@@ -64,7 +64,7 @@ public class IndentControllerTest {
 	@Test	
 	public void test2ShowUserPageWithNoIndents() throws Exception{
 		mockMvc.perform(get("/user")
-				.with(user("test").password("test").roles("USER")))
+				.with(user("testuser").password("testuser").roles("USER")))
 				.andDo(print())
 				.andExpect(status().isOk())
 			    .andExpect(view().name("user"));
@@ -73,7 +73,7 @@ public class IndentControllerTest {
 	@Test
 	public void test3AddIndent() throws Exception{
 		mockMvc.perform(get("/addindents/2/7")
-			   .with(user("test").password("test").roles("USER")))
+			   .with(user("testuser").password("testuser").roles("USER")))
 			   .andDo(print())
 			   .andExpect(status().is3xxRedirection())
 			   .andExpect(redirectedUrl("/user"));
@@ -82,10 +82,10 @@ public class IndentControllerTest {
 	@Test
 	public void test4PayForIndent() throws Exception{
 		RestTemplate template = new RestTemplate();
-		indentId = template.getForObject("http://localhost:8080/indents/search/username?userId=104", Long.class);
+		indentId = template.getForObject("http://localhost:8080/indents/search/username?userId=164", Long.class);
 	
 		mockMvc.perform(get("/indent/pay/{indentId}",indentId)
-			   .with(user("test").password("test").roles("USER")))
+			   .with(user("testuser").password("testuser").roles("USER")))
 	   		   .andDo(print())
 	   		   .andExpect(status().is3xxRedirection())
 	   		   .andExpect(redirectedUrl("/user"));
@@ -94,7 +94,7 @@ public class IndentControllerTest {
 	@Test	
 	public void test5ShowUserPageWithIndents() throws Exception{
 		mockMvc.perform(get("/user")
-				.with(user("test").password("test").roles("USER")))
+				.with(user("testuser").password("testuser").roles("USER")))
 				.andDo(print())
 				.andExpect(status().isOk())
 			    .andExpect(view().name("user"));
@@ -103,10 +103,10 @@ public class IndentControllerTest {
 	@Test
 	public void test6RedirectToUserPageWhenIndentIsAlreadyPaid() throws Exception{
 		RestTemplate template = new RestTemplate();
-		indentId = template.getForObject("http://localhost:8080/indents/search/username?userId=104", Long.class);
+		indentId = template.getForObject("http://localhost:8080/indents/search/username?userId=164", Long.class);
 	
 		mockMvc.perform(get("/indent/pay/{indentId}",indentId)
-			   .with(user("test").password("test").roles("USER")))
+			   .with(user("testuser").password("testuser").roles("USER")))
 	   		   .andDo(print())
 	   		   .andExpect(status().is3xxRedirection())
 	   		   .andExpect(redirectedUrl("/user"))
@@ -117,7 +117,7 @@ public class IndentControllerTest {
 	@Test
 	public void test7RedirectToUserPageWhenIndentDoesntExist() throws Exception{
 		mockMvc.perform(get("/indent/pay/99999")
-				   .with(user("test").password("test").roles("USER")))
+				   .with(user("testuser").password("testuser").roles("USER")))
 				   .andDo(print())
 				   .andExpect(status().is3xxRedirection())
 				   .andExpect(redirectedUrl("/user"))
@@ -161,10 +161,10 @@ public class IndentControllerTest {
 	@Test
 	public void test9deleteIndent() throws Exception{
 		RestTemplate template = new RestTemplate();
-		indentId = template.getForObject("http://localhost:8080/indents/search/username?userId=104", Long.class);
+		indentId = template.getForObject("http://localhost:8080/indents/search/username?userId=164", Long.class);
 
 		mockMvc.perform(get("/indent/delete/{indentId}",indentId)
-			   .with(user("test").password("test").roles("USER")))
+			   .with(user("testuser").password("testuser").roles("USER")))
 	   		   .andDo(print())
 	   		   .andExpect(status().is3xxRedirection())
 	   		   .andExpect(redirectedUrl("/user"));

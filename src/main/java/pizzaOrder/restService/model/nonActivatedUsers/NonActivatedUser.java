@@ -1,4 +1,4 @@
-package pizzaOrder.restService.model.temporaryUsers;
+package pizzaOrder.restService.model.nonActivatedUsers;
 
 import java.util.List;
 

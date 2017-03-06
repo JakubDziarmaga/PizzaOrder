@@ -24,12 +24,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import pizzaOrder.Application;
 import pizzaOrder.client.controller.UserController;
+import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 import pizzaOrder.restService.model.users.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,6 +39,7 @@ import pizzaOrder.restService.model.users.User;
 // @ContextConfiguration(locations = {"classpath:testContext.xml",
 // "classpath:exampleApplicationContext-web.xml"})
 @WebAppConfiguration
+@Transactional
 public class UserControllerTest {
 
 	private MockMvc mockMvc;
@@ -61,12 +64,12 @@ public class UserControllerTest {
 	public void postUser() throws Exception {	
 		
 		mockMvc.perform(post("/registration")
-				.param("username", "testuser")
+				.param("username", "testUsername")
 				.param("password", "testPassword")
-				.param("mail", "testMail")
+				.param("mail", "test@Mail")
 				.param("role", "USER")
 				.param("phone", "1234567")
-				.sessionAttr("nonActivatedUser", new User()))
+				.sessionAttr("nonActivatedUser", new NonActivatedUser()))
 				.andExpect(status().is3xxRedirection());
 	}
 	
@@ -74,12 +77,12 @@ public class UserControllerTest {
 	public void postUserWithValidationErrors() throws Exception {	
 		
 		mockMvc.perform(post("/registration")
-				.param("username", "testuser")
+				.param("username", "testUser")
 				.param("password", "testPassword")
 				.param("mail", "testMail")
 				.param("role", "USER")
-				.param("phone", "123456")
-				.sessionAttr("nonActivatedUser", new User()))
+				.param("phone", "1234567")
+				.sessionAttr("nonActivatedUser", new NonActivatedUser()))
 				.andExpect(status().isOk())
 			    .andExpect(view().name("register"));
 	}
@@ -87,8 +90,8 @@ public class UserControllerTest {
 	@Test
 	public void goodLogin() throws Exception{
 		mockMvc.perform(post("/login")
-				.param("username", "test")
-				.param("password", "test"))
+				.param("username", "testuser")
+				.param("password", "testuser"))
 				.andDo(print())
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/"));
@@ -105,11 +108,11 @@ public class UserControllerTest {
 	}
 	
 //	Entity isn't send to server
-//    @AfterClass
-//	public static void deleteEntity() throws Exception{
-//    	RestTemplate template = new RestTemplate();
-//		Long userId = template.getForObject("http://localhost:8080/users/search/names?username=testuser", User.class).getId();
-//		template.delete("http://localhost:8080/users/{userId}",userId);
-//	}
+    @AfterClass
+	public static void deleteEntity() throws Exception{
+    	RestTemplate template = new RestTemplate();
+		Long userId = template.getForObject("http://localhost:8080/nonactivatedusers/search/names?username=testUsername", NonActivatedUser.class).getId();
+		template.delete("http://localhost:8080/nonactivatedusers/{userId}",userId);
+	}
 
 }

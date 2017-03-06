@@ -56,12 +56,12 @@ public class Indent// extends ResourceSupport
 	
 	@Column(name = "date_time")
     @Temporal(TemporalType.TIMESTAMP)
-	private Date dateTime;
+	private Date date;
 	
 	
-	public String getFormatedDate(){
+	public String getFormattedDate(){
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		return df.format(dateTime);
+		return df.format(date);
 	}
 	
 	
@@ -99,10 +99,10 @@ public class Indent// extends ResourceSupport
 		this.menu = menu;
 	}
 	public Date getDate() {
-		return dateTime;
+		return date;
 	}
 	public void setDate(Date dateTime) {
-		this.dateTime = dateTime;
+		this.date = dateTime;
 	}	
 
 }

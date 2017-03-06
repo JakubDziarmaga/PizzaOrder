@@ -1,11 +1,13 @@
 package pizzaOrder.security;
 
+import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 import pizzaOrder.restService.model.users.User;
 import pizzaOrder.restService.model.users.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashSet;
 
@@ -23,7 +25,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRole(user.getRole());
 //        user.setRole(roleRepository.findOne(1L)); 
-        userRepository.save(user);					//TODO zrob to restowo
+        RestTemplate template = new RestTemplate();
+        template.postForObject("http://localhost:8080/users", user, User.class);
+//        userRepository.save(user);					//TODO zrob to restowo
     }
 
     @Override

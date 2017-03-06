@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +25,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pizzaOrder.client.exceptionHandler.RestaurantNotFoundException;
 import pizzaOrder.restService.model.ingredients.Ingredients;
@@ -36,31 +33,16 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
 
 @Controller
-@SessionAttributes({ "actualUser", "ingredients" })
-public class ModifyRestaurantController {
+@SessionAttributes({ "actualUser", "ingredients" ,"restaurant" })
+public class ModifyRestaurantController extends AbstractController{
 
-	@Autowired
-	private RestTemplate template;
-
-	@Autowired
-	@Qualifier("configureHalObjectMapper")
-	private ObjectMapper mapper;
-
+	//Showing addRestaurant form
 	@RequestMapping(value = "/addRestaurant", method = RequestMethod.GET)
 	public String addRestaurant(Model model) {
-
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-		model.addAttribute("actualUser", actualUser);
+		
+		getActualUser(model);
 
 		Restaurant restaurant = new Restaurant();
-		String username = auth.getName();
-//		RestTemplate template = new RestTemplate();
-		Long idOwner = template
-				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username)
-				.getId();
-
-		restaurant.setOwnerId(idOwner);
 		model.addAttribute("restaurant", restaurant);
 
 		return "addRestaurant";
@@ -68,12 +50,11 @@ public class ModifyRestaurantController {
 
 	@RequestMapping(value = "/addRestaurant", method = RequestMethod.POST)
 	public String addRestaurant(@Valid Restaurant restaurant, BindingResult bindingResult, Model model) {
-
+		        
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("restaurant", restaurant);
 			return "addRestaurant";
 		}
-
-//		RestTemplate template = new RestTemplate();
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
@@ -87,25 +68,12 @@ public class ModifyRestaurantController {
 		return "redirect:/restaurantowner";
 	}
 
-	@RequestMapping(value = "/restaurantowner/{idRestaurant}/addmenu", method = RequestMethod.GET) // TODO
-																									// give
-																									// access
-																									// to
-																									// owner
-																									// of
-																									// this
-																									// restaurant,
-																									// not
-																									// all
-																									// users
+	//Showing addMenu form
+	@RequestMapping(value = "/restaurantowner/{idRestaurant}/addmenu", method = RequestMethod.GET) 
 	public String addMenu(Model model, @PathVariable("idRestaurant") Long idRestaurant) {
+		checkIfRestaurantExists(idRestaurant);
+		getActualUser(model);
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		if (auth.getPrincipal() != "anonymousUser") {
-			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth
-					.getPrincipal();
-			model.addAttribute("actualUser", actualUser);
-//		}
 		Menu menu = new Menu();
 		model.addAttribute("menu", menu);
 
@@ -122,6 +90,7 @@ public class ModifyRestaurantController {
 		if (bindingResult.hasErrors()) {
 			return "addMenu";
 		}
+		checkIfRestaurantExists(idRestaurant);
 
 		RestTemplate template = new RestTemplate();
 		HttpHeaders reqHeaders = new HttpHeaders();
@@ -130,12 +99,9 @@ public class ModifyRestaurantController {
 
 		URI newMenuURI = template.postForLocation("http://localhost:8080/menu/", menu.getPrice());
 
-		try {
-			HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
-			template.exchange(newMenuURI +"/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
-		} catch (HttpClientErrorException e) {
-			throw new RestaurantNotFoundException(idRestaurant);
-		}
+		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
+		template.exchange(newMenuURI +"/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
+	
 
 		HttpEntity<String> ingredientsEntity;
 		for (Ingredients i : menu.getIngredients()) {
@@ -144,5 +110,14 @@ public class ModifyRestaurantController {
 		}
 
 		return "redirect:/restaurantowner";
+	}
+	
+	//Check if restaurant with id = idRestaurant exists in DB
+	private void checkIfRestaurantExists(Long idRestaurant) {
+		try {
+			template.getForObject("http://localhost:8080/restaurants/{idRestaurant}", Restaurant.class, idRestaurant);
+		} catch (HttpClientErrorException e) {
+			throw new RestaurantNotFoundException(idRestaurant);
+		}
 	}
 }

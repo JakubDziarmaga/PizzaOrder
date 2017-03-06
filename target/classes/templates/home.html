@@ -20,7 +20,7 @@
 		<tr th:each="restaurant : ${restaurants}">
 			<td th:text="${restaurant.id}">1</td>
 			<td th:text="${restaurant.city}">1</td>
-			<td th:text="${restaurant.adress}">Text ...</td>
+			<td th:text="${restaurant.address}">Text ...</td>
 			<td th:text="${restaurant.phone}">1</td>
 			<td th:text="${restaurant.name}">1</td>
 			<td><a th:href="@{'/restaurant/' + ${restaurant.id}}">view</a></td>
