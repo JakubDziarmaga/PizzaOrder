@@ -21,14 +21,19 @@ import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
+import pizzaOrder.security.SecurityService;
 
 public abstract class AbstractController {
 
 	@Autowired
 	protected RestTemplate template;
+	
 	@Autowired
-	@Qualifier("configureHalObjectMapper")
+	@Qualifier("halObjectMapper")
 	protected ObjectMapper mapper;
+	
+	@Autowired
+	protected SecurityService securityService;
 
 	public void getActualUser(Model model){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

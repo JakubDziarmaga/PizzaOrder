@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashSet;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserSecurityServiceImpl implements UserSecurityService {
     @Autowired
     private UserRepository userRepository;
 //    @Autowired

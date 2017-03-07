@@ -63,7 +63,7 @@ import pizzaOrder.restService.model.users.User;
 			menu.setPrice(10.0);
 			ObjectMapper mapper = new ObjectMapper();
 
-			mockMvc.perform(post("/users")
+			mockMvc.perform(post("/menu")
 					.content(mapper.writeValueAsString(menu)))
 					.andExpect(status().isCreated());
 		}

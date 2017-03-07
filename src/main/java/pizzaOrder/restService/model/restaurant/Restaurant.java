@@ -59,6 +59,18 @@ public class Restaurant {
 	//
 	// GETTERS AND SETTERS
 	//
+	public Restaurant() {
+		super();
+	}
+	public Restaurant(Long id, String name, String city, String address, int phone, Long ownerId) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.city = city;
+		this.address = address;
+		this.phone = phone;
+		this.ownerId = ownerId;
+	}
 
 	public Long getId() {
 		return id;

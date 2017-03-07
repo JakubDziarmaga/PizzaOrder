@@ -42,11 +42,22 @@ public class User {
 	@Fetch(value = FetchMode.SELECT)
 //	@JsonManagedReference
 	private List<Indent> indent;
-	
 
 	private String role;
 	
 
+	public User() {
+		super();
+	}
+	public User(Long id, String username, String password, String mail, int phone, String role) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.mail = mail;
+		this.phone = phone;
+		this.role = role;
+	}
 	//
 	//GETTERS AND SETTERS
 	//

@@ -2,6 +2,8 @@ package pizzaOrder.client.config;
 
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.MediaType;
@@ -17,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class RestTemplateConfig {
 	
 	@Bean
-	public ObjectMapper configureHalObjectMapper(){
+	public ObjectMapper halObjectMapper(){
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		mapper.registerModule(new Jackson2HalModule());
@@ -25,9 +27,8 @@ public class RestTemplateConfig {
 	}
 
 	@Bean
-	public RestTemplate configureHalRestTemplate(){
-		ObjectMapper mapper = configureHalObjectMapper();
-
+	public RestTemplate halRestTemplate(){
+		ObjectMapper mapper = halObjectMapper();
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 		converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
 		converter.setObjectMapper(mapper);

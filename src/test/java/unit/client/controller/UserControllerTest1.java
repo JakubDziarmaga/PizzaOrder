@@ -53,7 +53,7 @@ import pizzaOrder.client.controller.UserController;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.users.User;
 import pizzaOrder.security.SecurityService;
-import pizzaOrder.security.UserService;
+import pizzaOrder.security.UserSecurityService;
 
 ////@RunWith(SpringRunner.class)
 ////@WebMvcTest(UserController.class)
