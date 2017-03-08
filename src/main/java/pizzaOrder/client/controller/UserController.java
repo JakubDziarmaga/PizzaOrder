@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import pizzaOrder.client.service.UserService;
+import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.client.validator.UserValidator;
 import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 

@@ -14,8 +14,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import pizzaOrder.client.exceptionHandler.RestaurantNotFoundException;
-import pizzaOrder.client.service.MenuService;
-import pizzaOrder.client.service.RestaurantService;
+import pizzaOrder.client.service.interfaces.MenuService;
+import pizzaOrder.client.service.interfaces.RestaurantService;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;

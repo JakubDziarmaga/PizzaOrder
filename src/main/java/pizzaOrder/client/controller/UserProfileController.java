@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import pizzaOrder.client.service.IndentService;
+import pizzaOrder.client.service.interfaces.IndentService;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
