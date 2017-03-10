@@ -131,8 +131,6 @@ public class HomeControllerTest {
 	}
 	
 	@Test 
-//	@WithMockUser(username="testuser",roles="USER")
-
 	public void showHomePageWithListOfRestaurantWithActivatedUser() throws Exception {
 		Restaurant first = new Restaurant(1L, "FirstName", "FirstCity", "FirstAddress",1111, 4L);
 		Restaurant second = new Restaurant(2L, "SecondName", "SecondCity", "SecondAddress",2222, 5L);

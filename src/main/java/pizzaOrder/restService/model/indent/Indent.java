@@ -68,9 +68,24 @@ public class Indent// extends ResourceSupport
 	//
 	//GETTERS AND SETTERS
 	//
+	public Indent(){
+		
+	}
+	
+	public Indent(Long id, boolean isPaid, User user, Restaurant restaurant, Menu menu, Date date) {
+		super();
+		this.id = id;
+		this.isPaid = isPaid;
+		this.user = user;
+		this.restaurant = restaurant;
+		this.menu = menu;
+		this.date = date;
+	}	
+	
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}

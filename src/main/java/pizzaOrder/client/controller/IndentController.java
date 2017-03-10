@@ -34,25 +34,22 @@ import pizzaOrder.restService.model.users.User;
 @Controller
 public class IndentController {
 
-	@Autowired
-	private RestTemplate template;
-	
-	@Autowired
-	private RestaurantService restaurantService;
+//	@Autowired
+//	private RestaurantService restaurantService;
 	
 	@Autowired
 	private IndentService indentService;
 	
-	@Autowired
-	private MenuService menuService;
+//	@Autowired
+//	private MenuService menuService;
 	
 	//Add indent to actual logged user
 	@RequestMapping(value = "/addindents/{idRestaurant}/{idMenu}")
 	public String addIndents(@PathVariable("idRestaurant") Long idRestaurant, @PathVariable("idMenu") Long idMenu) {
 		
-		restaurantService.checkIfRestaurantExists(idRestaurant);
-		menuService.checkIfMenuExists(idMenu);
-		menuService.checkIfMenuBelongsToRestaurant(idRestaurant, idMenu);
+//		restaurantService.checkIfRestaurantExists(idRestaurant);
+//		menuService.checkIfMenuExists(idMenu);
+//		menuService.checkIfMenuBelongsToRestaurant(idRestaurant, idMenu);
 		indentService.addIndents(idRestaurant, idMenu);
 
 		return "redirect:/user";
@@ -68,7 +65,7 @@ public class IndentController {
 	
 
 
-	@RequestMapping(value = "indent/delete/{idIndent}")
+	@RequestMapping(value = "/indent/delete/{idIndent}", method = RequestMethod.GET)
 	public String deleteIndent(@PathVariable("idIndent") Long idIndent) {
 
 		indentService.deleteIndent(idIndent);

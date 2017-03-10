@@ -28,6 +28,8 @@ import pizzaOrder.client.exceptionHandler.IndentAlreadyPaid;
 import pizzaOrder.client.exceptionHandler.IndentNotFoundException;
 import pizzaOrder.client.exceptionHandler.NotPermittedException;
 import pizzaOrder.client.service.interfaces.IndentService;
+import pizzaOrder.client.service.interfaces.MenuService;
+import pizzaOrder.client.service.interfaces.RestaurantService;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
@@ -38,11 +40,17 @@ import pizzaOrder.restService.model.users.User;
 public class IndentServiceImpl implements IndentService {
 
 	@Autowired
-	RestTemplate template;
+	private RestTemplate template;
 	
 	@Autowired
 	@Qualifier("halObjectMapper")
 	protected ObjectMapper mapper;
+	
+	@Autowired
+	private RestaurantService restaurantService;
+	
+	@Autowired
+	private MenuService menuService;
 	
 	@Override
 	public void payForIndent(Long idIndent) {
@@ -89,6 +97,11 @@ public class IndentServiceImpl implements IndentService {
 
 	@Override
 	public void addIndents(Long idRestaurant, Long idMenu) {
+		
+		restaurantService.checkIfRestaurantExists(idRestaurant);
+		menuService.checkIfMenuExists(idMenu);
+		menuService.checkIfMenuBelongsToRestaurant(idRestaurant, idMenu);
+		
 		RestTemplate template = new RestTemplate();
 		HttpHeaders reqHeaders = new HttpHeaders();
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());

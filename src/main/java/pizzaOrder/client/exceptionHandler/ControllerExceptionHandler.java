@@ -15,7 +15,7 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(RestaurantNotFoundException.class)
 	public String restaurantNotFound(RedirectAttributes redirectAttributes){
-		log.info("Restaurant not found.");
+		log.info("Restaurant not found");
 	    redirectAttributes.addFlashAttribute("error", "Restaurant not found.");
 		return "redirect:/";
 
@@ -24,7 +24,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(IndentNotFoundException.class)
 	public String indentNotFound(RedirectAttributes redirectAttributes){
 		log.info("Indent not found");
-		redirectAttributes.addFlashAttribute("error","Indent not found");
+		redirectAttributes.addFlashAttribute("error","Indent not found.");
 		return "redirect:/user";
 
 	}
@@ -32,21 +32,21 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(IndentAlreadyPaid.class)
 	public String indentAlreadyPaid(RedirectAttributes redirectAttributes){
 		log.info("Indent already paid");
-		redirectAttributes.addFlashAttribute("error","Indent already paid");
+		redirectAttributes.addFlashAttribute("error","Indent already paid.");
 		return "redirect:/user";
 	}
 	
 	@ExceptionHandler(MenuNotFoundException.class)
 	public String menuNotFoundException(RedirectAttributes redirectAttributes){
 		log.info("Menu not found");
-		redirectAttributes.addFlashAttribute("error","Indent already paid");
+		redirectAttributes.addFlashAttribute("error","Menu not found.");
 		return "redirect:/";
 	}
 	
 	@ExceptionHandler(NotPermittedException.class)
 	public String notPermittedException(RedirectAttributes redirectAttributes){
 		log.info("You have no permission");
-		redirectAttributes.addFlashAttribute("error","You have no permission");
+		redirectAttributes.addFlashAttribute("error","You have no permission.");
 		return "redirect:/";
 	}
 }
