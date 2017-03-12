@@ -40,7 +40,12 @@ import pizzaOrder.restService.model.users.User;
 public class IndentServiceImpl implements IndentService {
 
 	@Autowired
-	private RestTemplate template;
+	@Qualifier("halTemplate")
+	private RestTemplate halTemplate;
+	
+	@Autowired
+	@Qualifier("defaultTemplate")
+	private RestTemplate defaultTemplate;
 	
 	@Autowired
 	@Qualifier("halObjectMapper")
@@ -56,21 +61,20 @@ public class IndentServiceImpl implements IndentService {
 	public void payForIndent(Long idIndent) {
 		checkIfIndentExists(idIndent);
 		checkIfActualUserIsOwnerOfIndent(idIndent);
-		RestTemplate template = new RestTemplate();
-		Indent indent = template.getForObject("http://localhost:8080/indents/{id}", Indent.class, idIndent);
+//		RestTemplate template = new RestTemplate();
+		Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{id}", Indent.class, idIndent);
 		if (indent.isPaid())
 			throw new IndentAlreadyPaid(idIndent);
 		indent.setPaid(true);
-		template.put("http://localhost:8080/indents/{id}", indent, idIndent);
+		defaultTemplate.put("http://localhost:8080/indents/{id}", indent, idIndent);
 	}
 
 	// Check if indent with id = idIndent exists in DB
 	@Override
 	public void checkIfIndentExists(Long idIndent) {
-		RestTemplate template = new RestTemplate();
 
 		try {
-			template.getForObject("http://localhost:8080/indents/{idIndent}", Indent.class, idIndent);
+			defaultTemplate.getForObject("http://localhost:8080/indents/{idIndent}", Indent.class, idIndent);
 		} catch (HttpClientErrorException e) {
 			throw new IndentNotFoundException(idIndent);
 		}
@@ -80,9 +84,9 @@ public class IndentServiceImpl implements IndentService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 
-		String userUrl = template.getForObject("http://localhost:8080/indents/{id}", PagedResources.class, idIndent)
+		String userUrl = halTemplate.getForObject("http://localhost:8080/indents/{id}", PagedResources.class, idIndent)
 				.getLink("user").getHref();
-		if (!username.equals(template.getForObject(userUrl, User.class).getUsername()))
+		if (!username.equals(halTemplate.getForObject(userUrl, User.class).getUsername()))
 			throw new NotPermittedException();
 	}
 
@@ -92,7 +96,7 @@ public class IndentServiceImpl implements IndentService {
 		checkIfIndentExists(idIndent);
 		checkIfActualUserIsOwnerOfIndent(idIndent);
 
-		template.delete("http://localhost:8080/indents/{idIndent}", idIndent);
+		halTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
 	}
 
 	@Override
@@ -102,33 +106,33 @@ public class IndentServiceImpl implements IndentService {
 		menuService.checkIfMenuExists(idMenu);
 		menuService.checkIfMenuBelongsToRestaurant(idRestaurant, idMenu);
 		
-		RestTemplate template = new RestTemplate();
+//		RestTemplate template = new RestTemplate();
 		HttpHeaders reqHeaders = new HttpHeaders();
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
 
 		Indent indent = new Indent();
 		indent.setDate(new Date());			
-		URI newIndentURI = template.postForLocation("http://localhost:8080/indents/", indent);
+		URI newIndentURI = defaultTemplate.postForLocation("http://localhost:8080/indents/", indent);
 		
 		//Posting restaurant to indent
 		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
-		template.exchange(newIndentURI + "/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
+		defaultTemplate.exchange(newIndentURI + "/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
 
 		//Posting user to indent
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Long userId = template.getForObject("http://localhost:8080/users/search/names?username={username}",Restaurant.class, auth.getName()).getId();
+		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",Restaurant.class, auth.getName()).getId();
 		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/" + userId, reqHeaders);
-		template.exchange(newIndentURI + "/user", HttpMethod.PUT, userEntity, String.class);
+		defaultTemplate.exchange(newIndentURI + "/user", HttpMethod.PUT, userEntity, String.class);
 
 		//Posting menu to indent
 		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/" + idMenu, reqHeaders);
-		template.exchange(newIndentURI + "/menu", HttpMethod.PUT, menuEntity, String.class);		
+		defaultTemplate.exchange(newIndentURI + "/menu", HttpMethod.PUT, menuEntity, String.class);		
 	}
 
 	@Override
 	public List<Indent> getPayedIndentsByRestaurantId(Long restaurantId) {
-		Collection<?> indentsHal =   template.getForObject("http://localhost:8080/restaurants/{restaurantId}/indent",PagedResources.class,restaurantId).getContent();
+		Collection<?> indentsHal =   halTemplate.getForObject("http://localhost:8080/restaurants/{restaurantId}/indent",PagedResources.class,restaurantId).getContent();
 		List<Indent> indents = mapper.convertValue(indentsHal, new TypeReference<List<Indent>>() {});
 	
 		List<Indent> payedIndents = new ArrayList<Indent>();
@@ -136,12 +140,12 @@ public class IndentServiceImpl implements IndentService {
 		for(Indent indent : indents){
 			if(!indent.isPaid()) continue;
 			
-			User user = template.getForObject("http://localhost:8080/indents/{id}/user", User.class,indent.getId());
+			User user = halTemplate.getForObject("http://localhost:8080/indents/{id}/user", User.class,indent.getId());
 			indent.setUser(user);
 			
-			Menu tempMenu = template.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
+			Menu tempMenu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
 			
-			Collection<?> ingredientsHal =template.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,tempMenu.getId()).getContent();
+			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,tempMenu.getId()).getContent();
 			List<Ingredients> tempIngredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients> >() {});
 			
 			tempMenu.setIngredients(tempIngredients);
@@ -154,16 +158,16 @@ public class IndentServiceImpl implements IndentService {
 
 	@Override
 	public List<Indent> getIndentsByUsername(String username) {
-		String indentUrl = template.getForObject("http://localhost:8080/users/search/names?username={username}",PagedResources.class, username).getLink("indent").getHref();
-		Collection<?> indentsHal = template.getForObject(indentUrl, PagedResources.class).getContent();		
+		String indentUrl = halTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",PagedResources.class, username).getLink("indent").getHref();
+		Collection<?> indentsHal = halTemplate.getForObject(indentUrl, PagedResources.class).getContent();		
 		List<Indent> indents = mapper.convertValue(indentsHal, new TypeReference<List<Indent>>() {});
 
 		for(Indent indent : indents){
-			indent.setRestaurant(template.getForObject("http://localhost:8080/indents/{indentId}/restaurant", Restaurant.class,indent.getId()));
+			indent.setRestaurant(halTemplate.getForObject("http://localhost:8080/indents/{indentId}/restaurant", Restaurant.class,indent.getId()));
 			
-			Menu menu = template.getForObject("http://localhost:8080/indents/{indentId}/menu", Menu.class,indent.getId());
+			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/menu", Menu.class,indent.getId());
 			
-			Collection<?> ingredientsHal = template.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();
+			Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();
 			
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			

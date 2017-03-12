@@ -1,5 +1,6 @@
 package client.service;
 
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 
 import java.util.Date;
@@ -38,8 +39,11 @@ import pizzaOrder.restService.model.users.User;
 
 public class IndentServiceTest {
 
-	@MockBean
-	private RestTemplate template;
+	@MockBean(name = "defaultTemplate")
+	private RestTemplate defaultTemplate;
+
+	@MockBean(name = "halTemplate")
+	private RestTemplate halTemplate;
 	
 	@MockBean	
 	private RestaurantService restaurantService;
@@ -54,12 +58,13 @@ public class IndentServiceTest {
     public void pay_for_indent() throws Exception{
     	Indent indent = new Indent(1L, true, new User(), new Restaurant(), new Menu(), new Date());
 
-    	Mockito.when(template.getForObject(
+    	Mockito.when(defaultTemplate.getForObject(
                 Mockito.anyString(),
                 eq(Indent.class),
-                Matchers.any(Object.class)               
+                Matchers.anyLong()               
                 ))
                 .thenReturn(indent);
+//    	Mockito.when(indentService.checkIfIndentExists(anyLong())).thenReturn(null);
     	
     	indentService.payForIndent(1L);
     }

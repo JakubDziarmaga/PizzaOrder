@@ -89,5 +89,14 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="E:/maven dependencies/hamcrest-library-1.3.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/powermock-core-1.4.6.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/powermock-module-junit4-1.6.6.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/powermock-api-mockito-1.6.6.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/powermock-tests-utils-1.6.5.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/cglib-3.2.5.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/powermock-core-1.6.6.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/powermock-api-mockito-common-1.6.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

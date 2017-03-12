@@ -25,13 +25,13 @@ import pizzaOrder.security.SecurityService;
 
 public abstract class AbstractController {
 
-	@Autowired
-	protected RestTemplate template;
-	
-	@Autowired
-	@Qualifier("halObjectMapper")
-	protected ObjectMapper mapper;
-	
+//	@Autowired
+//	protected RestTemplate template;
+//	
+//	@Autowired
+//	@Qualifier("halObjectMapper")
+//	protected ObjectMapper mapper;
+//	
 	@Autowired
 	protected SecurityService securityService;
 

@@ -56,6 +56,21 @@ public class NonActivatedUser {
 	//
 	// GETTERS AND SETTERS
 	//
+
+	public NonActivatedUser(){
+		super();
+	}
+	
+	public NonActivatedUser(Long id, String username, String password, String mail, int phone, String role) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.mail = mail;
+		this.phone = phone;
+		this.role = role;
+	}
+	
 	public Long getId() {
 		return id;
 	}

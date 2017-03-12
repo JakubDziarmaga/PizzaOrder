@@ -6,6 +6,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ import pizzaOrder.security.UserSecurityService;
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
+	@Qualifier("defaultTemplate")
+	private RestTemplate defaultTemplate;
+	
+	@Autowired
 	private UserSecurityService userSecurityService;
 
 	@Autowired
@@ -31,10 +36,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void addNonActivatedUser(NonActivatedUser user) throws MessagingException {
-		RestTemplate template = new RestTemplate();
-		URI nonActivatedUserUri = template.postForLocation("http://localhost:8080/nonactivatedusers", user,
-				NonActivatedUser.class);
-		Long id = template.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
+		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
+		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
 //		sendActivatingMail(user);	//TODO uncomment
 	}
@@ -55,10 +58,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void activateUser(Long nonActivatedUserId) {
-		RestTemplate template = new RestTemplate();
-		User user = template.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
+//		RestTemplate template = new RestTemplate();
+		User user = defaultTemplate.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
 		user.setId(null);
-		template.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
+		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
 		userSecurityService.save(user);
 		securityService.autologin(user.getUsername(), user.getPassword());
 	}

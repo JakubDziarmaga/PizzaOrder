@@ -45,6 +45,12 @@ public class Ingredients {
 		super();
 		this.name = name;
 	}
+	
+	public Ingredients(Long id,String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 
 	public Long getId() {
 		return id;

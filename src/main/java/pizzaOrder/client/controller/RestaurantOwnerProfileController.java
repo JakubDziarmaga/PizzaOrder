@@ -10,6 +10,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -43,16 +45,20 @@ import pizzaOrder.restService.model.users.User;
 public class RestaurantOwnerProfileController extends AbstractController{
 
 	@Autowired
-	RestaurantService restaurantService;
+	@Qualifier("halTemplate")
+	private RestTemplate halTemplate;
 	
 	@Autowired
-	MenuService menuService;
+	private RestaurantService restaurantService;
 	
 	@Autowired
-	IndentService indentService;
+	private MenuService menuService;
 	
 	@Autowired
-	IngredientService ingredientsSrvice;
+	private IndentService indentService;
+	
+	@Autowired
+	private IngredientService ingredientsSrvice;
 	
 	@RequestMapping("/restaurantowner")
 	public String findRestaurantByOwner(Model model) throws JsonParseException, JsonMappingException, IOException {
@@ -60,7 +66,7 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	
 		getActualUser(model);
 
-		Long userId = template
+		Long userId = halTemplate
 				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName())
 				.getId();
 		

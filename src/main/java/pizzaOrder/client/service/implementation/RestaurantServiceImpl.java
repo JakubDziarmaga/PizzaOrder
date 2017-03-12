@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,26 +25,27 @@ import pizzaOrder.restService.model.users.User;
 public class RestaurantServiceImpl implements RestaurantService {
 	
 	@Autowired
-	private RestTemplate template;
+	@Qualifier("halTemplate")
+	private RestTemplate halTemplate;
 
 	public List<Restaurant> getAllRestaurantsList() {
-		return new ArrayList<Restaurant>(template.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent());
-
+		return new ArrayList<Restaurant>(halTemplate.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent());
 	}
 
 	@Override
 	public Restaurant getRestaurantById(Long restaurantId) {
 		try {
-			return template.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class,restaurantId);
+			return halTemplate.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class,restaurantId);
 		} catch (HttpClientErrorException e) {
 			throw new RestaurantNotFoundException(restaurantId);
 		}
 	}
 
 	//Check if restaurant with id = idRestaurant exists in DB
+	//TODO potrzebne gdy jest getRestaurantById ?
 	public void checkIfRestaurantExists(Long idRestaurant) {
 		try {
-			template.getForObject("http://localhost:8080/restaurants/{idRestaurant}", Restaurant.class, idRestaurant);
+			halTemplate.getForObject("http://localhost:8080/restaurants/{idRestaurant}", Restaurant.class, idRestaurant);
 		} catch (HttpClientErrorException e) {
 			throw new RestaurantNotFoundException(idRestaurant);
 		}
@@ -51,19 +53,21 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Override
 	public void addRestaurant(Restaurant restaurant) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String username = auth.getName();
-		Long userId = template
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		String username = auth.getName();
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println(username);
+		Long userId = halTemplate
 				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username)
 				.getId();
 
 		restaurant.setOwnerId(userId);
-		template.postForObject("http://localhost:8080/restaurants", restaurant, Restaurant.class);		
+		halTemplate.postForObject("http://localhost:8080/restaurants", restaurant, Restaurant.class);		
 	}
 
 	@Override
 	public Restaurant getRestaurantByOwnerId(Long ownerId) {
-		Restaurant restaurant = template.getForObject("http://localhost:8080/restaurants/search/owner?ownerId={ownerId}", Restaurant.class, ownerId);
+		Restaurant restaurant = halTemplate.getForObject("http://localhost:8080/restaurants/search/owner?ownerId={ownerId}", Restaurant.class, ownerId);
 
 		return restaurant;
 	}

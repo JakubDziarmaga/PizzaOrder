@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class RestTemplateConfig {
 	
-	@Bean
+	@Bean("halObjectMapper")
 	public ObjectMapper halObjectMapper(){
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -26,7 +26,7 @@ public class RestTemplateConfig {
 		return mapper;
 	}
 
-	@Bean
+	@Bean("halTemplate")
 	public RestTemplate halRestTemplate(){
 		ObjectMapper mapper = halObjectMapper();
 		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -34,5 +34,10 @@ public class RestTemplateConfig {
 		converter.setObjectMapper(mapper);
 
 		return new RestTemplate(Collections.<HttpMessageConverter<?>>singletonList(converter));
+	}
+	
+	@Bean("defaultTemplate")
+	public RestTemplate defaultRestTemplate(){
+		return new RestTemplate();
 	}
 }
