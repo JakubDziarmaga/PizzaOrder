@@ -24,10 +24,10 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 public class RestaurantController extends AbstractController{
 
 	@Autowired
-	RestaurantService restaurantService;
+	private RestaurantService restaurantService;
 	
 	@Autowired
-	MenuService menuService;
+	private MenuService menuService;
 	
 	@RequestMapping(value = "/restaurant/{restaurantId}")
 	public String showRestaurantById(@PathVariable("restaurantId") Long restaurantId, Model model){
@@ -36,6 +36,7 @@ public class RestaurantController extends AbstractController{
 		model.addAttribute("restaurant",restaurant);
 		
 		getActualUser(model);
+		
 		List<Menu> menuList = menuService.getMenuByRestaurantId(restaurantId);
 		model.addAttribute("menu", menuList);
 
