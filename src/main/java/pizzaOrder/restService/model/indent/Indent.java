@@ -22,6 +22,7 @@ import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import pizzaOrder.restService.model.menu.Menu;
@@ -58,7 +59,8 @@ public class Indent// extends ResourceSupport
     @Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	
+	//TODO check if it still works
+	@JsonIgnore
 	public String getFormattedDate(){
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		return df.format(date);

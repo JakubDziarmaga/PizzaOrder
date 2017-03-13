@@ -29,8 +29,7 @@ public class IngredientServiceImpl implements IngredientService {
 	@Override
 	public List<Ingredients> getAllIngredients() {
 		List<Ingredients> ingredientsHal = new ArrayList<Ingredients>(halTemplate.getForObject("http://localhost:8080/ingredients", PagedResources.class).getContent());
-		System.out.println(halTemplate);
-		System.out.println(mapper);
+
 		List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 		return ingredients;
 	}

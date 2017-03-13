@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,15 +50,12 @@ import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
 
-@RunWith( SpringJUnit4ClassRunner.class )
-@ContextConfiguration(classes = { Application.class, RestTemplateConfig.class })
-
 public class IngredientsServiceTest {
 
 	@Mock(name = "halTemplate")
 	private RestTemplate halTemplate;	
 	
-	@Mock(name = "halObjectMapper")
+	@Spy//(name = "halObjectMapper")
 	private ObjectMapper mapper;
 	
     @InjectMocks
@@ -69,8 +69,6 @@ public class IngredientsServiceTest {
     
     @Test
     public void pay_for_indent() throws Exception{
-		System.out.println(mapper);
-
     	Ingredients first = new Ingredients(1L, "szynka");
     	Ingredients second = new Ingredients(1L, "pieczarki");
     	
@@ -86,8 +84,16 @@ public class IngredientsServiceTest {
     	
     	List<Ingredients> ingredientsList = ingredientsService.getAllIngredients();
     	
-    	assertThat(ingredientsList,is(Arrays.asList(first,second)));
+		verify(halTemplate, times(1)).getForObject(Matchers.anyString(), Matchers.eq(PagedResources.class));
+		verifyNoMoreInteractions(halTemplate);
 
+		Assert.assertNotNull(ingredientsList);
+		Assert.assertEquals(2, ingredientsList.size());
+		Assert.assertEquals(ingredientsList.get(0).getName(),first.getName());		
+		Assert.assertEquals(ingredientsList.get(1).getName(),second.getName());		
+
+		Assert.assertEquals(ingredientsList.get(0).getName(),first.getName());
+		Assert.assertEquals(ingredientsList.get(1).getName(),second.getName());
     	
     }
 	

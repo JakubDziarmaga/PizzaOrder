@@ -49,7 +49,7 @@ public class IndentServiceImpl implements IndentService {
 	
 	@Autowired
 	@Qualifier("halObjectMapper")
-	protected ObjectMapper mapper;
+	private ObjectMapper mapper;
 	
 	@Autowired
 	private RestaurantService restaurantService;
@@ -121,7 +121,8 @@ public class IndentServiceImpl implements IndentService {
 
 		//Posting user to indent
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",Restaurant.class, auth.getName()).getId();
+//		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",Restaurant.class, auth.getName()).getId();
+		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
 		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/" + userId, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/user", HttpMethod.PUT, userEntity, String.class);
 
@@ -144,7 +145,7 @@ public class IndentServiceImpl implements IndentService {
 			indent.setUser(user);
 			
 			Menu tempMenu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
-			
+
 			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,tempMenu.getId()).getContent();
 			List<Ingredients> tempIngredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients> >() {});
 			
