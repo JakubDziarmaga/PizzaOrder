@@ -1,6 +1,7 @@
 package pizzaOrder.client.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.client.HttpClientErrorException;
@@ -9,9 +10,8 @@ import org.springframework.web.client.RestTemplate;
 import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 import pizzaOrder.restService.model.users.User;
 
+@Component
 public class UserValidator implements Validator {
-
-	
 	
 	@Override
 	public boolean supports(Class<?> clazz) {

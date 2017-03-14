@@ -19,10 +19,11 @@ import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 //@SessionAttributes("user")
 public class UserController {//extends AbstractController{
 	
-
-	
     @Autowired 
     private UserService userService;
+    
+    @Autowired
+    private UserValidator userValidator;
     
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -36,7 +37,6 @@ public class UserController {//extends AbstractController{
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model) throws MessagingException{
     	
-    	UserValidator userValidator = new UserValidator();
         userValidator.validate(nonActivatedUser, bindingResult);
 
     	if(bindingResult.hasErrors()){
