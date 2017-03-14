@@ -35,19 +35,22 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 @Entity
 
 public class Menu {
-	//TODO pole name
-
+	//TODO attribute name
+	//TODO add validation class for each entity instead of e.g @NotEmpty adnotation
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_menu")
-	private Long id;			
+	private Long id;		
+	
 	@Min(value=0,message = "Price can't be negative.")
 	@NotNull
 	private Double price;
+	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_restaurant")
 //	@JsonBackReference
 	private Restaurant restaurant;
+	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
     @JoinTable(name = "menu_ingredients", joinColumns = @JoinColumn(name = "id_menu", nullable = false),
     inverseJoinColumns = @JoinColumn(name = "id_ingredients", nullable = false))

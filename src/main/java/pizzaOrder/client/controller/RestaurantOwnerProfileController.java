@@ -65,7 +65,8 @@ public class RestaurantOwnerProfileController extends AbstractController{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	
 		getActualUser(model);
-
+		
+		//TODO add findUserIdByUsername in UserServiceImpl and delete this 3 lines
 		Long userId = halTemplate
 				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName())
 				.getId();
