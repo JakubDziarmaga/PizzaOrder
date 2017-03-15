@@ -9,4 +9,5 @@ public interface UserService {
 	void addNonActivatedUser(NonActivatedUser user) throws MessagingException;
 	void sendActivatingMail(NonActivatedUser user) throws MessagingException;
 	void activateUser(Long nonActivatedUserId);
+	Long getActualUserId();
 }

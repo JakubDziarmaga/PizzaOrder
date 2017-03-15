@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -19,7 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,6 +36,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.context.WebApplicationContext;
 
 import pizzaOrder.Application;
+import pizzaOrder.client.controller.UserController;
 import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.client.validator.UserValidator;
 import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
@@ -50,6 +54,9 @@ public class UserControllerTest {
 	
 	@MockBean
     private UserValidator userValidatorMock;
+	
+	@InjectMocks
+	private UserController userController;
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -102,6 +109,32 @@ public class UserControllerTest {
         verifyNoMoreInteractions(userServiceMock);
         verifyNoMoreInteractions(userValidatorMock);
 	}
+	
+	@Test
+	public void post_new_user_with_validation_error() throws Exception{
+		
+	
+        mockMvc.perform(post("/registration")
+        		.param("username", "test")  //error - Username length must be between 6 and 20.
+        		.param("password", "test")  //error - Password length must be between 6 and 20.
+        		.param("mail", "")			//error - Not blank.
+        		.param("phone", "123456")	//error - Phone number must have between 7 and 9 digits
+        		.param("role", "")			//error - Not blank.
+        		.sessionAttr("nonActivatedUser", new NonActivatedUser()))
+        		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "username"))
+        		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "password"))
+        		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "mail"))
+        		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "phone"))
+        		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "role"));
+
+
+        verify(userValidatorMock, times(1)).validate(Matchers.any(NonActivatedUser.class),Matchers.any(Errors.class));
+
+        verifyNoMoreInteractions(userServiceMock);
+        verifyNoMoreInteractions(userValidatorMock);
+	}
+
+    
 	
 	@Test
 	public void activate_user() throws Exception{

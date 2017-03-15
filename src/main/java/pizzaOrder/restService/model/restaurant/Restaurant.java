@@ -37,7 +37,7 @@ public class Restaurant {
 	@Size(min = 3, max = 20, message = "Please enter your city.")
 	private String city;
 	
-	@Size(min = 3, max = 30, message = "Please enter your address.")//TODO change to address
+	@Size(min = 3, max = 30, message = "Please enter your address.")
 	private String address;
 	
 	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")

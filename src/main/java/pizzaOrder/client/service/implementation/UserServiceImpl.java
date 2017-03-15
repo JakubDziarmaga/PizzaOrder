@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +26,10 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	@Qualifier("defaultTemplate")
 	private RestTemplate defaultTemplate;
+	
+	@Autowired
+	@Qualifier("halTemplate")
+	private RestTemplate halTemplate;
 	
 	@Autowired
 	private UserSecurityService userSecurityService;
@@ -64,6 +70,13 @@ public class UserServiceImpl implements UserService {
 		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
 		userSecurityService.save(user);
 		securityService.autologin(user.getUsername(), user.getPassword());
+	}
+
+	@Override 
+	public Long getActualUserId(){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		return halTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
 	}
 
 

@@ -97,7 +97,6 @@ public class MenuServiceImpl implements MenuService {
 
 		if (menuHal.size() == 0)	return null;			//restaurant doesn't have any menu 
 
-		System.out.println(menuHal.getClass());
 		List<Menu> menu = mapper.convertValue(menuHal, new TypeReference<List<Menu>>() {});
 
 		getIngredientsByMenu(menu);
@@ -107,10 +106,8 @@ public class MenuServiceImpl implements MenuService {
 	
 	private void getIngredientsByMenu(List<Menu> menu){
 		for (Menu m : menu) {
-			System.out.println("menu id " + m.getId());
 			Collection<Ingredients> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class, m.getId()).getContent();
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
-			System.out.println("ING" + ingredients);
 			m.setIngredients(ingredients);
 		}
 	}

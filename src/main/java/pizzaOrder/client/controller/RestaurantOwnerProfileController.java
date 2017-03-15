@@ -34,6 +34,7 @@ import pizzaOrder.client.service.interfaces.IndentService;
 import pizzaOrder.client.service.interfaces.IngredientService;
 import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.client.service.interfaces.RestaurantService;
+import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
@@ -60,16 +61,16 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	@Autowired
 	private IngredientService ingredientsSrvice;
 	
+	@Autowired
+	private UserService userService;
+	
 	@RequestMapping("/restaurantowner")
 	public String findRestaurantByOwner(Model model) throws JsonParseException, JsonMappingException, IOException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	
 		getActualUser(model);
 		
 		//TODO add findUserIdByUsername in UserServiceImpl and delete this 3 lines
-		Long userId = halTemplate
-				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName())
-				.getId();
+		Long userId = userService.getActualUserId();
 		
 		Restaurant restaurant;
 		try{

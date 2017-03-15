@@ -132,13 +132,9 @@ public class MenuServiceTest {
 		
     	PagedResources<Menu> menuHal = new PagedResources<Menu>(Collections.emptyList(), new PageMetadata(1, 0, 10));   
     	Arrays.asList(firstMenu,secondMenu);
-    	
-    	System.out.println(menuHal.getContent());
-    	
+    	    	
     	Mockito.when(halTemplate.getForObject(menuUrl, PagedResources.class)).thenReturn(menuHal);
     	
-    	
-//		menuService.getMenuByRestaurantId(testRestaurant.getId());
 		assertNull(menuService.getMenuByRestaurantId(testRestaurant.getId()));
 	}
 	@Test

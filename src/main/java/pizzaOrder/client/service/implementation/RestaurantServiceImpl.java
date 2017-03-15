@@ -56,7 +56,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 //		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //		String username = auth.getName();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		System.out.println(username);
 		Long userId = halTemplate
 				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username)
 				.getId();

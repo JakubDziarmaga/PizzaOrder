@@ -104,13 +104,34 @@ public class RestaurantOwnerProfileControllerTest {
 				.with(user("testRestaurantOwner").password("testRestaurantOwner").roles("RESTAURANT_OWNER"))
 				.param("name", "testName")
 				.param("city", "testCity")
-				.param("adress", "testAdress")
+				.param("address", "testAdress")
 				.param("phone", "1234567")
 				.sessionAttr("restaurant", new Restaurant()))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/restaurantowner"));
 		
         verify(restaurantServiceMock, times(1)).addRestaurant(Matchers.any(Restaurant.class));
+        verifyNoMoreInteractions(restaurantServiceMock);
+        verifyNoMoreInteractions(menuServiceMock);
+        verifyNoMoreInteractions(indentServiceMock);
+        verifyNoMoreInteractions(ingredientsSrviceMock);
+	}
+	
+	@Test
+	public void post_new_restaurant_with_validation_errors() throws Exception{
+		mockMvc.perform(post("/addRestaurant")
+				.with(user("testRestaurantOwner").password("testRestaurantOwner").roles("RESTAURANT_OWNER"))
+				.param("name", "zz")		//error - Username length must be between 3 and 30.
+				.param("city", "zz")		//error - Username length must be between 3 and 20.
+				.param("address", "z")		//error - Username length must be between 3 and 30.
+				.param("phone", "123456")	//error - Phone number must have between 7 and 9 digits
+				.sessionAttr("restaurant", new Restaurant()))
+				.andExpect(model().attributeHasFieldErrors("restaurant", "name"))
+				.andExpect(model().attributeHasFieldErrors("restaurant", "city"))
+				.andExpect(model().attributeHasFieldErrors("restaurant", "address"))
+				.andExpect(model().attributeHasFieldErrors("restaurant", "phone"));
+		
+//        verify(restaurantServiceMock, times(1)).addRestaurant(Matchers.any(Restaurant.class));
         verifyNoMoreInteractions(restaurantServiceMock);
         verifyNoMoreInteractions(menuServiceMock);
         verifyNoMoreInteractions(indentServiceMock);
@@ -156,6 +177,22 @@ public class RestaurantOwnerProfileControllerTest {
 		
         verify(restaurantServiceMock, times(1)).checkIfRestaurantExists(Matchers.anyLong());
         verify(menuServiceMock, times(1)).addMenu(Matchers.any(Menu.class),Matchers.anyLong());
+        verifyNoMoreInteractions(restaurantServiceMock);
+        verifyNoMoreInteractions(menuServiceMock);
+        verifyNoMoreInteractions(indentServiceMock);
+        verifyNoMoreInteractions(ingredientsSrviceMock);
+	}
+	
+	@Test
+	public void post_new_menu_with_validation_errors() throws Exception{
+		final Long idRestaurant = 8L;
+		mockMvc.perform(post("/restaurantowner/{idRestaurant}/addmenu",idRestaurant)
+				.with(user("testRestaurantOwner").password("testRestaurantOwner").roles("RESTAURANT_OWNER"))
+				.param("price", "-3")				//error - price must be >0.
+				.sessionAttr("menu", new Menu()))
+				.andExpect(model().attributeHasFieldErrors("menu", "price"));
+		
+//        verify(restaurantServiceMock, times(1)).addRestaurant(Matchers.any(Restaurant.class));
         verifyNoMoreInteractions(restaurantServiceMock);
         verifyNoMoreInteractions(menuServiceMock);
         verifyNoMoreInteractions(indentServiceMock);
