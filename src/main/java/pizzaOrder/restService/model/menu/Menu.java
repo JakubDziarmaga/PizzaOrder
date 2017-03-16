@@ -48,13 +48,11 @@ public class Menu {
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_restaurant")
-//	@JsonBackReference
 	private Restaurant restaurant;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
     @JoinTable(name = "menu_ingredients", joinColumns = @JoinColumn(name = "id_menu", nullable = false),
     inverseJoinColumns = @JoinColumn(name = "id_ingredients", nullable = false))
-//	@JsonManagedReference
 	@Fetch(value = FetchMode.SELECT)
 //	@NotEmpty(message = "Please choose at least one ingredient.")
 	//TODO add after split program for client and server

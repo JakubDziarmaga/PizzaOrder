@@ -40,6 +40,8 @@ public abstract class AbstractController {
 		if (auth.getPrincipal() != "anonymousUser") {
 			org.springframework.security.core.userdetails.User actualUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 			model.addAttribute("actualUser", actualUser);
+
+
 		}
 	}
 }

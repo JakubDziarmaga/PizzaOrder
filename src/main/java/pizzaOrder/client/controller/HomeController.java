@@ -19,7 +19,7 @@ public class HomeController extends AbstractController{
 	@Autowired
 	RestaurantService restaurantService;
 	
-	@RequestMapping(value = {"/","home"}, method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showAllRestaurants(Model model) {
 
 		List<Restaurant> restaurantList = restaurantService.getAllRestaurantsList();

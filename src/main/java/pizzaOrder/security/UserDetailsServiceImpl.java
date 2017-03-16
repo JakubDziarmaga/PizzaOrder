@@ -17,8 +17,8 @@ import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
-	//TODO zrob to restowo
-    @Autowired
+
+	@Autowired
     private UserRepository userRepository;
 
     @Override
@@ -27,12 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         User user = userRepository.findByUsername(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
-        /*
-        for (Role role : user.getRole()){ 
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-		*/
-//        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+
         grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }

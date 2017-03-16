@@ -69,7 +69,6 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	
 		getActualUser(model);
 		
-		//TODO add findUserIdByUsername in UserServiceImpl and delete this 3 lines
 		Long userId = userService.getActualUserId();
 		
 		Restaurant restaurant;

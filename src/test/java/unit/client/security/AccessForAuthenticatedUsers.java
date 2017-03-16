@@ -21,7 +21,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import pizzaOrder.Application;
+import pizzaOrder.client.service.interfaces.IndentService;
+import pizzaOrder.client.service.interfaces.IngredientService;
+import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.client.service.interfaces.RestaurantService;
+import pizzaOrder.client.service.interfaces.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class)
@@ -29,7 +33,7 @@ import pizzaOrder.client.service.interfaces.RestaurantService;
 public class AccessForAuthenticatedUsers {
 	
 	private MockMvc mockMvc;
-
+	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 

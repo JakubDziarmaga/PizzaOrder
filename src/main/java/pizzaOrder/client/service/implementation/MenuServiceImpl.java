@@ -51,7 +51,6 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public void checkIfMenuExists(Long idMenu) {
 		try {
-//			RestTemplate template = new RestTemplate();
 			defaultemplate.getForObject("http://localhost:8080/menu/{idMenu}", Menu.class, idMenu);
 		} catch (HttpClientErrorException e) {
 			throw new MenuNotFoundException(idMenu);
@@ -69,10 +68,7 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public void addMenu(Menu menu, Long idRestaurant)  {
-
-//		checkIfRestaurantExists(idRestaurant);
-
-//		RestTemplate template = new RestTemplate();
+		
 		HttpHeaders reqHeaders = new HttpHeaders();
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());

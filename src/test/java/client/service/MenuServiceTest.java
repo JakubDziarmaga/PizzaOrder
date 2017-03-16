@@ -77,7 +77,7 @@ public class MenuServiceTest {
 		menuService.checkIfMenuExists(1L);
 	}
 	
-	@Test//(expected = NotPermittedException.class)
+	@Test
 	public void check_if_menu_belongs_to_restaurant() throws Exception{
 		
     	PagedResources<Menu> menuHal = new PagedResources<Menu>(Collections.emptyList(),  new PageMetadata(1, 0, 10));

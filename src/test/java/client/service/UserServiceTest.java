@@ -14,6 +14,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
@@ -29,6 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
@@ -120,6 +127,22 @@ public class UserServiceTest {
 
 		verify(securityService, times(1)).autologin(anyString(), anyString());
 		verifyNoMoreInteractions(securityService);
+
+	}
+	
+	@Test
+	public void get_actual_user_id() throws Exception{
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+        grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+        org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User(testUser.getUsername(),testUser.getPassword(),grantedAuthorities);
+
+	    Authentication auth = new UsernamePasswordAuthenticationToken(securityUser,null);	    
+	    SecurityContextHolder.getContext().setAuthentication(auth);
+	    
+	    Mockito.when(defaultTemplate.getForObject(anyString(), Matchers.eq(User.class), anyLong())).thenReturn(testUser);
+	    
+	    userService.getActualUserId();
+		verify(defaultTemplate, times(1)).getForObject(anyString(), Matchers.eq(User.class), anyString());
 
 	}
 

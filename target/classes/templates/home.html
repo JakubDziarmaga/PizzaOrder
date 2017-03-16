@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,10 +5,20 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <p th:text="${error}"></p>
 
+<a th:href="@{'/'}">homePage</a>
+
 	<div th:if="${actualUser} != null">
-		<p th:text="${actualUser.getUsername()}"></p>				<!--  SPRAWDZ WEB CONTTENT OBJECT Z PORADNIKA DO THYMELEAFA -->
+		<div th:if="${actualUser.getAuthorities().toString().equals('[USER]')}">
+				<a th:href="@{'/user'}">userPage</a>
+		</div>
+		
+		<div th:if="${actualUser.getAuthorities().toString().equals('[RESTAURANT_OWNER]')}">
+				<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
+		</div>
+		
 		<form th:action="@{/logout}" method="POST">
 			<input type="submit" value="Logout" />
 		</form>

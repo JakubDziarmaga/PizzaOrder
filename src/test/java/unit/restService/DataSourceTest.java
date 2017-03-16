@@ -19,23 +19,23 @@ import org.springframework.transaction.annotation.Transactional;
 import pizzaOrder.Application;
 import pizzaOrder.restService.database.DataSourceConfiguration;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(classes = DataSourceConfiguration.class)
-@ContextConfiguration(classes = { Application.class })
-public class DataSourceTest {
-
-	@Autowired 
-	DataSource dataSource;
-	
-	@Mock
-	DataSource mockDataSource;
-	
-	@Test
-	@Ignore
-	public void connectToDataSource() throws SQLException{
-		assertTrue(dataSource.getConnection().getAutoCommit());
-
-	}
-	
-}
+//
+//@RunWith(SpringJUnit4ClassRunner.class)
+////@ContextConfiguration(classes = DataSourceConfiguration.class)
+//@ContextConfiguration(classes = { Application.class })
+//public class DataSourceTest {
+//
+//	@Autowired 
+//	DataSource dataSource;
+//	
+//	@Mock
+//	DataSource mockDataSource;
+//	
+//	@Test
+//	@Ignore
+//	public void connectToDataSource() throws SQLException{
+//		assertTrue(dataSource.getConnection().getAutoCommit());
+//
+//	}
+//	
+//}

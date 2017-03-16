@@ -28,19 +28,18 @@ public class UserValidator implements Validator {
 	}
 
 	private void checkIfUsernameIsAlreadyTaken(Errors errors, NonActivatedUser user, RestTemplate template) {
-		errors.rejectValue("username", "duplicatedName", new Object[]{"'username'"}, "This username is already taken");
 		
 		try{
 		template.getForEntity("http://localhost:8080/users/search/names?username={username}", NonActivatedUser.class, user.getUsername()).getStatusCodeValue();
 		errors.rejectValue("username", "duplicatedName", new Object[]{"'username'"}, "This username is already taken");
 		}
-		catch(HttpClientErrorException e){return;} //It's OK. No user with this username found in User table
-												   //Not ok. Doesn't check if user is int nonactivatedusers
+		catch(HttpClientErrorException e){} 		//It's OK. No user with this username found in User table
+												    //Not ok. Doesn't check if user is int nonactivatedusers
 		try{
 			template.getForEntity("http://localhost:8080/nonactivatedusers/search/names?username={username}", NonActivatedUser.class, user.getUsername()).getStatusCodeValue();
 			errors.rejectValue("username", "duplicatedName", new Object[]{"'username'"}, "This username is already taken");
 			}
-		catch(HttpClientErrorException e){return;} //It's OK. No user with this username found in NonActivatedUser Table
+		catch(HttpClientErrorException e){} 		//It's OK. No user with this username found in NonActivatedUser Table
 	}
 
 }

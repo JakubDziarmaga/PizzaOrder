@@ -5,7 +5,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<p th:text="${error}"></p>
+	<a th:href="@{'/'}">home</a>
+
+	<p th:text="${error}"></p>
 
 	<div th:if="${actualUser} != null">
 		<p th:text="${actualUser.getUsername()}"></p>

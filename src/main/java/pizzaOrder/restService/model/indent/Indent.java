@@ -59,7 +59,6 @@ public class Indent// extends ResourceSupport
     @Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	//TODO check if it still works
 	@JsonIgnore
 	public String getFormattedDate(){
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

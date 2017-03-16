@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
-//		sendActivatingMail(user);	//TODO uncomment
+		// sendActivatingMail(user); //TODO uncomment
 	}
 
 	@Override
@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void activateUser(Long nonActivatedUserId) {
-//		RestTemplate template = new RestTemplate();
 		User user = defaultTemplate.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
 		user.setId(null);
 		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
@@ -76,7 +75,7 @@ public class UserServiceImpl implements UserService {
 	public Long getActualUserId(){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		return halTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
+		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
 	}
 
 

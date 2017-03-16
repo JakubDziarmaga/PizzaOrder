@@ -53,8 +53,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Override
 	public void addRestaurant(Restaurant restaurant) {
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		String username = auth.getName();
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Long userId = halTemplate
 				.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username)

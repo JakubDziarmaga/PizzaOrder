@@ -14,7 +14,6 @@ import pizzaOrder.restService.model.users.User;
 
 @Configuration
 public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
-	//TODO SPRAWDZ CZY TO JEST POTRZEBNE SKORO JEST W APPLICATION
 	
 	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
 		config.exposeIdsFor(Menu.class,Restaurant.class,User.class,Ingredients.class,Indent.class,NonActivatedUser.class);//Enable to pass id in JSON

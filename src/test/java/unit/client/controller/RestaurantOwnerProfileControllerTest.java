@@ -129,7 +129,10 @@ public class RestaurantOwnerProfileControllerTest {
 				.andExpect(model().attributeHasFieldErrors("restaurant", "name"))
 				.andExpect(model().attributeHasFieldErrors("restaurant", "city"))
 				.andExpect(model().attributeHasFieldErrors("restaurant", "address"))
-				.andExpect(model().attributeHasFieldErrors("restaurant", "phone"));
+				.andExpect(model().attributeHasFieldErrors("restaurant", "phone"))
+	        	.andExpect(status().isOk())
+	            .andExpect(model().attributeExists("restaurant"))
+	        	.andExpect(view().name("addRestaurant"));
 		
 //        verify(restaurantServiceMock, times(1)).addRestaurant(Matchers.any(Restaurant.class));
         verifyNoMoreInteractions(restaurantServiceMock);

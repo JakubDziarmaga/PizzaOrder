@@ -61,7 +61,6 @@ public class IndentServiceImpl implements IndentService {
 	public void payForIndent(Long idIndent) {
 		checkIfIndentExists(idIndent);
 		checkIfActualUserIsOwnerOfIndent(idIndent);
-//		RestTemplate template = new RestTemplate();
 		Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{id}", Indent.class, idIndent);
 		if (indent.isPaid())
 			throw new IndentAlreadyPaid(idIndent);

@@ -26,10 +26,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/users/**", "/registration","/restaurants/**","/menu/**", "/ingredients/**","/indents/**","/role/**","/nonactivatedusers/**","/activate/**").permitAll()
-                    .antMatchers("/restaurantowner/**","/addRestaurant").access("hasRole('RESTAURANT_OWNER')")
-                    .antMatchers("/indent/**","/user","/addindents/**","/indent/delete/**","/indent/pay/**").access("hasRole('USER')")
+                    .antMatchers("/restaurantowner/**","/addRestaurant").hasAuthority("RESTAURANT_OWNER")
+                    .antMatchers("/indent/**","/user","/addindents/**","/indent/delete/**","/indent/pay/**").hasAuthority("USER")
                     .anyRequest().authenticated()
-                    .and().exceptionHandling().accessDeniedPage("/home")
+                    .and().exceptionHandling().accessDeniedPage("/")
                     .and()
                 .formLogin()
                     .loginPage("/login")
@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .logoutSuccessUrl("/")
                     .and() 
-                .csrf().disable(); //TODO PRZYWROC CSRF 
+                .csrf().disable(); 
                 
     }
 

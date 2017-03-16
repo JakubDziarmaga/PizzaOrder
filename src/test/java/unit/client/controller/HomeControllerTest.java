@@ -67,10 +67,7 @@ public class HomeControllerTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilter;
-	
-//	@MockBean
-//	private UserDetailsService userDetailsService;
-	 
+		 
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(this.springSecurityFilter, "/*").build();
