@@ -16,8 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -57,18 +55,27 @@ public class IndentServiceImpl implements IndentService {
 	@Autowired
 	private MenuService menuService;
 	
+	/*
+	 * Change indent.isPaid to true 
+	 * @throw IndentAlreadyPaid if indent was already paid
+	 */
 	@Override
 	public void payForIndent(Long idIndent) {
 		checkIfIndentExists(idIndent);
 		checkIfActualUserIsOwnerOfIndent(idIndent);
 		Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{id}", Indent.class, idIndent);
+		
 		if (indent.isPaid())
 			throw new IndentAlreadyPaid(idIndent);
+		
 		indent.setPaid(true);
 		defaultTemplate.put("http://localhost:8080/indents/{id}", indent, idIndent);
 	}
 
-	// Check if indent with id = idIndent exists in DB
+	/*
+	 * Check if indent with id = idIndent exists in DB
+	 * @throw IndentNotFoundException if it doesn't
+	 */
 	@Override
 	public void checkIfIndentExists(Long idIndent) {
 
@@ -78,6 +85,11 @@ public class IndentServiceImpl implements IndentService {
 			throw new IndentNotFoundException(idIndent);
 		}
 	}
+	
+	/*
+	 * Check if actual user has indent with id = idIndent in DB
+	 * @throw IndentNotFoundException if he hasn't
+	 */
 	@Override
 	public void checkIfActualUserIsOwnerOfIndent(Long idIndent) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -88,7 +100,10 @@ public class IndentServiceImpl implements IndentService {
 		if (!username.equals(halTemplate.getForObject(userUrl, User.class).getUsername()))
 			throw new NotPermittedException();
 	}
-
+	
+	/*
+	 * Delete indent if it exists in db and if actual user has indent with id = idIndent in DB
+	 */
 	@Override
 	public void deleteIndent(Long idIndent) {
 
@@ -97,21 +112,23 @@ public class IndentServiceImpl implements IndentService {
 
 		halTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
 	}
-
+	/*
+	 * Post new indent
+	 * Link it with actual user, menu and restaurant
+	 */
 	@Override
 	public void addIndents(Long idRestaurant, Long idMenu) {
 		
-		restaurantService.checkIfRestaurantExists(idRestaurant);
+		restaurantService.getRestaurantById(idRestaurant);
 		menuService.checkIfMenuExists(idMenu);
 		menuService.checkIfMenuBelongsToRestaurant(idRestaurant, idMenu);
 		
-//		RestTemplate template = new RestTemplate();
 		HttpHeaders reqHeaders = new HttpHeaders();
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
 
 		Indent indent = new Indent();
-		indent.setDate(new Date());			
+		indent.setDate(new Date());																					//add CURRENT data to entity
 		URI newIndentURI = defaultTemplate.postForLocation("http://localhost:8080/indents/", indent);
 		
 		//Posting restaurant to indent
@@ -120,7 +137,6 @@ public class IndentServiceImpl implements IndentService {
 
 		//Posting user to indent
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",Restaurant.class, auth.getName()).getId();
 		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
 		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/" + userId, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/user", HttpMethod.PUT, userEntity, String.class);
@@ -129,7 +145,10 @@ public class IndentServiceImpl implements IndentService {
 		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/" + idMenu, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/menu", HttpMethod.PUT, menuEntity, String.class);		
 	}
-
+	
+	/*
+	 * @return List of restaurant which are paid
+	 */
 	@Override
 	public List<Indent> getPayedIndentsByRestaurantId(Long restaurantId) {
 		Collection<?> indentsHal =   halTemplate.getForObject("http://localhost:8080/restaurants/{restaurantId}/indent",PagedResources.class,restaurantId).getContent();
@@ -140,22 +159,29 @@ public class IndentServiceImpl implements IndentService {
 		for(Indent indent : indents){
 			if(!indent.isPaid()) continue;
 			
+			//Get user entity
 			User user = halTemplate.getForObject("http://localhost:8080/indents/{id}/user", User.class,indent.getId());
-			indent.setUser(user);
 			
-			Menu tempMenu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
+			//Get menu entity
+			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
 
-			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,tempMenu.getId()).getContent();
+			//Get ingredients entity
+			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,menu.getId()).getContent();
 			List<Ingredients> tempIngredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients> >() {});
 			
-			tempMenu.setIngredients(tempIngredients);
-			indent.setMenu(tempMenu);
-			
+			//Link entities
+			menu.setIngredients(tempIngredients);
+			indent.setMenu(menu);
+			indent.setUser(user);
+
 			payedIndents.add(indent);
 		}
 		return payedIndents;
 	}
-
+	
+	/*
+	 * @return List of restaurant which user added to cart
+	 */
 	@Override
 	public List<Indent> getIndentsByUsername(String username) {
 		String indentUrl = halTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",PagedResources.class, username).getLink("indent").getHref();
@@ -163,16 +189,20 @@ public class IndentServiceImpl implements IndentService {
 		List<Indent> indents = mapper.convertValue(indentsHal, new TypeReference<List<Indent>>() {});
 
 		for(Indent indent : indents){
-			indent.setRestaurant(halTemplate.getForObject("http://localhost:8080/indents/{indentId}/restaurant", Restaurant.class,indent.getId()));
+			//Get restaurant entity
+			Restaurant restaurant = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/restaurant", Restaurant.class,indent.getId());
 			
+			//Get menu entity
 			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/menu", Menu.class,indent.getId());
 			
-			Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();
-			
+			//Get ingredients entity
+			Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();			
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			
+			//Link entities
 			menu.setIngredients(ingredients);			
 			indent.setMenu(menu);
+			indent.setRestaurant(restaurant);
 		}
 		return indents;
 	}

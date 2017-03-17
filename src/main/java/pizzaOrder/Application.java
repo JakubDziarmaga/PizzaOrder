@@ -12,12 +12,8 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 
 @SpringBootApplication(scanBasePackages = "pizzaOrder")
 public class Application {
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
-//	 protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-//	        config.exposeIdsFor(Restaurant.class);
-//	    }
-
 }

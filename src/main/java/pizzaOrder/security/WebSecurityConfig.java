@@ -26,8 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/users/**", "/registration","/restaurants/**","/menu/**", "/ingredients/**","/indents/**","/role/**","/nonactivatedusers/**","/activate/**").permitAll()
-                    .antMatchers("/restaurantowner/**","/addRestaurant").hasAuthority("RESTAURANT_OWNER")
-                    .antMatchers("/indent/**","/user","/addindents/**","/indent/delete/**","/indent/pay/**").hasAuthority("USER")
+                    .antMatchers("/restaurantOwner/**","/addRestaurant").hasRole("RESTAURANT_OWNER")//hasAuthority("RESTAURANT_OWNER")
+                    .antMatchers("/indent/**","/user","/addindents/**","/indent/delete/**","/indent/pay/**").hasRole("USER")//hasAuthority("USER")
                     .anyRequest().authenticated()
                     .and().exceptionHandling().accessDeniedPage("/")
                     .and()

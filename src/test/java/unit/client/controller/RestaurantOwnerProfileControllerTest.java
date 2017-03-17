@@ -108,7 +108,7 @@ public class RestaurantOwnerProfileControllerTest {
 				.param("phone", "1234567")
 				.sessionAttr("restaurant", new Restaurant()))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/restaurantowner"));
+				.andExpect(redirectedUrl("/restaurantOwner"));
 		
         verify(restaurantServiceMock, times(1)).addRestaurant(Matchers.any(Restaurant.class));
         verifyNoMoreInteractions(restaurantServiceMock);
@@ -144,12 +144,11 @@ public class RestaurantOwnerProfileControllerTest {
 	@Test
 	public void show_add_menu_form () throws Exception{
 		final Long idRestaurant = 8L;
-		mockMvc.perform(get("/restaurantowner/{idRestaurant}/addmenu",idRestaurant)
+		mockMvc.perform(get("/restaurantOwner/{idRestaurant}/addmenu",idRestaurant)
 			   .with(user("testRestaurantOwner").password("testRestaurantOwner").roles("RESTAURANT_OWNER")))
         	   .andDo(print())
         	   .andExpect(status().isOk())
         	   .andExpect(view().name("addMenu"))
-//               .andExpect(model().attributeExists("actualUser"))
                .andExpect(model().attributeExists("menu"))
                .andExpect(model().attributeExists("ingredients"))
                .andExpect(model().attribute("ingredients", notNullValue()))
@@ -160,7 +159,7 @@ public class RestaurantOwnerProfileControllerTest {
             		   hasProperty("ingredients", nullValue()),
             		   hasProperty("indent", nullValue())
             		   )));
-        verify(restaurantServiceMock, times(1)).checkIfRestaurantExists(Matchers.anyLong());
+        verify(restaurantServiceMock, times(1)).getRestaurantById(Matchers.anyLong());
         verify(ingredientsSrviceMock, times(1)).getAllIngredients();
         verifyNoMoreInteractions(restaurantServiceMock);
         verifyNoMoreInteractions(menuServiceMock);
@@ -171,14 +170,14 @@ public class RestaurantOwnerProfileControllerTest {
 	@Test
 	public void post_new_menu() throws Exception{
 		final Long idRestaurant = 8L;
-		mockMvc.perform(post("/restaurantowner/{idRestaurant}/addmenu",idRestaurant)
+		mockMvc.perform(post("/restaurantOwner/{idRestaurant}/addmenu",idRestaurant)
 				.with(user("testRestaurantOwner").password("testRestaurantOwner").roles("RESTAURANT_OWNER"))
 				.param("price", "333")
 				.sessionAttr("menu", new Menu()))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/restaurantowner"));
+				.andExpect(redirectedUrl("/restaurantOwner"));
 		
-        verify(restaurantServiceMock, times(1)).checkIfRestaurantExists(Matchers.anyLong());
+        verify(restaurantServiceMock, times(1)).getRestaurantById(Matchers.anyLong());
         verify(menuServiceMock, times(1)).addMenu(Matchers.any(Menu.class),Matchers.anyLong());
         verifyNoMoreInteractions(restaurantServiceMock);
         verifyNoMoreInteractions(menuServiceMock);
@@ -189,13 +188,12 @@ public class RestaurantOwnerProfileControllerTest {
 	@Test
 	public void post_new_menu_with_validation_errors() throws Exception{
 		final Long idRestaurant = 8L;
-		mockMvc.perform(post("/restaurantowner/{idRestaurant}/addmenu",idRestaurant)
+		mockMvc.perform(post("/restaurantOwner/{idRestaurant}/addmenu",idRestaurant)
 				.with(user("testRestaurantOwner").password("testRestaurantOwner").roles("RESTAURANT_OWNER"))
 				.param("price", "-3")				//error - price must be >0.
 				.sessionAttr("menu", new Menu()))
 				.andExpect(model().attributeHasFieldErrors("menu", "price"));
 		
-//        verify(restaurantServiceMock, times(1)).addRestaurant(Matchers.any(Restaurant.class));
         verifyNoMoreInteractions(restaurantServiceMock);
         verifyNoMoreInteractions(menuServiceMock);
         verifyNoMoreInteractions(indentServiceMock);

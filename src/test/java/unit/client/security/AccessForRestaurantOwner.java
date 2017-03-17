@@ -102,7 +102,7 @@ public class AccessForRestaurantOwner {
 	
 	@Test
 	public void disable_showing_add_menu_page_with_user_role() throws Exception{
-		mockMvc.perform(get("/restaurantowner/1/addmenu")
+		mockMvc.perform(get("/restaurantOwner/1/addmenu")
 				 .with(user("test").password("test").roles("USER")))
 		 		 .andDo(print())
 		 		 .andExpect(status().is4xxClientError());					
@@ -118,7 +118,7 @@ public class AccessForRestaurantOwner {
 	
 	@Test
 	public void disable_posting_new_menu_with_user_role() throws Exception{
-		mockMvc.perform(post("/restaurantowner/1/addmenu")
+		mockMvc.perform(post("/restaurantOwner/1/addmenu")
 				 .with(user("test").password("test").roles("USER")))
 		 		 .andDo(print())
 		 		 .andExpect(status().is4xxClientError());							

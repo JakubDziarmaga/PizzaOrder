@@ -42,7 +42,7 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
 
 @Controller
-@SessionAttributes({"actualUser","ingredients","restaurant"})
+@SessionAttributes({"actualUser","ingredients"})//,"restaurant"})
 public class RestaurantOwnerProfileController extends AbstractController{
 
 	@Autowired
@@ -53,7 +53,7 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	private RestaurantService restaurantService;
 	
 	@Autowired
-	private MenuService menuService;
+	private MenuService menuService; 
 	
 	@Autowired
 	private IndentService indentService;
@@ -64,12 +64,14 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("/restaurantowner")
+	@RequestMapping("/restaurantOwner")
 	public String findRestaurantByOwner(Model model) throws JsonParseException, JsonMappingException, IOException {
 	
 		getActualUser(model);
 		
 		Long userId = userService.getActualUserId();
+		System.out.println(userId);
+
 		
 		Restaurant restaurant;
 		try{
@@ -112,13 +114,13 @@ public class RestaurantOwnerProfileController extends AbstractController{
 
 		restaurantService.addRestaurant(restaurant);
 
-		return "redirect:/restaurantowner";
+		return "redirect:/restaurantOwner";
 	}
 
 	//Showing addMenu form
-	@RequestMapping(value = "/restaurantowner/{idRestaurant}/addmenu", method = RequestMethod.GET) 
+	@RequestMapping(value = "/restaurantOwner/{idRestaurant}/addmenu", method = RequestMethod.GET) 
 	public String addMenu(Model model, @PathVariable("idRestaurant") Long idRestaurant) {
-		restaurantService.checkIfRestaurantExists(idRestaurant);
+		restaurantService.getRestaurantById(idRestaurant);
 		getActualUser(model);
 
 		Menu menu = new Menu();
@@ -131,17 +133,17 @@ public class RestaurantOwnerProfileController extends AbstractController{
 		return "addMenu";
 	}
 
-	@RequestMapping(value = "/restaurantowner/{idRestaurant}/addmenu", method = RequestMethod.POST)
+	@RequestMapping(value = "/restaurantOwner/{idRestaurant}/addmenu", method = RequestMethod.POST)
 	public String addMenu(@Valid Menu menu, BindingResult bindingResult, Model model,@PathVariable("idRestaurant") Long idRestaurant) throws URISyntaxException {
 
 		if (bindingResult.hasErrors()) {
 			return "addMenu";
 		}
-		restaurantService.checkIfRestaurantExists(idRestaurant);
+		restaurantService.getRestaurantById(idRestaurant);
 
 		menuService.addMenu(menu, idRestaurant);
 
-		return "redirect:/restaurantowner";
+		return "redirect:/restaurantOwner";
 	}
 	
 

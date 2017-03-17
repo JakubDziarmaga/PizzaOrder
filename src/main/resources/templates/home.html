@@ -11,11 +11,11 @@
 <a th:href="@{'/'}">homePage</a>
 
 	<div th:if="${actualUser} != null">
-		<div th:if="${actualUser.getAuthorities().toString().equals('[USER]')}">
+		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
 				<a th:href="@{'/user'}">userPage</a>
 		</div>
 		
-		<div th:if="${actualUser.getAuthorities().toString().equals('[RESTAURANT_OWNER]')}">
+		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}">
 				<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
 		</div>
 		

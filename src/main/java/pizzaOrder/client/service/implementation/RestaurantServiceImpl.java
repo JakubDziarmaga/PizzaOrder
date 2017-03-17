@@ -27,30 +27,31 @@ public class RestaurantServiceImpl implements RestaurantService {
 	@Autowired
 	@Qualifier("halTemplate")
 	private RestTemplate halTemplate;
-
+	
+	/*
+	 * @return List of all restaurants in db
+	 */
 	public List<Restaurant> getAllRestaurantsList() {
 		return new ArrayList<Restaurant>(halTemplate.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent());
 	}
 
+	/*
+	 * @return Restaurant with id = idRestaurant
+	 * @throw RestaurantNotFoundException when Restaurant with id = idRestaurant doesn't exist in db
+	 */
 	@Override
-	public Restaurant getRestaurantById(Long restaurantId) {
+	public Restaurant getRestaurantById(Long idRestaurant) {
 		try {
-			return halTemplate.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class,restaurantId);
-		} catch (HttpClientErrorException e) {
-			throw new RestaurantNotFoundException(restaurantId);
-		}
-	}
-
-	//Check if restaurant with id = idRestaurant exists in DB
-	//TODO potrzebne gdy jest getRestaurantById ?
-	public void checkIfRestaurantExists(Long idRestaurant) {
-		try {
-			halTemplate.getForObject("http://localhost:8080/restaurants/{idRestaurant}", Restaurant.class, idRestaurant);
+			return halTemplate.getForObject("http://localhost:8080/restaurants/{id}", Restaurant.class,idRestaurant);
 		} catch (HttpClientErrorException e) {
 			throw new RestaurantNotFoundException(idRestaurant);
 		}
 	}
 
+	/*
+	 * Set ownerId to actualUser id
+	 * Add Restaurant entity to db
+	 */
 	@Override
 	public void addRestaurant(Restaurant restaurant) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -62,11 +63,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 		halTemplate.postForObject("http://localhost:8080/restaurants", restaurant, Restaurant.class);		
 	}
 
+	/*
+	 * @return Restaurant which belongs to user with id = idOwner 
+	 */
 	@Override
-	public Restaurant getRestaurantByOwnerId(Long ownerId) {
-		Restaurant restaurant = halTemplate.getForObject("http://localhost:8080/restaurants/search/owner?ownerId={ownerId}", Restaurant.class, ownerId);
-
-		return restaurant;
+	public Restaurant getRestaurantByOwnerId(Long idOwner) {
+		
+		return halTemplate.getForObject("http://localhost:8080/restaurants/search/owner?ownerId={ownerId}", Restaurant.class, idOwner);
 	}
-
 }

@@ -16,7 +16,7 @@ import pizzaOrder.restService.model.users.User;
 public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
 	
 	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-		config.exposeIdsFor(Menu.class,Restaurant.class,User.class,Ingredients.class,Indent.class,NonActivatedUser.class);//Enable to pass id in JSON
+		config.exposeIdsFor(Menu.class,Restaurant.class,User.class,Ingredients.class,Indent.class,NonActivatedUser.class);		//Enable to send id in JSON
         
 	}
 }

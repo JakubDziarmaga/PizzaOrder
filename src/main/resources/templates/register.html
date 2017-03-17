@@ -36,8 +36,8 @@
           			<td>
           			        <select id="role" name="role">
           			            <option value=""></option>          			        
-                				<option value="USER">User</option>
-              					<option value="RESTAURANT_OWNER">Restaurant owner</option>
+                				<option value="ROLE_USER">User</option>
+              					<option value="ROLE_RESTAURANT_OWNER">Restaurant owner</option>
             				</select>
             		</td>
             		<td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</td>

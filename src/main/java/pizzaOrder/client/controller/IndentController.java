@@ -37,7 +37,6 @@ public class IndentController {
 	@Autowired
 	private IndentService indentService;
 	
-	//Add indent to actual logged user
 	@RequestMapping(value = "/addindents/{idRestaurant}/{idMenu}")
 	public String addIndents(@PathVariable("idRestaurant") Long idRestaurant, @PathVariable("idMenu") Long idMenu) {
 
@@ -51,16 +50,16 @@ public class IndentController {
 	public String payForIndent(@PathVariable("id") Long idIndent) {
 
 		indentService.payForIndent(idIndent);
+		
 		return "redirect:/user";
 	}
 	
-
 
 	@RequestMapping(value = "/indent/delete/{idIndent}", method = RequestMethod.GET)
 	public String deleteIndent(@PathVariable("idIndent") Long idIndent) {
 
 		indentService.deleteIndent(idIndent);
+		
 		return "redirect:/user";
 	}
-
 }

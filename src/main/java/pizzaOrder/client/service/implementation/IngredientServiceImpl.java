@@ -26,6 +26,9 @@ public class IngredientServiceImpl implements IngredientService {
 	@Qualifier("halObjectMapper")
 	private ObjectMapper mapper;
 	
+	/*
+	 * @return List of all restaurant saved in db
+	 */
 	@Override
 	public List<Ingredients> getAllIngredients() {
 		List<Ingredients> ingredientsHal = new ArrayList<Ingredients>(halTemplate.getForObject("http://localhost:8080/ingredients", PagedResources.class).getContent());

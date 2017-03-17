@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.restService.model.users.User;
 import pizzaOrder.restService.model.users.UserRepository;
 
@@ -19,12 +20,12 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userService.getUserByUsername(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 

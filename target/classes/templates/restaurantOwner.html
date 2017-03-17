@@ -9,7 +9,7 @@
 	<a th:href="@{'/'}">home</a>
 
 	<div th:if="${actualUser} != null">
-		<p th:text="${actualUser.getUsername()}"></p>				<!--  SPRAWDZ WEB CONTTENT OBJECT Z PORADNIKA DO THYMELEAFA -->
+		<p th:text="${actualUser.getUsername()}"></p>				
 		<form th:action="@{/logout}" method="POST">
 			<input type="submit" value="Logout" />
 		</form>

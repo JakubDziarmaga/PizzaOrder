@@ -9,6 +9,6 @@ public interface RestaurantService {
 	List<Restaurant> getAllRestaurantsList();
 	Restaurant getRestaurantById(Long restaurantId);
 	Restaurant getRestaurantByOwnerId(Long ownerId);
-	void checkIfRestaurantExists(Long restaurantId);
+//	void checkIfRestaurantExists(Long restaurantId);
 	void addRestaurant(Restaurant restaurant);
 }
