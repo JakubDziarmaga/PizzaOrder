@@ -24,12 +24,13 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
 
 @Entity
-public class Indent// extends ResourceSupport 
+public class Indent
 {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_indent")
 	private Long id;
+	
 	@Column(name="is_paid")
 	private boolean isPaid;
 	

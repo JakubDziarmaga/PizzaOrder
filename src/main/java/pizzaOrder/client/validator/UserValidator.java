@@ -22,7 +22,13 @@ public class UserValidator implements Validator {
 		NonActivatedUser user = (NonActivatedUser) target;	
 		RestTemplate template = new RestTemplate();
 		
+		checkIfPasswordEqualsPasswordConfirm(errors, user.getPassword(), user.getPasswordConfirm());
 		checkIfUsernameIsAlreadyTaken(errors, user, template);
+	}
+
+	private void checkIfPasswordEqualsPasswordConfirm(Errors errors, String password, String passwordConfirm) {
+		if(!password.equals(passwordConfirm))			
+			errors.rejectValue("passwordConfirm", "wrongConfirmPassword", new Object[]{"'passwordConfirm'"}, "Typed password aren't equal");		
 	}
 
 	private void checkIfUsernameIsAlreadyTaken(Errors errors, NonActivatedUser user, RestTemplate template) {

@@ -1,8 +1,7 @@
-
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head> 
-    <title>Getting Started: Handling Form Submission</title>
+    <title>Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -19,7 +18,12 @@
                 <tr>
                     <td>Password:</td>
                     <td><input type="password" th:field="*{password}" /></td>
-                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td> 
+                </tr>
+                <tr>
+                    <td>Confirm password:</td>
+                    <td><input type="password" th:field="*{passwordConfirm}" /></td>
+                    <td th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">PasswordConfirm Error</td>
                 </tr>
                 <tr>
                     <td>Email:</td>
