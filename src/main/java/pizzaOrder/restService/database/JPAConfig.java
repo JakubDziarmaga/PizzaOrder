@@ -21,8 +21,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages="pizzaOrder")
-//@EnableJpaRepositories(basePackages="src")
-//@EnableJpaRepositories
 public class JPAConfig {
 
 	@Bean	
@@ -31,11 +29,9 @@ public class JPAConfig {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource);
 		
-//		em.setPackagesToScan(new String[] { "rest.model" });
 		em.setPackagesToScan(new String[] { "pizzaOrder" });
 
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-//		vendorAdapter.setShowSql(true);		//zmien potem na true
 		vendorAdapter.setShowSql(false);
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setJpaDialect(new HibernateJpaDialect());
@@ -45,7 +41,7 @@ public class JPAConfig {
 
 	Properties additionalProperties() {
 		Properties properties = new Properties();
-		properties.setProperty("hibernate.hbm2ddl.auto", "none"); // albo update
+		properties.setProperty("hibernate.hbm2ddl.auto", "none"); 
 		properties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 
 		return properties;
@@ -59,7 +55,6 @@ public class JPAConfig {
 		return transactionManager;
 	}
 
-//
 	@Bean
 	public PersistenceAnnotationBeanPostProcessor paPostProcessor() {
 		return new PersistenceAnnotationBeanPostProcessor();
@@ -69,5 +64,4 @@ public class JPAConfig {
 	public BeanPostProcessor persistenceTranslation() {
 	return new PersistenceExceptionTranslationPostProcessor();
 	}
-//
 }

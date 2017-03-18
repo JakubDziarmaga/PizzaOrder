@@ -17,9 +17,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.menu.Menu;
 
@@ -48,7 +45,6 @@ public class Restaurant {
 	private Long ownerId;
 	
 	@OneToMany(mappedBy = "restaurant", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-//	@JsonManagedReference
 	@Fetch(value = FetchMode.SELECT)
 	private List<Menu> menu;
 

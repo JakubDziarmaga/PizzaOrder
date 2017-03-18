@@ -13,21 +13,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
+    /**
+     * Configure access to each page
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/users/**", "/registration","/restaurants/**","/menu/**", "/ingredients/**","/indents/**","/role/**","/nonactivatedusers/**","/activate/**").permitAll()
-                    .antMatchers("/restaurantOwner/**","/addRestaurant").hasRole("RESTAURANT_OWNER")//hasAuthority("RESTAURANT_OWNER")
-                    .antMatchers("/indent/**","/user","/addindents/**","/indent/delete/**","/indent/pay/**").hasRole("USER")//hasAuthority("USER")
+                    .antMatchers("/users/**", "/registration","/restaurants/**","/menu/**", "/ingredients/**","/indents/**","/role/**","/nonactivatedusers/**" //rest url's
+                    		,"/activate/**","/restaurant/**").permitAll()
+                    .antMatchers("/restaurantOwner/**","/addRestaurant").hasRole("RESTAURANT_OWNER")
+                    .antMatchers("/indent/**","/user","/addindents/**","/indent/delete/**","/indent/pay/**").hasRole("USER")
                     .anyRequest().authenticated()
                     .and().exceptionHandling().accessDeniedPage("/")
                     .and()
@@ -41,6 +41,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and() 
                 .csrf().disable(); 
                 
+    }
+    
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Autowired

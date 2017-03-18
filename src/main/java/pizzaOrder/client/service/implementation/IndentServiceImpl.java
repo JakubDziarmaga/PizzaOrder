@@ -55,7 +55,7 @@ public class IndentServiceImpl implements IndentService {
 	@Autowired
 	private MenuService menuService;
 	
-	/*
+	/**
 	 * Change indent.isPaid to true 
 	 * @throw IndentAlreadyPaid if indent was already paid
 	 */
@@ -72,7 +72,7 @@ public class IndentServiceImpl implements IndentService {
 		defaultTemplate.put("http://localhost:8080/indents/{id}", indent, idIndent);
 	}
 
-	/*
+	/**
 	 * Check if indent with id = idIndent exists in DB
 	 * @throw IndentNotFoundException if it doesn't
 	 */
@@ -86,7 +86,7 @@ public class IndentServiceImpl implements IndentService {
 		}
 	}
 	
-	/*
+	/**
 	 * Check if actual user has indent with id = idIndent in DB
 	 * @throw IndentNotFoundException if he hasn't
 	 */
@@ -101,7 +101,7 @@ public class IndentServiceImpl implements IndentService {
 			throw new NotPermittedException();
 	}
 	
-	/*
+	/**
 	 * Delete indent if it exists in db and if actual user has indent with id = idIndent in DB
 	 */
 	@Override
@@ -112,7 +112,8 @@ public class IndentServiceImpl implements IndentService {
 
 		halTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
 	}
-	/*
+	
+	/**
 	 * Post new indent
 	 * Link it with actual user, menu and restaurant
 	 */
@@ -146,7 +147,7 @@ public class IndentServiceImpl implements IndentService {
 		defaultTemplate.exchange(newIndentURI + "/menu", HttpMethod.PUT, menuEntity, String.class);		
 	}
 	
-	/*
+	/**
 	 * @return List of restaurant which are paid
 	 */
 	@Override
@@ -179,7 +180,7 @@ public class IndentServiceImpl implements IndentService {
 		return payedIndents;
 	}
 	
-	/*
+	/**
 	 * @return List of restaurant which user added to cart
 	 */
 	@Override

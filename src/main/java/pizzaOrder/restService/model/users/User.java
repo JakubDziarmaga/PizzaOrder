@@ -9,16 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import pizzaOrder.restService.model.indent.Indent;
@@ -40,15 +36,14 @@ public class User {
 	
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
-//	@JsonManagedReference
 	private List<Indent> indent;
 
-	private String role;
-	
+	private String role;	
 
 	public User() {
 		super();
 	}
+	
 	public User(Long id, String username, String password, String mail, int phone, String role) {
 		super();
 		this.id = id;

@@ -13,9 +13,9 @@ public abstract class AbstractController {
 	@Autowired
 	protected SecurityService securityService;
 
-	/*
-	 * Get actual logged user from SecurityContext
-	 * If actual logged user exists add it to model
+	/**
+	 * Get actual user from SecurityContext
+	 * If actual user exists add it to model
 	 */
 	public void getActualUser(Model model){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

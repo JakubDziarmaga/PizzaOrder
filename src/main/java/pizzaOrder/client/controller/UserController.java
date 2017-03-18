@@ -25,15 +25,24 @@ public class UserController {//extends AbstractController{
     @Autowired
     private UserValidator userValidator;
     
+    /**
+     * Show registration form
+     */
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
     
-    	NonActivatedUser nonActivatedUser = new NonActivatedUser();        	  
-        model.addAttribute("nonActivatedUser", nonActivatedUser);
+//    	NonActivatedUser nonActivatedUser = new NonActivatedUser();        	  
+        model.addAttribute("nonActivatedUser", new NonActivatedUser());
 
         return "register";
     }
-
+    
+    /**
+	 * Add nonActrivatedUser
+	 * @see pizzaOrder.client.validator.UserValidator.class
+	 * @return register view if posted entity isn't valid
+	 * @return "redirect:/" if entity was valid
+	 */
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model) throws MessagingException{
     	
@@ -48,19 +57,19 @@ public class UserController {//extends AbstractController{
         return "redirect:/";
     }
 
+    /**
+     * Show login page
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
+    public String login(Model model,String error) {
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
-   
-//        if (logout != null)
-//            model.addAttribute("message", "You have been logged out successfully.");
-
+        
         return "login";
     }
     
     /**
-     * Delete user data from temporaryuser table and post it in user table
+     * Delete user data from temporaryUser table and post it in user table
      * Autologin
      * Redirect to home page 
      */

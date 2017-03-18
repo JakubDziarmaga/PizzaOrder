@@ -26,7 +26,7 @@ public class IngredientServiceImpl implements IngredientService {
 	@Qualifier("halObjectMapper")
 	private ObjectMapper mapper;
 	
-	/*
+	/**
 	 * @return List of all restaurant saved in db
 	 */
 	@Override

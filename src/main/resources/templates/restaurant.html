@@ -55,10 +55,12 @@
 				<p th:text="${ingredients.name}">ingredientName</p>
 			</td>
 			<td>
-			<div th:if = "${actualUser.getAuthorities().toString().equals('[USER]')}">
-				<form th:action="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}" method="GET">
-					<input type="submit" value="Add to cart" />
-				</form>
+				<div th:if="${actualUser} != null">
+					<div th:if = "${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
+						<form th:action="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}" method="GET">
+							<input type="submit" value="Add to cart" />
+						</form>
+					</div>
 				</div>
 			</td>
 		</tr>

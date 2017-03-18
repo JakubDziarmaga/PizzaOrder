@@ -1,12 +1,8 @@
 package pizzaOrder.client.service.implementation;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,9 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -47,7 +40,7 @@ public class MenuServiceImpl implements MenuService {
 	@Qualifier("halObjectMapper")
 	private ObjectMapper mapper;
 	
-	/*
+	/**
 	 * @Throw MenuNotFoundException if Menu with id = idMenu doesn't exist in db
 	 */
 	@Override
@@ -59,7 +52,7 @@ public class MenuServiceImpl implements MenuService {
 		}
 	}
 
-	/*
+	/**
 	 * @Throw NotPermittedException if Restaurant with id = idRestaurant doesn't have Menu with id = idMenu
 	 */
 	@Override
@@ -71,7 +64,7 @@ public class MenuServiceImpl implements MenuService {
 			throw new NotPermittedException();
 	}
 
-	/*
+	/**
 	 * 
 	 */
 	@Override
@@ -97,7 +90,7 @@ public class MenuServiceImpl implements MenuService {
 		}
 	}
 
-	/*
+	/**
 	 * @return List of Menu which belongs to Restaurant with id = idRestaurant
 	 * @return Null if Restaurant doesn't have any menu
 	 */
@@ -117,7 +110,7 @@ public class MenuServiceImpl implements MenuService {
 		return menu;
 	}
 	
-	/*
+	/**
 	 * Get list of Ingredients whichc belongs to Menu
 	 * Add it to Menu entity
 	 */

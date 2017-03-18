@@ -12,8 +12,6 @@ import javax.persistence.ManyToMany;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import pizzaOrder.restService.model.menu.Menu;
 
 
@@ -26,7 +24,6 @@ public class Ingredients {
 	private Long id;
 	private String name;
     @ManyToMany(mappedBy = "ingredients")
-//    @JsonBackReference
     @Fetch(value = FetchMode.SELECT)
 	private List<Menu> menu;
 	

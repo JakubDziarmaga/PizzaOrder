@@ -1,9 +1,6 @@
 package unit.client.controller;
 
-import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -14,14 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,11 +39,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import pizzaOrder.Application;
 import pizzaOrder.client.service.interfaces.IndentService;
-import pizzaOrder.client.service.interfaces.UserService;
-import pizzaOrder.client.validator.UserValidator;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.menu.Menu;
-import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class)

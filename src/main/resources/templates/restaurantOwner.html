@@ -45,15 +45,8 @@
 			<td th:each="ingredient : ${menu.getIngredients()}"> <!--  nie wyswietla sie bo to integer -->
 				<p th:text="${ingredient.name}">1</p>
 			</td>
-			<td>
-			<div th:if = "${actualUser.getAuthorities().toString().equals('[USER]')}">
-				<form th:action="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}" method="GET">
-					<input type="submit" value="Add to cart" />
-				</form>
-				</div>
-			</td>
 		</tr>
 	</table>
-		<a th:href="@{'/restaurantowner/' + ${restaurant.id}} + '/addmenu'">Add menu</a>
+		<a th:href="@{'/restaurantOwner/' + ${restaurant.id}} + '/addmenu'">Add menu</a>
 </body>
 </html>

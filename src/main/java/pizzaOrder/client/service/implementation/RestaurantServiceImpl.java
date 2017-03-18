@@ -3,16 +3,11 @@ package pizzaOrder.client.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,14 +23,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 	@Qualifier("halTemplate")
 	private RestTemplate halTemplate;
 	
-	/*
+	/**
 	 * @return List of all restaurants in db
 	 */
 	public List<Restaurant> getAllRestaurantsList() {
 		return new ArrayList<Restaurant>(halTemplate.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent());
 	}
 
-	/*
+	/**
 	 * @return Restaurant with id = idRestaurant
 	 * @throw RestaurantNotFoundException when Restaurant with id = idRestaurant doesn't exist in db
 	 */
@@ -48,7 +43,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 		}
 	}
 
-	/*
+	/**
 	 * Set ownerId to actualUser id
 	 * Add Restaurant entity to db
 	 */
@@ -63,7 +58,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 		halTemplate.postForObject("http://localhost:8080/restaurants", restaurant, Restaurant.class);		
 	}
 
-	/*
+	/**
 	 * @return Restaurant which belongs to user with id = idOwner 
 	 */
 	@Override

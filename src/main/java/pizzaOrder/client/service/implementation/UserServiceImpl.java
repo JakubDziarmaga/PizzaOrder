@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private JavaMailSender mailSender;
 
-	/*
+	/**
 	 * Post new NonActivatedUser to db
 	 * Get its id from db and put it in NonActivatedUser entity
 	 */
@@ -49,10 +49,10 @@ public class UserServiceImpl implements UserService {
 		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
-		// sendActivatingMail(user); //TODO uncomment
+		sendActivatingMail(user); //TODO uncomment
 	}
 
-	/*
+	/**
 	 * Send to NonActivatedUser mail with activating link
 	 * Activation link -> "http://localhost:8080/activate/" + user.getId()
 	 * @see pizzaOrder.client.mail.MailConfig.java
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 		mailSender.send(message);
 	}
 
-	/*
+	/**
 	 * Delete NonActivatedUser from NonActivatedUser table and post it in User table with different id
 	 * Autologin to server 
 	 */
@@ -84,11 +84,10 @@ public class UserServiceImpl implements UserService {
 		securityService.autologin(user.getUsername(), user.getPassword());
 	}
 	
-	/*
+	/**
 	 * Get actual user from SecurityContext
 	 * @return actual user id 
 	 */
-
 	@Override 
 	public Long getActualUserId(){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -98,6 +97,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByUsername(String username) {
+		
 		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username);
 	}
 

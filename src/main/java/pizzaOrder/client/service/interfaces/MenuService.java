@@ -2,9 +2,6 @@ package pizzaOrder.client.service.interfaces;
 
 import java.util.List;
 
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import pizzaOrder.restService.model.menu.Menu;
 
 public interface MenuService {

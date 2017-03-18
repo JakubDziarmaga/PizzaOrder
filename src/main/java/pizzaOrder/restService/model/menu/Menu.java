@@ -19,14 +19,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
@@ -51,11 +43,8 @@ public class Menu {
 	private Restaurant restaurant;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
-    @JoinTable(name = "menu_ingredients", joinColumns = @JoinColumn(name = "id_menu", nullable = false),
-    inverseJoinColumns = @JoinColumn(name = "id_ingredients", nullable = false))
+    @JoinTable(name = "menu_ingredients", joinColumns = @JoinColumn(name = "id_menu", nullable = false),inverseJoinColumns = @JoinColumn(name = "id_ingredients", nullable = false))
 	@Fetch(value = FetchMode.SELECT)
-//	@NotEmpty(message = "Please choose at least one ingredient.")
-	//TODO add after split program for client and server
 	private List<Ingredients> ingredients;
 
 	@OneToMany(mappedBy = "menu", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
