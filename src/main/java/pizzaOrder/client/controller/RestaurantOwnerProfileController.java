@@ -26,6 +26,7 @@ import pizzaOrder.client.service.interfaces.IngredientService;
 import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.client.service.interfaces.RestaurantService;
 import pizzaOrder.client.service.interfaces.UserService;
+import pizzaOrder.client.validator.MenuValidator;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
@@ -53,6 +54,9 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired 
+	private MenuValidator menuValidator;
 	
 	/**
 	 * Show restaurantOwnerPage
@@ -141,9 +145,11 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	@RequestMapping(value = "/restaurantOwner/{idRestaurant}/addmenu", method = RequestMethod.POST)
 	public String addMenu(@Valid Menu menu, BindingResult bindingResult, Model model,@PathVariable("idRestaurant") Long idRestaurant) throws URISyntaxException {
 
+		menuValidator.validate(menu, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "addMenu";
 		}
+		
 		restaurantService.getRestaurantById(idRestaurant);				//Check if restaurant with idRestaurant exists in db
 
 		menuService.addMenu(menu, idRestaurant);

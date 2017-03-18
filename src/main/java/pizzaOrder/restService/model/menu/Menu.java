@@ -14,8 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,15 +24,13 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 
 @Entity
 public class Menu {
-	//TODO attribute name
-	//TODO add validation class for each entity instead of e.g @NotEmpty adnotation
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_menu")
 	private Long id;		
+
+	private String name;
 	
-	@Min(value=0,message = "Price can't be negative.")
-	@NotNull
 	private Double price;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
@@ -78,9 +74,16 @@ public class Menu {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Double getPrice() {
