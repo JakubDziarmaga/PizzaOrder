@@ -26,7 +26,6 @@ import pizzaOrder.restService.model.users.User;
 @Entity
 public class Indent// extends ResourceSupport 
 {
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_indent")
@@ -59,10 +58,9 @@ public class Indent// extends ResourceSupport
 	
 	
 	//
-	//GETTERS AND SETTERS
+	//CONSTRUCTORS
 	//
-	public Indent(){
-		
+	public Indent(){		
 	}
 	
 	public Indent(Long id, boolean isPaid, User user, Restaurant restaurant, Menu menu, Date date) {
@@ -75,6 +73,9 @@ public class Indent// extends ResourceSupport
 		this.date = date;
 	}	
 	
+	//
+	//GETTERS AND SETTERS
+	//
 	public Long getId() {
 		return id;
 	}

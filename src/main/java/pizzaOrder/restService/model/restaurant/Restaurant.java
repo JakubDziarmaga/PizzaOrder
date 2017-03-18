@@ -52,8 +52,9 @@ public class Restaurant {
 	@Fetch(value = FetchMode.SELECT)
 	private List<Indent> indent;
 	
+
 	//
-	// GETTERS AND SETTERS
+	//CONSTRUCTORS
 	//
 	public Restaurant() {
 		super();
@@ -67,7 +68,10 @@ public class Restaurant {
 		this.phone = phone;
 		this.ownerId = ownerId;
 	}
-
+	
+	//
+	// GETTERS AND SETTERS
+	//
 	public Long getId() {
 		return id;
 	}

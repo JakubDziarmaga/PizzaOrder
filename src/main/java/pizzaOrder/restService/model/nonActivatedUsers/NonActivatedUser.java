@@ -15,7 +15,6 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "non_activated_user")
 public class NonActivatedUser {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_user")
@@ -23,6 +22,8 @@ public class NonActivatedUser {
 	
 	@Size(min = 6, max = 20, message = "Username length must be between 6 and 20.")
 	private String username;
+	
+	//private String passwordConfirm; 
 	
 	@Size(min = 6, max = 30, message = "Password length must be between 6 and 20.")
 	private String password;
@@ -37,10 +38,10 @@ public class NonActivatedUser {
 	@NotBlank (message = "Please select your role.")
 	private String role;
 
-	//
-	// GETTERS AND SETTERS
-	//
 
+	//
+	//CONSTRUCTORS
+	//
 	public NonActivatedUser(){
 		super();
 	}
@@ -55,6 +56,9 @@ public class NonActivatedUser {
 		this.role = role;
 	}
 	
+	//
+	// GETTERS AND SETTERS
+	//
 	public Long getId() {
 		return id;
 	}

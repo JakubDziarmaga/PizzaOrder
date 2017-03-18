@@ -20,9 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import pizzaOrder.restService.model.indent.Indent;
 
 @Entity
-@JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_user")
@@ -31,15 +29,16 @@ public class User {
 	private String password;
 	private String mail;
 	private int phone;
-//    private String passwordConfirm; //dodane przy securityconfig
-
 	
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	private List<Indent> indent;
 
 	private String role;	
-
+	
+	//
+	//CONSTRUCTORS
+	//
 	public User() {
 		super();
 	}
@@ -98,15 +97,4 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	//
-	// dodane przy security
-//	   @Transient
-//	    public String getPasswordConfirm() {
-//	        return passwordConfirm;
-//	    }
-//
-//	    public void setPasswordConfirm(String passwordConfirm) {
-//	        this.passwordConfirm = passwordConfirm;
-//	    }
-//	
 }

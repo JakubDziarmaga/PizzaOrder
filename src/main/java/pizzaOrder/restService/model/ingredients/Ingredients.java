@@ -17,23 +17,20 @@ import pizzaOrder.restService.model.menu.Menu;
 
 @Entity
 public class Ingredients {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_ingredients")
 	private Long id;
+	
 	private String name;
+	
     @ManyToMany(mappedBy = "ingredients")
     @Fetch(value = FetchMode.SELECT)
 	private List<Menu> menu;
-	
-	
-	
-	
+
 	//
-	//GETTERS AND SETTERS
+	//CONSTRUCTORS
 	//
-	
 	public Ingredients() {
 		super();
 	}
@@ -48,7 +45,10 @@ public class Ingredients {
 		this.id = id;
 		this.name = name;
 	}
-
+	
+	//
+	//GETTERS AND SETTERS
+	//
 	public Long getId() {
 		return id;
 	}

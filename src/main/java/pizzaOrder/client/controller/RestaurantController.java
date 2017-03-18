@@ -22,15 +22,19 @@ public class RestaurantController extends AbstractController{
 	@Autowired
 	private MenuService menuService;
 	
-	@RequestMapping(value = "/restaurant/{restaurantId}")
-	public String showRestaurantById(@PathVariable("restaurantId") Long restaurantId, Model model){
+	/**
+	 * Show restaurant data with id = idRestaurant
+	 * Show list of menu belong to restaurant
+	 */
+	@RequestMapping(value = "/restaurant/{idRestaurant}")
+	public String showRestaurantById(@PathVariable("idRestaurant") Long idRestaurant, Model model){
 
-		Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+		Restaurant restaurant = restaurantService.getRestaurantById(idRestaurant);
 		model.addAttribute("restaurant",restaurant);
 		
 		getActualUser(model);
 		
-		List<Menu> menuList = menuService.getMenuByRestaurantId(restaurantId);
+		List<Menu> menuList = menuService.getMenuByRestaurantId(idRestaurant);
 		model.addAttribute("menu", menuList);
 
 		return "restaurant";

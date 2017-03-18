@@ -25,7 +25,6 @@ import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.restaurant.Restaurant;
 
 @Entity
-
 public class Menu {
 	//TODO attribute name
 	//TODO add validation class for each entity instead of e.g @NotEmpty adnotation
@@ -52,7 +51,7 @@ public class Menu {
 	private List<Indent> indent;
 
 	//
-	// GETTERS AND SETTERS
+	//CONSTRUCTORS
 	//
 	public Menu() {
 	}
@@ -72,7 +71,9 @@ public class Menu {
 		this.indent = indent;
 	}
 
-
+	//
+	// GETTERS AND SETTERS
+	//
 	public Long getId() {
 		return id;
 	}

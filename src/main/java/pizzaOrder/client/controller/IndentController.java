@@ -14,6 +14,9 @@ public class IndentController {
 	@Autowired
 	private IndentService indentService;
 	
+	/**
+	 * Add indent to user cart
+	 */
 	@RequestMapping(value = "/addindents/{idRestaurant}/{idMenu}")
 	public String addIndents(@PathVariable("idRestaurant") Long idRestaurant, @PathVariable("idMenu") Long idMenu) {
 
