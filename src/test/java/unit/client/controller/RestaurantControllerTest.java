@@ -61,7 +61,7 @@ public class RestaurantControllerTest {
 	}
 	
 	@Test
-	public void show_restaurant_page() throws Exception{
+	public void show_restaurant_page_with_user_authentication() throws Exception{
 		final Long restaurantId = 4L;
 		Restaurant restaurant = new Restaurant(restaurantId, "restaurantName", "restaurantCity", "restaurantAddress", 123456, 3L);
         when(restaurantServiceMock.getRestaurantById(restaurantId)).thenReturn(restaurant);
@@ -96,14 +96,33 @@ public class RestaurantControllerTest {
 	@Test
 	public void show_restaurant_page_without_authentication() throws Exception{
 		final Long restaurantId = 4L;
+		Restaurant restaurant = new Restaurant(restaurantId, "restaurantName", "restaurantCity", "restaurantAddress", 123456, 3L);
+        when(restaurantServiceMock.getRestaurantById(restaurantId)).thenReturn(restaurant);
+        
+        Menu firstMenu = new Menu();
+        firstMenu.setId(1L);
+        Menu secondMenu = new Menu();
+        firstMenu.setId(2L);
+        List<Menu> menuList = new ArrayList<Menu>();
+        menuList.add(firstMenu);
+        menuList.add(secondMenu);
 
-		mockMvc.perform(get("/restaurant/{restaurantId}",restaurantId))
-		 		 .andDo(print())
-		 		 .andExpect(status().is3xxRedirection())
-		 		 .andExpect(redirectedUrl("http://localhost/login"));		
-		 
-	     verifyNoMoreInteractions(restaurantServiceMock);
-	     verifyNoMoreInteractions(menuServiceMock);
+        when(menuServiceMock.getMenuByRestaurantId(restaurantId)).thenReturn(menuList);
+
+        
+        mockMvc.perform(get("/restaurant/{restaurantId}",restaurantId))
+        	   .andDo(print())
+        	   .andExpect(status().isOk())
+        	   .andExpect(view().name("restaurant"))
+        	   .andExpect(model().attribute("restaurant",restaurant))
+        	   .andExpect(model().attribute("menu",menuList))
+        	   .andExpect(model().attributeDoesNotExist("actualUser"));
+ 
+        verify(restaurantServiceMock, times(1)).getRestaurantById(restaurantId);
+        verifyNoMoreInteractions(restaurantServiceMock);
+        
+        verify(menuServiceMock, times(1)).getMenuByRestaurantId(restaurantId);
+        verifyNoMoreInteractions(restaurantServiceMock);
 
 	}
 }

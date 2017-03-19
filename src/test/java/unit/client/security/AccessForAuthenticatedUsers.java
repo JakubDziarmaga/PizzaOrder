@@ -63,11 +63,10 @@ public class AccessForAuthenticatedUsers {
 	}
 	
 	@Test
-	public void disable_showing_restaurant_page_without_authentication() throws Exception{
+	public void enablee_showing_restaurant_page_without_authentication() throws Exception{
 		mockMvc.perform(get("/restaurant/1"))
 		 		 .andDo(print())
-		 		 .andExpect(status().is3xxRedirection())
-		 		 .andExpect(redirectedUrl("http://localhost/login"));		
+		 		 .andExpect(status().isOk());		
 	}
 	
 	@Test

@@ -1,5 +1,7 @@
 package pizzaOrder.client.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,6 +13,10 @@ import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 @Component
 public class UserValidator implements Validator {
 	
+	@Autowired
+	@Qualifier(value="defaultTemplate")
+	private RestTemplate template;
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return NonActivatedUser.class.equals(clazz);
@@ -20,7 +26,6 @@ public class UserValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		NonActivatedUser user = (NonActivatedUser) target;	
-		RestTemplate template = new RestTemplate();
 		
 		checkIfPasswordEqualsPasswordConfirm(errors, user.getPassword(), user.getPasswordConfirm());
 		checkIfUsernameIsAlreadyTaken(errors, user, template);
@@ -35,7 +40,7 @@ public class UserValidator implements Validator {
 		
 		//Check if user with username is in NonActivatedUser table
 		try{
-			template.getForEntity("http://localhost:8080/users/search/names?username={username}", NonActivatedUser.class, user.getUsername()).getStatusCodeValue();
+			template.getForEntity("http://localhost:8080/users/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
 			errors.rejectValue("username", "duplicatedName", new Object[]{"'username'"}, "This username is already taken");
 			return;
 		}
@@ -43,7 +48,7 @@ public class UserValidator implements Validator {
 		
 		//Check if user with username is in User table
 		try{
-			template.getForEntity("http://localhost:8080/nonactivatedusers/search/names?username={username}", NonActivatedUser.class, user.getUsername()).getStatusCodeValue();
+			template.getForEntity("http://localhost:8080/nonactivatedusers/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
 			errors.rejectValue("username", "duplicatedName", new Object[]{"'username'"}, "This username is already taken");
 			return;
 		}

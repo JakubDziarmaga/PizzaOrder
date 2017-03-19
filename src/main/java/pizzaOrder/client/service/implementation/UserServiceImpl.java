@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
-		sendActivatingMail(user); //TODO uncomment
+//		sendActivatingMail(user); //TODO uncomment
 	}
 
 	/**
