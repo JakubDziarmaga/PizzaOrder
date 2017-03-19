@@ -55,7 +55,8 @@ public class MenuValidator implements Validator {
 	 * IngredientsList can't be empty
 	 */
 	private void checkIfIngredientsListIsValid(Errors errors, List<Ingredients> ingredientsList) {
-	
+//		if (ingredientsList.size() == 0)			errors.rejectValue("ingredients", "emptyIngredients", new Object[] { "'ingredients'" },"Choose at least one ingredient");	
+
 		if (ingredientsList.isEmpty())
 			errors.rejectValue("ingredients", "emptyIngredients", new Object[] { "'ingredients'" },"Choose at least one ingredient");	
 	}
