@@ -3,54 +3,44 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>Restaurant</title>
 </head>
 <body>
 	<a th:href="@{'/'}">home</a>
 
-	<div th:if="${actualUser} != null">
+<!-- Part for logged users -->
+	<div th:if="${actualUser} != null">	
 		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
 				<a th:href="@{'/user'}">userPage</a>
 		</div>
 		
 		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}">
 				<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
-		</div>
+		</div>		
 		
 		<form th:action="@{/logout}" method="POST">
 			<input type="submit" value="Logout" />
 		</form>
 	</div>
+	
+<!-- Part for unlogged users -->
+	<div th:if="${actualUser} == null">
+				<a th:href="@{'/login'}">Login</a>
+				<a th:href="@{'/registration'}">Register</a>				
+	</div>
 
+<!-- Data about chosen restaurant -->
 	<span th:text="${restaurant.id}"></span>
 	<span th:text="${restaurant.name}"></span>
 	<span th:text="${restaurant.city}"></span> ul.
 	<span th:text="${restaurant.address}"></span> tel.:
 	<span th:text="${restaurant.phone}"></span>
 
-	<!-- 
+<!-- List of all menu with ingredients -->
 	<table>
-
-		<tr th:each="menu : ${menu}">
-			<td th:text="${menu.id}">1</td>
-			<td th:text="${menu.price}">1</td>
-
-			 
-			<td th:each="ingredients : ${ingredients.get(id}">
-			<p th:text="${ingredients.name}">1</p>
-			pop
-			</td>
-		</tr>
-
-	</table>
-	
-	 -->
-	<table>
-		
 		<tr th:each="menu : ${menu}">
 			<td th:text="${menu.id}">1</td>
 			<td th:text="${menu.price}"></td>
-			<!-- <td th:text="${ingredients.get(new Long(1))}"></td> -->
 			<td th:each="ingredients : ${menu.getIngredients()}">
 				<p th:text="${ingredients.name}">ingredientName</p>
 			</td>
@@ -66,29 +56,5 @@
 		</tr>
 	</table>
 
-	
-	
-<!--
-		<table>
-	
-			<tr th:each="ingredients : ${ingredients}">
-				<td th:text="${ingredients.value.name}">Some name</td>
-
-			</tr>
-			</table>
-	  -->
-
-
-	<!-- 
-	<table>
-		<span th:each="menu : ${menu}">
-			<tr>
-				<td th:each="ingredients : ${ingredients}">
-					<p th:text="${ingredients.name}"></p>
-				</td>
-			</tr>
-		</span>
-	</table>
--->
 </body>
 </html>

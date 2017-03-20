@@ -2,51 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>Restaurant Owner</title>
 </head>
 <body>
 
 	<a th:href="@{'/'}">home</a>
 
-	<div th:if="${actualUser} != null">
-		<p th:text="${actualUser.getUsername()}"></p>				
-		<form th:action="@{/logout}" method="POST">
-			<input type="submit" value="Logout" />
-		</form>
-	</div>
+	<p th:text="${actualUser.getUsername()}"></p>
+	<form th:action="@{/logout}" method="POST">
+		<input type="submit" value="Logout" />
+	</form>
 
+<!-- Show restaurant data -->
 	<span th:text="${restaurant.id}"></span>
 	<span th:text="${restaurant.name}"></span>
 	<span th:text="${restaurant.city}"></span> ul.
 	<span th:text="${restaurant.address}"></span> tel.:
 	<span th:text="${restaurant.phone}"></span>
-	
-	<table>		
+
+<!-- Show list of payed indents -->
+	<table>
 		<tr th:each="indent : ${indents}">
 			<td th:text="${indent.id}">1</td>
-		<!--<td th:text="${indent.isPaid()}"></td> -->
-		<!--<td th:text="${indent.getUser().getPhone()}"></td> TODO add after testing -->	
 			<td th:text="${indent.getUser().getUsername()}"></td>
 			<td th:text="${indent.getMenu().getPrice()}"></td>
-			<td th:each="ingredient : ${indent.getMenu().getIngredients()}"> 
+			<td th:each="ingredient : ${indent.getMenu().getIngredients()}">
 				<p th:text="${ingredient.getName()}">1</p>
 			</td>
-			<td th:text="${indent.getFormatedDate()}"></td>			
+			<td th:text="${indent.getFormatedDate()}"></td>
 		</tr>
 	</table>
-	
-	
 
-	<table>		
+<!-- Show list of menu belong to restaurant -->
+	<table>
 		<tr th:each="menu : ${menu}">
 			<td th:text="${menu.id}">1</td>
 			<td th:text="${menu.price}"></td>
-			<!-- <td th:text="${ingredients.get(new Long(1))}"></td> -->
-			<td th:each="ingredient : ${menu.getIngredients()}"> <!--  nie wyswietla sie bo to integer -->
+			<td th:each="ingredient : ${menu.getIngredients()}">
 				<p th:text="${ingredient.name}">1</p>
 			</td>
 		</tr>
 	</table>
-		<a th:href="@{'/restaurantOwner/' + ${restaurant.id}} + '/addmenu'">Add menu</a>
+	<a th:href="@{'/restaurantOwner/' + ${restaurant.id}} + '/addmenu'">Add	menu</a>
 </body>
 </html>

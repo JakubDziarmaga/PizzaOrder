@@ -156,7 +156,4 @@ public class RestaurantOwnerProfileController extends AbstractController{
 
 		return "redirect:/restaurantOwner";
 	}
-	
-
-
 }

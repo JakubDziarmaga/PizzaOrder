@@ -65,7 +65,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	/**
-	 * 
+	 * Add menu to restaurant with id = idRestaurant
 	 */
 	@Override
 	public void addMenu(Menu menu, Long idRestaurant)  {

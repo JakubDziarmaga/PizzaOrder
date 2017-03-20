@@ -2,37 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>Homepage</title>
 </head>
 <body>
 
 <p th:text="${error}"></p>
 
-<a th:href="@{'/'}">homePage</a>
-
-	<div th:if="${actualUser} != null">
+<!-- Part for logged users -->
+	<div th:if="${actualUser} != null">	
 		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
 				<a th:href="@{'/user'}">userPage</a>
 		</div>
 		
 		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}">
 				<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
-		</div>
+		</div>		
 		
 		<form th:action="@{/logout}" method="POST">
 			<input type="submit" value="Logout" />
 		</form>
 	</div>
+	
+<!-- Part for unlogged users -->
+	<div th:if="${actualUser} == null">
+				<a th:href="@{'/login'}">Login</a>
+				<a th:href="@{'/registration'}">Register</a>				
+	</div>
 
+<!-- Shows list of all available restaurants -->
 	<table>
-
 		<tr th:each="restaurant : ${restaurants}">
-			<td th:text="${restaurant.id}">1</td>
-			<td th:text="${restaurant.city}">1</td>
-			<td th:text="${restaurant.address}">Text ...</td>
-			<td th:text="${restaurant.phone}">1</td>
-			<td th:text="${restaurant.name}">1</td>
-			<td><a th:href="@{'/restaurant/' + ${restaurant.id}}">view</a></td>
+			<td th:text="${restaurant.id}">RestaurantId</td>
+			<td th:text="${restaurant.city}">RestaurantCity</td>
+			<td th:text="${restaurant.address}">RestaurantAddress</td>
+			<td th:text="${restaurant.phone}">RestaurantPhone</td>
+			<td th:text="${restaurant.name}">RestaurantName</td>
+			<td><a th:href="@{'/restaurant/' + ${restaurant.id}}">RestaurantHref</a></td>
 		</tr>
 	</table>
 </body>

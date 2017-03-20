@@ -1,21 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Getting Started: Handling Form Submission</title>
+<title>Add menu</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 	<a th:href="@{'/'}">home</a>
 
-	<div th:if="${actualUser} != null">
-		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}">
-			<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
-		</div>
-		<form th:action="@{/logout}" method="POST">
-			<input type="submit" value="Logout" />
-		</form>
-	</div>
-	
+	<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
+	<form th:action="@{/logout}" method="POST">
+		<input type="submit" value="Logout" />
+	</form>
+
+
+<!-- Add new menu to restaurant -->
 	<form method="POST" th:object="${menu}">
 		<table>
 			<tr>
@@ -30,11 +28,11 @@
 			</tr>
 			<tr>
 				<td>Ingredients:</td>
-				<td th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}">Ingredients Error</td>
+				<td th:if="${#fields.hasErrors('ingredients')}"
+					th:errors="*{ingredients}">Ingredients Error</td>
 			</tr>
 			<tr th:each="ingredient : ${ingredients}">
-				<td>	<input
-					type="checkbox" th:field="${menu.ingredients}"
+				<td><input type="checkbox" th:field="${menu.ingredients}"
 					th:value="${ingredient.id}" /><label th:text="${ingredient.name}">Name of ingredient</label></td>
 			</tr>
 			<tr>
