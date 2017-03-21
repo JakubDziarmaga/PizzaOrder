@@ -11,8 +11,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 
-import com.sun.mail.util.MailSSLSocketFactory;
-
 @Component
 public class MailConfig {
 

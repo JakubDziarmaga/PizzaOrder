@@ -32,7 +32,6 @@
 <!-- Shows list of all available restaurants -->
 	<table>
 		<tr th:each="restaurant : ${restaurants}">
-			<td th:text="${restaurant.id}">RestaurantId</td>
 			<td th:text="${restaurant.city}">RestaurantCity</td>
 			<td th:text="${restaurant.address}">RestaurantAddress</td>
 			<td th:text="${restaurant.phone}">RestaurantPhone</td>

@@ -14,7 +14,6 @@
 	</form>
 
 <!-- Show restaurant data -->
-	<span th:text="${restaurant.id}"></span>
 	<span th:text="${restaurant.name}"></span>
 	<span th:text="${restaurant.city}"></span> ul.
 	<span th:text="${restaurant.address}"></span> tel.:
@@ -23,24 +22,23 @@
 <!-- Show list of payed indents -->
 	<table>
 		<tr th:each="indent : ${indents}">
-			<td th:text="${indent.id}">1</td>
 			<td th:text="${indent.getUser().getUsername()}"></td>
-			<td th:text="${indent.getMenu().getPrice()}"></td>
+			<td th:text="${indent.getMenu().getName()}"></td>
 			<td th:each="ingredient : ${indent.getMenu().getIngredients()}">
 				<p th:text="${ingredient.getName()}">1</p>
 			</td>
-			<td th:text="${indent.getFormatedDate()}"></td>
+			<td th:text="${indent.getFormattedDate()}"></td>
 		</tr>
 	</table>
 
 <!-- Show list of menu belong to restaurant -->
 	<table>
 		<tr th:each="menu : ${menu}">
-			<td th:text="${menu.id}">1</td>
-			<td th:text="${menu.price}"></td>
+			<td th:text="${menu.name}"></td>
 			<td th:each="ingredient : ${menu.getIngredients()}">
 				<p th:text="${ingredient.name}">1</p>
 			</td>
+			<td th:text="${menu.price}">zł.</td>
 		</tr>
 	</table>
 	<a th:href="@{'/restaurantOwner/' + ${restaurant.id}} + '/addmenu'">Add	menu</a>

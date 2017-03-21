@@ -30,7 +30,6 @@
 	</div>
 
 <!-- Data about chosen restaurant -->
-	<span th:text="${restaurant.id}"></span>
 	<span th:text="${restaurant.name}"></span>
 	<span th:text="${restaurant.city}"></span> ul.
 	<span th:text="${restaurant.address}"></span> tel.:
@@ -39,11 +38,12 @@
 <!-- List of all menu with ingredients -->
 	<table>
 		<tr th:each="menu : ${menu}">
-			<td th:text="${menu.id}">1</td>
-			<td th:text="${menu.price}"></td>
+			<td th:text="${menu.name}">1</td>
 			<td th:each="ingredients : ${menu.getIngredients()}">
 				<p th:text="${ingredients.name}">ingredientName</p>
 			</td>
+			<td th:text="${menu.price}">zł</td>
+			
 			<td>
 				<div th:if="${actualUser} != null">
 					<div th:if = "${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">

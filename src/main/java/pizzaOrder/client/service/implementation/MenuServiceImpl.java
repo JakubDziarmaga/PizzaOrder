@@ -75,8 +75,11 @@ public class MenuServiceImpl implements MenuService {
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
 
+		Menu tempMenu = new Menu();
+		tempMenu.setName(menu.getName());
+		tempMenu.setPrice(menu.getPrice());
 		//Post new Menu
-		URI newMenuURI = defaultemplate.postForLocation("http://localhost:8080/menu/", menu.getPrice());
+		URI newMenuURI = defaultemplate.postForLocation("http://localhost:8080/menu/", tempMenu);
 
 		//Add Restaurant to Menu entity
 		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
