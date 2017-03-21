@@ -28,13 +28,10 @@ public class MailConfig {
 		mailSender.setPassword("pizzaorder123");
 
 		Properties javaMailProperties = new Properties();
-		MailSSLSocketFactory sf = new MailSSLSocketFactory();
-		sf.setTrustAllHosts(true); 
 		javaMailProperties.put("mail.smtp.starttls.enable", "true");
 		javaMailProperties.put("mail.smtp.auth", "true");
 		javaMailProperties.put("mail.smtp.ssl.checkserveridentity", "false");
 		javaMailProperties.put("mail.smtp.ssl.trust", "*");
-		javaMailProperties.put("mail.smtp.ssl.socketFactory", sf);
 		
 		mailSender.setJavaMailProperties(javaMailProperties);
 
