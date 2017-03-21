@@ -31,7 +31,6 @@ public class UserController {//extends AbstractController{
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
     
-//    	NonActivatedUser nonActivatedUser = new NonActivatedUser();        	  
         model.addAttribute("nonActivatedUser", new NonActivatedUser());
 
         return "register";

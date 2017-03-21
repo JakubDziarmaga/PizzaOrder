@@ -51,9 +51,7 @@ public class RestaurantControllerTest {
 
 	@Autowired
 	private FilterChainProxy springSecurityFilter;
-	
-//	@MockBean
-//	private UserDetailsService userDetailsService;
+
 	 
 	@Before
 	public void setUp() {

@@ -1,4 +1,4 @@
-package client.service;
+package unit.client.service;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,7 +30,7 @@ public class IngredientsServiceTest {
 	@Mock(name = "halTemplate")
 	private RestTemplate halTemplate;	
 	
-	@Spy//(name = "halObjectMapper")
+	@Spy
 	private ObjectMapper mapper;
 	
     @InjectMocks
@@ -43,18 +43,18 @@ public class IngredientsServiceTest {
     }
     
     @Test
-    public void pay_for_indent() throws Exception{
+    public void get_all_ingredients() throws Exception{
     	Ingredients first = new Ingredients(1L, "szynka");
     	Ingredients second = new Ingredients(1L, "pieczarki");
     	
-    	PagedResources<Ingredients> persistentEntityResource = new PagedResources<Ingredients>(
+    	PagedResources<Ingredients> ingredientsPagedResources = new PagedResources<Ingredients>(
     			Arrays.asList(first,second), new PageMetadata(1, 0, 10));
     	
 
     	Mockito.when
     			(halTemplate
     			.getForObject(Matchers.anyString(), Matchers.eq(PagedResources.class)))
-                .thenReturn(persistentEntityResource);
+                .thenReturn(ingredientsPagedResources);
     	
     	
     	List<Ingredients> ingredientsList = ingredientsService.getAllIngredients();

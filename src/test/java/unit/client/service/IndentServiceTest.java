@@ -1,4 +1,4 @@
-package client.service;
+package unit.client.service;
 
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -74,20 +74,7 @@ public class IndentServiceTest {
 		MockitoAnnotations.initMocks(this);
 	}
 	
-//    @Test
-//    public void pay_for_indent() throws Exception{
-//    	Indent indent = new Indent(1L, true, new User(), new Restaurant(), new Menu(), new Date());
-//
-//    	Mockito.when(defaultTemplate.getForObject(
-//                Mockito.anyString(),
-//                eq(Indent.class),
-//                Matchers.anyLong()               
-//                ))
-//                .thenReturn(indent);
-////    	Mockito.when(indentService.checkIfIndentExists(anyLong())).thenReturn(null);
-//    	
-//    	indentService.payForIndent(1L);
-//    }
+
 	@Test(expected = IndentNotFoundException.class)
 	public void throw_IndentNotFoundException_when_indent_isnt_in_db() throws Exception{
 		Mockito.when(defaultTemplate.getForObject(Matchers.anyString(), Matchers.eq(Indent.class), anyLong())).thenThrow(HttpClientErrorException.class);
@@ -96,7 +83,7 @@ public class IndentServiceTest {
 	}
 	@Test
 	public void check_if_actualUser_is_owner_of_indent() throws Exception{
-	    setUpAuthentication();
+	    set_up_authentication();
 	    
     	PagedResources<Indent> indentHal = new PagedResources<Indent>(Collections.emptyList(),  new PageMetadata(1, 0, 10));
     	indentHal.add(new Link("userUrl","user"));    	
@@ -111,7 +98,7 @@ public class IndentServiceTest {
 	}
 	
 
-	private void setUpAuthentication() {
+	private void set_up_authentication() {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 	    grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
 	    org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User("testUser","testPassword",grantedAuthorities);
@@ -122,11 +109,10 @@ public class IndentServiceTest {
 	
 	@Test(expected = NotPermittedException.class)
 	public void throw_NotPermittedException_when_actualUser_isnt_owner_of_indent() throws Exception{
-	    setUpAuthentication();
+	    set_up_authentication();
 	    
     	PagedResources<Indent> restaurantHal = new PagedResources<Indent>(Collections.emptyList(),  new PageMetadata(1, 0, 10));
-    	restaurantHal.add(new Link("userUrl","user"));    	
-   	    
+    	restaurantHal.add(new Link("userUrl","user"));    	   	    
 	    
 		Mockito.when(halTemplate.getForObject(Matchers.anyString(), Matchers.eq(PagedResources.class), anyLong())).thenReturn(restaurantHal);
 		
@@ -136,16 +122,9 @@ public class IndentServiceTest {
 		indentService.checkIfActualUserIsOwnerOfIndent(1L);
 	}
 	
-//	@Test
-//	public void delete_indent() throws Exception{
-//		
-//		indentService.deleteIndent(1L);
-//
-//	}
-	
 	@Test
 	public void add_indent() throws Exception{
-	    setUpAuthentication();
+	    set_up_authentication();
 	    User user = new User();
 	    user.setId(1L);
 		Mockito.when(defaultTemplate.getForObject(Matchers.anyString(), Matchers.eq(User.class),Matchers.anyString())).thenReturn(user);
@@ -176,6 +155,7 @@ public class IndentServiceTest {
     	
 		Mockito.when(halTemplate.getForObject(Matchers.endsWith("indent"), Matchers.eq(PagedResources.class),anyLong())).thenReturn(indentsHal);
 		
+		//Linking indent with menu and user
 		Mockito.when(halTemplate.getForObject(Matchers.endsWith("user"), Matchers.eq(User.class),Matchers.eq(1L))).thenReturn(firstUser);
 		Mockito.when(halTemplate.getForObject(Matchers.endsWith("menu"), Matchers.eq(Menu.class),Matchers.eq(1L))).thenReturn(firstMenu);
 		Mockito.when(halTemplate.getForObject(Matchers.endsWith("user"), Matchers.eq(User.class),Matchers.eq(2L))).thenReturn(secondUser);
@@ -190,6 +170,7 @@ public class IndentServiceTest {
     	PagedResources<Ingredients> ingredientsHal = new PagedResources<Ingredients>(Arrays.asList(firstIngredient,secondIngredient,thirdIngredient), new PageMetadata(1, 0, 10));
 		Mockito.when(halTemplate.getForObject(Matchers.endsWith("ingredients"), Matchers.eq(PagedResources.class),anyLong())).thenReturn(ingredientsHal);
 
+		//Call method
 		List<Indent> payedIndents = indentService.getPayedIndentsByRestaurantId(1L);
 		
 		verify(halTemplate, times(3)).getForObject(Matchers.anyString(),Matchers.eq(PagedResources.class),anyLong());
@@ -205,6 +186,8 @@ public class IndentServiceTest {
 		Assert.assertEquals(payedIndents.get(0).getId(),firstIndent.getId());		
 		Assert.assertEquals(payedIndents.get(0).getUser().getUsername(),firstUser.getUsername());		
 
+		//Second indent isn't payed. It shouldn't be in list
+		
 		Assert.assertEquals(payedIndents.get(1).getMenu().getPrice(),thirdMenu.getPrice());		
 		Assert.assertEquals(payedIndents.get(1).getId(),thirdIndent.getId());		
 		Assert.assertEquals(payedIndents.get(1).getUser().getUsername(),thirdUser.getUsername());	
@@ -246,6 +229,7 @@ public class IndentServiceTest {
     	PagedResources<Ingredients> ingredientsHal = new PagedResources<Ingredients>(Arrays.asList(firstIngredient,secondIngredient,thirdIngredient), new PageMetadata(1, 0, 10));
 		Mockito.when(halTemplate.getForObject(Matchers.endsWith("ingredients"), Matchers.eq(PagedResources.class),anyLong())).thenReturn(ingredientsHal);
 
+		//Call method
 		List<Indent> indentsList = indentService.getIndentsByUsername("testUsername");
 		
 		verify(halTemplate, times(4)).getForObject(Matchers.anyString(),Matchers.eq(PagedResources.class),anyString());
@@ -257,6 +241,7 @@ public class IndentServiceTest {
 
 		Assert.assertNotNull(indentsList);
 		
+		//Show all indents whether it's payed or not
 		Assert.assertEquals(3, indentsList.size());
 		Assert.assertEquals(indentsList.get(0).getMenu().getPrice(),firstMenu.getPrice());		
 		Assert.assertEquals(indentsList.get(0).getId(),firstIndent.getId());		

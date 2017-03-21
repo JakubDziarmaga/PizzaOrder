@@ -1,11 +1,13 @@
-package client.service;
+package unit.client.service;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -38,9 +40,7 @@ import pizzaOrder.client.service.implementation.RestaurantServiceImpl;
 import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
 
-//@RunWith(PowerMockRunner.class)
-//@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
-//@PrepareForTest(SecurityContextHolder.class)
+
 public class RestaurantServiceTest {
 
 	@Mock(name = "halTemplate")
@@ -48,9 +48,6 @@ public class RestaurantServiceTest {
 
 	@Mock
 	private RestaurantNotFoundException restaurantNotFoundException;
-
-//	@Mock
-//	private SecurityContext mockSecurityContext;
 
 	@InjectMocks
 	private RestaurantServiceImpl restaurantService;
@@ -63,32 +60,6 @@ public class RestaurantServiceTest {
 		expectedRestaurant = new Restaurant(1L, "first", "firstCity", "firstAddress", 12, 1L);
 	}
 
-	// @Test
-	// public void
-	// findById_TodoEntryFound_ShouldAddTodoEntryToModelAndRenderViewTodoEntryView()
-	// throws Exception {
-	// Restaurant found = new Restaurant(1L, "RestaurantName", "RestaurantCity",
-	// "RestaurantAddress",123456789, 1L);
-	//
-	// when(restaurantServiceMock.getRestaurantById(1L)).thenReturn(found);
-	//
-	// mockMvc.perform(get("/restaurant/1")
-	// .with(user("testuser").password("testuser").roles("USER")))
-	// .andDo(print())
-	// .andExpect(status().isOk())
-	// .andExpect(view().name("restaurant"))
-	// .andExpect(model().attribute("restaurant", hasProperty("id", is(1L))))
-	// .andExpect(model().attribute("restaurant", hasProperty("name",
-	// is("RestaurantName"))))
-	// .andExpect(model().attribute("restaurant", hasProperty("city",
-	// is("RestaurantCity"))))
-	// .andExpect(model().attribute("restaurant", hasProperty("address", is(
-	// "RestaurantAddress"))))
-	// .andExpect(model().attribute("restaurant", hasProperty("phone",
-	// is(123456789))))
-	// .andExpect(model().attribute("restaurant", hasProperty("ownerId",
-	// is(1L))));;
-	// }
 	@Test
 	public void get_all_restaurant_list() throws Exception {
 		Restaurant first = new Restaurant(1L, "first", "firstCity", "firstAddress", 12, 1L);
@@ -112,14 +83,13 @@ public class RestaurantServiceTest {
 
 	@Test
 	public void get_restaurant_by_id() throws Exception {
-	
 
 		Mockito.when(halTemplate.getForObject(Matchers.anyString(), Matchers.eq(Restaurant.class), anyLong()))
 				.thenReturn(expectedRestaurant);
 
 		Restaurant actualRestaurant = restaurantService.getRestaurantById(1L);
 
-		verify(halTemplate, times(1)).getForObject(anyString(), Matchers.eq(Restaurant.class), anyLong());
+		verify(halTemplate, times(1)).getForObject(anyString(), eq(Restaurant.class), anyLong());
 		verifyNoMoreInteractions(halTemplate);
 		Assert.notNull(actualRestaurant);
 		assertThat(actualRestaurant, is(expectedRestaurant));
@@ -134,12 +104,7 @@ public class RestaurantServiceTest {
 
 	@Test
 	public void add_restaurant() throws Exception {
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
-        org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User("test","test",grantedAuthorities);
-
-	    Authentication auth = new UsernamePasswordAuthenticationToken(securityUser,null);	    
-	    SecurityContextHolder.getContext().setAuthentication(auth);
+        set_up_authentication();
 
 		User testUser = new User();
 		testUser.setId(5L);
@@ -148,19 +113,27 @@ public class RestaurantServiceTest {
 
 		restaurantService.addRestaurant(expectedRestaurant);
 		
-		verify(halTemplate, times(1)).getForObject(Matchers.anyString(), Matchers.eq(User.class), Matchers.anyString());
-		verify(halTemplate, times(1)).postForObject(Matchers.anyString(), Matchers.any(Restaurant.class), Matchers.eq(Restaurant.class));
+		verify(halTemplate, times(1)).getForObject(anyString(), eq(User.class), anyString());
+		verify(halTemplate, times(1)).postForObject(anyString(), any(Restaurant.class), eq(Restaurant.class));
 		verifyNoMoreInteractions(halTemplate);
 		assertThat(expectedRestaurant.getOwnerId(), is(5L));
 
+	}
+
+	private void set_up_authentication() {
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+        grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+        org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User("test","test",grantedAuthorities);
+
+	    Authentication auth = new UsernamePasswordAuthenticationToken(securityUser,null);	    
+	    SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 	@Test
 	public void get_restaurant_by_owner_id() throws Exception {
 
 		Mockito.when(halTemplate.getForObject(Matchers.anyString(), Matchers.eq(Restaurant.class), Matchers.anyLong())).thenReturn(expectedRestaurant);
 
-		Restaurant actualRestaurant = restaurantService.getRestaurantByOwnerId(1L);
-		
+		Restaurant actualRestaurant = restaurantService.getRestaurantByOwnerId(1L);		
 		
 		verify(halTemplate, times(1)).getForObject(Matchers.anyString(), Matchers.eq(Restaurant.class), Matchers.anyLong());
 		verifyNoMoreInteractions(halTemplate);

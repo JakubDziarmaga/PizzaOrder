@@ -58,33 +58,31 @@ public class UserProfileControllerTest {
 	@Autowired
 	private FilterChainProxy springSecurityFilter;
 
+	private List<Indent> indentList;
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(this.springSecurityFilter, "/*").build();
+		
+		set_up_authentication();
+
 	}
 
-	@Test
-	public void show_user_profile_page() throws Exception {
-
+	private void set_up_authentication() {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
 		org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User("test", "test", grantedAuthorities);
 
 		Authentication auth = new UsernamePasswordAuthenticationToken(securityUser, null);
 		SecurityContextHolder.getContext().setAuthentication(auth);
+	}
 
-		Indent firstIndent = new Indent();
-		Menu firstmenu = new Menu();
-		firstIndent.setMenu(firstmenu);
-		
-		Indent secondIndent = new Indent();
-		Menu secondmenu = new Menu();
-		secondIndent.setMenu(secondmenu);
+	@Test
+	public void show_user_profile_page() throws Exception {
 
-		List<Indent> indentList = new ArrayList<Indent> ();
-		indentList.add(firstIndent);
-		indentList.add(secondIndent);
+		create_indentList();
+
 
 		Mockito.when(indentServiceMock.getIndentsByUsername(Matchers.any(String.class))).thenReturn(indentList);
 		
@@ -99,5 +97,19 @@ public class UserProfileControllerTest {
 
 		verify(indentServiceMock, times(1)).getIndentsByUsername(Matchers.anyString());
 		verifyNoMoreInteractions(indentServiceMock);
+	}
+	
+	private void create_indentList() {
+		Indent firstIndent = new Indent();
+		Menu firstmenu = new Menu();
+		firstIndent.setMenu(firstmenu);
+		
+		Indent secondIndent = new Indent();
+		Menu secondmenu = new Menu();
+		secondIndent.setMenu(secondmenu);
+
+		indentList = new ArrayList<Indent> ();
+		indentList.add(firstIndent);
+		indentList.add(secondIndent);
 	}
 }

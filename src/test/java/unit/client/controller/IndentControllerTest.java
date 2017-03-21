@@ -49,9 +49,6 @@ public class IndentControllerTest {
 	@Autowired
 	private FilterChainProxy springSecurityFilter;
 	
-//	@Rule
-//	public ExpectedException thrown = ExpectedException.none();
-	
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(this.springSecurityFilter, "/*").build();
@@ -129,7 +126,6 @@ public class IndentControllerTest {
 		mockMvc.perform(get("/indent/delete/1")
 				 .with(user("test").password("test").roles("USER")))
 		 		 .andDo(print())
-//		 		 .andExpect(view().name("redirect:/user"))
 		 		 .andExpect(status().is3xxRedirection())
 		 		 .andExpect(redirectedUrl("/user"));		
 		 

@@ -47,15 +47,6 @@ public class AccessForRestaurantOwner {
 		 		 .andExpect(status().is4xxClientError());						
 	}
 	
-//	@Test
-//	public void enable_showing_restaurant_owner_page_with_restaurant_owner_role() throws Exception{
-//
-//		mockMvc.perform(get("/restaurantowner")
-//			     .with(user("test").password("test").roles("RESTAURANT_OWNER")))
-//		 		 .andDo(print())
-//		 		 .andExpect(status().isOk());		
-//	}
-	
 	@Test
 	public void disable_showing_add_restaurant_page_with_user_role() throws Exception{
 		mockMvc.perform(get("/addRestaurant")			     
@@ -63,16 +54,7 @@ public class AccessForRestaurantOwner {
 		 		 .andDo(print())
 		 		 .andExpect(status().is4xxClientError());				
 	}
-	
-//	@Test
-//	@WithMockUser//(authorities="ADMIN")
-//	public void enable_showing_add_restaurant_page_with_restaurant_owner_role() throws Exception{
-//		mockMvc.perform(get("/addRestaurant")			     
-//				 .with(user("test").password("test").roles("RESTAURANT_OWNER")))
-//		 		 .andDo(print())
-//		 		 .andExpect(status().isOk());		
-//	}
-	
+
 	@Test
 	public void disable_posting_new_restaurant_with_user_role() throws Exception{
 		mockMvc.perform(post("/addRestaurant")
@@ -80,14 +62,6 @@ public class AccessForRestaurantOwner {
 		 		 .andDo(print())
 		 		 .andExpect(status().is4xxClientError());					
 	}
-	
-//	@Test
-//	public void enable_posting_new_restaurant_with_restaurant_owner_role() throws Exception{
-//		mockMvc.perform(post("/addRestaurant")
-//				 .with(user("test").password("test").roles("RESTAURANT_OWNER")))
-//		 		 .andDo(print())
-//		 		 .andExpect(status().isOk());		
-//	}
 	
 	@Test
 	public void disable_showing_add_menu_page_with_user_role() throws Exception{
@@ -97,14 +71,6 @@ public class AccessForRestaurantOwner {
 		 		 .andExpect(status().is4xxClientError());					
 	}
 	
-//	@Test
-//	public void enable_showing_add_menu_page_with_restaurant_owner_role() throws Exception{
-//		mockMvc.perform(get("/restaurantowner/1/addmenu")
-//				 .with(user("test").password("test").roles("RESTAURANT_OWNER")))
-//		 		 .andDo(print())
-//		 		 .andExpect(status().isOk());		
-//	}
-	
 	@Test
 	public void disable_posting_new_menu_with_user_role() throws Exception{
 		mockMvc.perform(post("/restaurantOwner/1/addmenu")
@@ -112,12 +78,4 @@ public class AccessForRestaurantOwner {
 		 		 .andDo(print())
 		 		 .andExpect(status().is4xxClientError());							
 	}
-	
-//	@Test
-//	public void enable_posting_new_menu_with_restaurant_owner_role() throws Exception{
-//		mockMvc.perform(post("/restaurantowner/1/addmenu")
-//				 .with(user("test").password("test").roles("RESTAURANT_OWNER")))
-//		 		 .andDo(print())
-//		 		 .andExpect(status().isOk());		
-//	}
 }

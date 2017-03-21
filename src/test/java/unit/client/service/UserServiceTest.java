@@ -1,9 +1,11 @@
-package client.service;
+package unit.client.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,41 +80,30 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void test_if_service_changes_user_id_after_posting_to_db() throws Exception {
+	public void check_if_service_changes_nonActivatedUser_id_after_posting_to_db() throws Exception {
 
-		Mockito.when(defaultTemplate.postForLocation(Matchers.anyString(), Mockito.any(NonActivatedUser.class),
-				Matchers.eq(NonActivatedUser.class))).thenReturn(new URI("aaa"));
+		Mockito.when(defaultTemplate.postForLocation(anyString(), any(NonActivatedUser.class),	eq(NonActivatedUser.class))).thenReturn(new URI("aaa"));
 
-		Mockito.when(defaultTemplate.getForObject(isA(URI.class), Matchers.eq(NonActivatedUser.class)))
-				.thenReturn(testNonActivatedUser);
+		Mockito.when(defaultTemplate.getForObject(isA(URI.class), eq(NonActivatedUser.class))).thenReturn(testNonActivatedUser);
 
 		NonActivatedUser user = new NonActivatedUser();
+		
 		userService.addNonActivatedUser(user);
-		assertThat(user.getId(), is(2L));
+		assertThat(user.getId(), is(testNonActivatedUser.getId()));
 	}
-
-	// @Test
-	// nie dziala
-	// public void test_sending_activation_link() throws Exception{
-	// userService.sendActivatingMail(testNonActivatedUser);
-	//
-	// verify(mailSender, times(1));
-	// verifyNoMoreInteractions(mailSender);
-	// }
 
 	@Test
 	public void authenticate_user() throws Exception {
-		Mockito.when(defaultTemplate.getForObject(anyString(), Matchers.eq(User.class), anyLong()))
-			   .thenReturn(testUser);
+		Mockito.when(defaultTemplate.getForObject(anyString(), eq(User.class), anyLong())).thenReturn(testUser);
 
 		userService.activateUser(testUser.getId());
 		Assert.isNull(testUser.getId()); 				// Id should be null before posting in	User table
 
-		verify(defaultTemplate, times(1)).getForObject(anyString(), Matchers.eq(User.class), anyLong());
+		verify(defaultTemplate, times(1)).getForObject(anyString(), eq(User.class), anyLong());
 		verify(defaultTemplate, times(1)).delete(anyString(), anyLong());
 		verifyNoMoreInteractions(defaultTemplate);
 
-		verify(userSecurityService, times(1)).save(Mockito.any(User.class));
+		verify(userSecurityService, times(1)).save(any(User.class));
 		verifyNoMoreInteractions(userSecurityService);
 
 		verify(securityService, times(1)).autologin(anyString(), anyString());
@@ -122,18 +113,23 @@ public class UserServiceTest {
 	
 	@Test
 	public void get_actual_user_id() throws Exception{
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+        set_up_authentication();
+	    
+	    Mockito.when(defaultTemplate.getForObject(anyString(), eq(User.class), anyLong())).thenReturn(testUser);
+	    
+	    Long actualId = userService.getActualUserId();
+	    
+		assertThat(actualId,is(testUser.getId()));
+	    verify(defaultTemplate, times(1)).getForObject(anyString(), eq(User.class), anyString());
+	}
+
+	private void set_up_authentication() {
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
         grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
         org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User(testUser.getUsername(),testUser.getPassword(),grantedAuthorities);
 
 	    Authentication auth = new UsernamePasswordAuthenticationToken(securityUser,null);	    
 	    SecurityContextHolder.getContext().setAuthentication(auth);
-	    
-	    Mockito.when(defaultTemplate.getForObject(anyString(), Matchers.eq(User.class), anyLong())).thenReturn(testUser);
-	    
-	    userService.getActualUserId();
-		verify(defaultTemplate, times(1)).getForObject(anyString(), Matchers.eq(User.class), anyString());
-
 	}
 
 }
