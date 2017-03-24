@@ -47,6 +47,8 @@
 	<classpathentry kind="lib" path="E:/maven dependencies/spring-boot-starter-test-1.5.1.RELEASE.jar"/>
 	<classpathentry kind="lib" path="E:/maven dependencies/spring-boot-test-1.5.1.RELEASE.jar"/>
 	<classpathentry kind="lib" path="E:/maven dependencies/spring-security-test-4.2.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/mail-1.4.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Jakub/.m2/repository/org/springframework/spring-context-support/4.3.4.RELEASE/spring-context-support-4.3.4.RELEASE.jar">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -57,26 +59,5 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/maven dependencies/mail-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Jakub/.m2/repository/org/springframework/spring-web/4.3.6.RELEASE/spring-web-4.3.6.RELEASE.jar" sourcepath="C:/Users/Jakub/.m2/repository/org/springframework/spring-web/4.3.6.RELEASE/spring-web-4.3.6.RELEASE-sources.jar">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="org.springframework"/>
-			<attribute name="maven.artifactId" value="spring-web"/>
-			<attribute name="maven.version" value="4.3.6.RELEASE"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Jakub/.m2/repository/org/springframework/security/spring-security-core/4.2.0.RELEASE/spring-security-core-4.2.0.RELEASE.jar">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="org.eclipse.jst.component.archivename" value="spring-security-core-4.2.0.RELEASE.jar"/>
-			<attribute name="maven.groupId" value="org.springframework.security"/>
-			<attribute name="maven.artifactId" value="spring-security-core"/>
-			<attribute name="maven.version" value="4.2.0.RELEASE"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="E:/maven dependencies/junit-4.12.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

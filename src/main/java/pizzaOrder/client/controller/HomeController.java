@@ -17,7 +17,7 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 public class HomeController extends AbstractController{
 	
 	@Autowired
-	RestaurantService restaurantService;
+	private RestaurantService restaurantService;
 	
 	/**
 	 * Homapage
