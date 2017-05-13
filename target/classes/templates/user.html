@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>User</title>
+<head> 
+    <title>Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
+    <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
+	<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png"/>
+
 </head>
 <body>
-	<a th:href="@{'/'}">home</a>
 
-	<p th:text="${error}"></p>
+<header>
+		<div id="header_container">
+			 <a th:href="@{'/'}"> 
+	 			<img id="logo" src="../img/pizza.png"/>
+				<h1>PizzaOrder</h1>
+			</a>
 
-	<p th:text="${actualUser.getUsername()}"></p>
-	<form th:action="@{/logout}" method="POST">
-		<input type="submit" value="Logout" />
-	</form>
+			<a th:href="@{'/user'}">
+				<div class="icon-user">Profile</div>
+			</a>				
+			<a th:href="@{'/logout'}">
+				<div class="icon-logout">Logout</div>
+			</a>
+			<div class="clear"></div>
+		</div>
+	<!-- </a> -->
+</header>
+
+ <div id="container">
 
 <!-- Show list of all indents belong to user -->
 	<table>
@@ -40,6 +57,6 @@
 			</td>
 		</tr>
 	</table>
-
+</div>
 </body>
 </html>

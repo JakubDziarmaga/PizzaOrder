@@ -1,56 +1,66 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+ <html lang="pl"    xmlns:th="http://www.thymeleaf.org"> 
 <head> 
     <title>Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
+
 </head>
 <body>
- <a th:href="@{'/'}">home</a>
+
+<header>
+	<a th:href="@{'/'}">
+		<div id="header_container">
+ 			<img id="logo" src="../img/pizza.png"/>
+			<h1>PizzaOrder</h1>
+			<div class="clear"></div>
+		</div>
+	</a>
+</header>
  
- 
+ <div id="container">
  <form action="#" th:action="@{/registration}" th:object="${nonActivatedUser}" method="post">
             <table>
                 <tr>
-                    <td>Username:</td>
-                    <td><input type="text" th:field="*{username}" /></td>
+                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="Username" th:field="*{username}" /></td>
                     <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
                 </tr>
                 <tr>
-                    <td>Password:</td>
-                    <td><input type="password" th:field="*{password}" /></td>
+                    <td><span class="asterisk"> &#42;</span> <input type="password" placeholder="Password" th:field="*{password}" /></td>
                     <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td> 
                 </tr>
                 <tr>
-                    <td>Confirm password:</td>
-                    <td><input type="password" th:field="*{passwordConfirm}" /></td>
+                    <td><span class="asterisk"> &#42;</span> <input type="password" placeholder="Confirm password" th:field="*{passwordConfirm}" /></td>
                     <td th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">PasswordConfirm Error</td>
                 </tr>
                 <tr>
-                    <td>Email:</td>
-                    <td><input type="email" th:field="*{mail}" /></td>
+                    <td><span class="asterisk"> &#42;</span> <input type="email" placeholder="Email" th:field="*{mail}" /></td>
                     <td th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Email Error</td>
                 </tr>
                 <tr>
-                    <td>Phone:</td>
-                    <td><input type="number" th:field="*{phone}" /></td>
+                    <td><span class="asterisk"> &#42;</span> <input id="phone" type="number" placeholder='Phone' th:field="*{phone}" /></td>
                     <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</td>
                 </tr>
           		<tr>
-          			<td>Role:</td>
-          			<td>
+          			<td><span class="asterisk"> &#42;</span>
           			        <select id="role" name="role">
-          			            <option value=""></option>          			        
-                				<option value="ROLE_USER">User</option>
+          			            <option value="" selected="selected" >Select role:</option>
+                				<option value="ROLE_USER" >User</option>
               					<option value="ROLE_RESTAURANT_OWNER">Restaurant owner</option>
             				</select>
             		</td>
             		<td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</td>
           		</tr>         	   
                 <tr>
-                    <td><button type="submit">Submit</button></td>
+                    <td><input type="submit" value="Submit"/></td>
                 </tr>
             </table>
         </form>
-	
+</div>        
+
+<script type="text/javascript"> 
+  document.getElementById("phone").setAttribute('value','');
+</script>
 </body>
 </html>

@@ -12,11 +12,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -49,6 +44,11 @@
 	<classpathentry kind="lib" path="E:/maven dependencies/spring-security-test-4.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="E:/maven dependencies/mail-1.4.jar"/>
 	<classpathentry kind="lib" path="E:/maven dependencies/junit-4.12.jar"/>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Jakub/.m2/repository/org/springframework/spring-context-support/4.3.4.RELEASE/spring-context-support-4.3.4.RELEASE.jar">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

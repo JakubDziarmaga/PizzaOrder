@@ -27,8 +27,20 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		NonActivatedUser user = (NonActivatedUser) target;	
 		
+		checkIfPhoneNumberIsValid(errors, user);
 		checkIfPasswordEqualsPasswordConfirm(errors, user.getPassword(), user.getPasswordConfirm());
-		checkIfUsernameIsAlreadyTaken(errors, user, template);
+//		checkIfUsernameIsAlreadyTaken(errors, user, template);
+//	TODO UNCOMMENT
+	}
+	
+	private void checkIfPhoneNumberIsValid(Errors errors,NonActivatedUser user){
+		if(user.getPhone() == null){
+			errors.rejectValue("phone", "wrongPhoneNumber", new Object[]{"'phone'"}, "Phone number must have between 7 and 9 digits");		
+			return;
+		}
+		if(user.getPhone() < 100000000 || user.getPhone() > 999999999) 
+			errors.rejectValue("phone", "wrongPhoneNumber", new Object[]{"'phone'"}, "Phone number must have between 7 and 9 digits");		
+
 	}
 
 	private void checkIfPasswordEqualsPasswordConfirm(Errors errors, String password, String passwordConfirm) {

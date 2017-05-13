@@ -1,0 +1,267 @@
+@CHARSET "UTF-8";
+
+
+
+body
+{
+	margin: 0 !important;
+	font-family: 'Dosis', sans-serif;
+	font-size:15px;
+	/* Background pattern from Subtle Patterns */	
+	background-image:url("../img/background.png");
+	
+}
+
+header
+{
+	background-color:#1076DC;
+	
+}
+#container
+{
+	width:1200px;
+	margin-left:auto;
+	margin-right:auto;
+	background-color:white;
+	text-allign:center;
+	/*background-color:#1076DC;*/
+	
+}
+
+#header_container
+{
+	width:1200px;
+	height:80px;
+	margin-left:auto;
+	margin-right:auto;
+	padding:10px;
+	color:white;
+}
+
+header img
+{
+	width:80px;
+	height:80px;
+	float:left;
+	padding: 0px 10px 0px 30px;
+}
+
+.icon-login
+{
+	float:left;
+	width:150px;
+	height:30px;
+	font-size:18px;
+	padding:5px;
+	cursor: pointer;
+	
+}
+
+.icon-user
+{
+	float:left;	
+	width:150px;
+	height:30px;
+	font-size:18px;
+	padding:5px;
+	cursor: pointer;
+}
+
+.icon-logout
+{
+	float:left;	
+	width:150px;
+	height:30px;
+	font-size:18px;
+	padding:5px;
+	cursor: pointer;
+}
+
+#header_container > a
+{
+    color: white;
+}
+
+#unloggedUser > a
+{
+	color:white;
+}
+
+#loggedUser > a
+{
+	color:white;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+    
+}
+
+input
+{
+	border 2px solid #ddd;
+	border-radius:5px;	
+	width:400px;
+	font-size: 20px;
+	padding: 5px;
+	box-sizing: border-box;
+	border: 1px solid grey;
+	margin: 5px 0px;
+}
+
+input[type=submit]
+{
+	cursor: pointer;
+	background-color:#1076DC;
+}
+
+ input[type=submit]:hover
+{
+	background-color:#2086EC;
+}
+
+
+select
+{
+	border 2px solid #ddd;
+	border-radius:5px;	
+	width:400px;
+	font-size: 20px;
+	padding: 5px 5px 5px 0px;
+	box-sizing: border-box;
+	/*color: grey;*/
+}
+
+select option 
+{ 
+	color: black; 
+}
+
+
+select option:first-child
+{
+	color: grey;
+}
+
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+
+}
+
+
+.asterisk
+{
+	color:red;
+	font-size:25px;
+}
+
+.clear
+{
+	clear:both;	
+}
+h1
+{
+	font-size:70px;
+	margin:0px;
+	padding: 0px 630px 0px 0px;
+	float:left;	
+}
+
+/*
+form
+{
+	padding:0px 40px;
+	margin:0;
+}
+*/
+
+table
+{
+	width:800px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+
+/*
+
+
+
+*/
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+	background-color:white;
+    margin: 5px auto; /* 15% from the top and centered */
+    border: 1px solid #888;
+    width: 460px; /* Could be more or less, depending on screen size */
+    padding:30px;
+}
+
+/* The Close Button */
+.close {
+
+    margin:0px;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+    float: right;
+    
+}
+
+/* Close button on hover */
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.4s;
+    animation: animatezoom 0.4s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+}
+
+
+
+
+
+#login_content
+{
+	padding: 0px 40px;
+    width: 400px;
+}
+
+#login_content > p
+{
+	font-size:20px;
+}

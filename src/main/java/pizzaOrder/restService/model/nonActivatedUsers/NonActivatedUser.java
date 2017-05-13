@@ -36,9 +36,9 @@ public class NonActivatedUser {
 	@NotBlank (message = "Please enter your email address.")//TODO make mail validation '...@...'
 	private String mail;
 	
-	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")
-	@Max(value = 999999999, message="Phone number must have between 7 and 9 digits")
-	private int phone;
+//	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")
+//	@Max(value = 999999999, message="Phone number must have between 7 and 9 digits")
+	private Integer phone;
 	
 	@NotBlank (message = "Please select your role.")
 	private String role;
@@ -104,11 +104,11 @@ public class NonActivatedUser {
 		this.mail = mail;
 	}
 
-	public int getPhone() {
+	public Integer getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(Integer phone) {
 		this.phone = phone;
 	}
 

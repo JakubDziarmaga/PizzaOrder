@@ -21,15 +21,15 @@ public class MailConfig {
 	public JavaMailSender mailSender(Environment env) throws MessagingException, GeneralSecurityException {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.gmail.com");
-		mailSender.setPort(587); 
+		mailSender.setPort(465); 
 		mailSender.setUsername("pizza0rd3r");
-		mailSender.setPassword("pizzaorder123");
+		mailSender.setPassword("smieja123");
 
 		Properties javaMailProperties = new Properties();
-		javaMailProperties.put("mail.smtp.starttls.enable", "true");
 		javaMailProperties.put("mail.smtp.auth", "true");
-		javaMailProperties.put("mail.smtp.ssl.checkserveridentity", "false");
-		javaMailProperties.put("mail.smtp.ssl.trust", "*");
+		javaMailProperties.put("mail.smtp.socketFactory.port", 465);
+		javaMailProperties.put("mail.smtp.port", 465);
+		javaMailProperties.put("mail.debug", "true");
 		
 		mailSender.setJavaMailProperties(javaMailProperties);
 
