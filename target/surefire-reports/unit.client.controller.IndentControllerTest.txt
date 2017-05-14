@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+Test set: unit.client.controller.IndentControllerTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 6.404 sec <<< FAILURE! - in unit.client.controller.IndentControllerTest
+delete_indent(unit.client.controller.IndentControllerTest)  Time elapsed: 0.031 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at unit.client.controller.IndentControllerTest.delete_indent(IndentControllerTest.java:127)
+
+delete_as_restaurantowner(unit.client.controller.IndentControllerTest)  Time elapsed: 0.023 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.IndentControllerTest.delete_as_restaurantowner(IndentControllerTest.java:149)
+
+add_indent_as_restaurantowner(unit.client.controller.IndentControllerTest)  Time elapsed: 0.02 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.IndentControllerTest.add_indent_as_restaurantowner(IndentControllerTest.java:84)
+
+pay_for_indent_as_restaurantowner(unit.client.controller.IndentControllerTest)  Time elapsed: 0.04 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.IndentControllerTest.pay_for_indent_as_restaurantowner(IndentControllerTest.java:117)
+
+pay_for_indent(unit.client.controller.IndentControllerTest)  Time elapsed: 0.025 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.IndentControllerTest.pay_for_indent(IndentControllerTest.java:94)
+
+add_indent(unit.client.controller.IndentControllerTest)  Time elapsed: 0.018 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.IndentControllerTest.add_indent(IndentControllerTest.java:60)
+

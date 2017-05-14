@@ -1,0 +1,21 @@
+-------------------------------------------------------------------------------
+Test set: unit.client.controller.UserControllerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 4.055 sec <<< FAILURE! - in unit.client.controller.UserControllerTest
+show_registration_form(unit.client.controller.UserControllerTest)  Time elapsed: 0.26 sec  <<< FAILURE!
+java.lang.AssertionError: Model attribute 'nonActivatedUser'
+Expected: (hasProperty("id", null) and hasProperty("username", null) and hasProperty("password", null) and hasProperty("mail", null) and hasProperty("phone", is <0>) and hasProperty("role", null))
+     but: hasProperty("phone", is <0>) property 'phone' was null
+	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
+	at org.springframework.test.web.servlet.result.ModelResultMatchers$1.match(ModelResultMatchers.java:58)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:171)
+	at unit.client.controller.UserControllerTest.show_registration_form(UserControllerTest.java:76)
+
+post_new_user_with_validation_error(unit.client.controller.UserControllerTest)  Time elapsed: 0.049 sec  <<< FAILURE!
+java.lang.AssertionError: No errors for field: [phone] of attribute [nonActivatedUser]
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:35)
+	at org.springframework.test.util.AssertionErrors.assertTrue(AssertionErrors.java:65)
+	at org.springframework.test.web.servlet.result.ModelResultMatchers$8.match(ModelResultMatchers.java:165)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:171)
+	at unit.client.controller.UserControllerTest.post_new_user_with_validation_error(UserControllerTest.java:123)
+

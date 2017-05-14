@@ -42,74 +42,74 @@ import pizzaOrder.client.service.interfaces.IndentService;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.menu.Menu;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Application.class)
-@WebAppConfiguration
-public class UserProfileControllerTest {
-
-	private MockMvc mockMvc;
-
-	@MockBean	
-	private IndentService indentServiceMock;
-
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-
-	@Autowired
-	private FilterChainProxy springSecurityFilter;
-
-	private List<Indent> indentList;
-	
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(this.springSecurityFilter, "/*").build();
-		
-		set_up_authentication();
-
-	}
-
-	private void set_up_authentication() {
-		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
-		grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
-		org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User("test", "test", grantedAuthorities);
-
-		Authentication auth = new UsernamePasswordAuthenticationToken(securityUser, null);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-	}
-
-	@Test
-	public void show_user_profile_page() throws Exception {
-
-		create_indentList();
-
-
-		Mockito.when(indentServiceMock.getIndentsByUsername(Matchers.any(String.class))).thenReturn(indentList);
-		
-		
-		mockMvc.perform(get("/user")
-			   .with(user("test").password("test").roles("USER")))
-			   .andDo(print()).andExpect(status().isOk())
-			   .andExpect(view().name("user"))
-			   .andExpect(model().attributeExists("actualUser"))
-			   .andExpect(model().attributeExists("indents"))
-			   .andExpect(model().attribute("indents",is(indentList) ));
-
-		verify(indentServiceMock, times(1)).getIndentsByUsername(Matchers.anyString());
-		verifyNoMoreInteractions(indentServiceMock);
-	}
-	
-	private void create_indentList() {
-		Indent firstIndent = new Indent();
-		Menu firstmenu = new Menu();
-		firstIndent.setMenu(firstmenu);
-		
-		Indent secondIndent = new Indent();
-		Menu secondmenu = new Menu();
-		secondIndent.setMenu(secondmenu);
-
-		indentList = new ArrayList<Indent> ();
-		indentList.add(firstIndent);
-		indentList.add(secondIndent);
-	}
-}
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = Application.class)
+//@WebAppConfiguration
+//public class UserProfileControllerTest {
+//
+//	private MockMvc mockMvc;
+//
+//	@MockBean	
+//	private IndentService indentServiceMock;
+//
+//	@Autowired
+//	private WebApplicationContext webApplicationContext;
+//
+//	@Autowired
+//	private FilterChainProxy springSecurityFilter;
+//
+//	private List<Indent> indentList;
+//	
+//	@Before
+//	public void setUp() {
+//		MockitoAnnotations.initMocks(this);
+//		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilter(this.springSecurityFilter, "/*").build();
+//		
+//		set_up_authentication();
+//
+//	}
+//
+//	private void set_up_authentication() {
+//		Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
+//		grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+//		org.springframework.security.core.userdetails.User securityUser = new org.springframework.security.core.userdetails.User("test", "test", grantedAuthorities);
+//
+//		Authentication auth = new UsernamePasswordAuthenticationToken(securityUser, null);
+//		SecurityContextHolder.getContext().setAuthentication(auth);
+//	}
+//
+//	@Test
+//	public void show_user_profile_page() throws Exception {
+//
+//		create_indentList();
+//
+//
+//		Mockito.when(indentServiceMock.getIndentsByUsername(Matchers.any(String.class))).thenReturn(indentList);
+//		
+//		
+//		mockMvc.perform(get("/user")
+//			   .with(user("test").password("test").roles("USER")))
+//			   .andDo(print()).andExpect(status().isOk())
+//			   .andExpect(view().name("user"))
+//			   .andExpect(model().attributeExists("actualUser"))
+//			   .andExpect(model().attributeExists("indents"))
+//			   .andExpect(model().attribute("indents",is(indentList) ));
+//
+//		verify(indentServiceMock, times(1)).getIndentsByUsername(Matchers.anyString());
+//		verifyNoMoreInteractions(indentServiceMock);
+//	}
+//	
+//	private void create_indentList() {
+//		Indent firstIndent = new Indent();
+//		Menu firstmenu = new Menu();
+//		firstIndent.setMenu(firstmenu);
+//		
+//		Indent secondIndent = new Indent();
+//		Menu secondmenu = new Menu();
+//		secondIndent.setMenu(secondmenu);
+//
+//		indentList = new ArrayList<Indent> ();
+//		indentList.add(firstIndent);
+//		indentList.add(secondIndent);
+//	}
+//}

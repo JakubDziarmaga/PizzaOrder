@@ -23,7 +23,7 @@ header
 	margin-left:auto;
 	margin-right:auto;
 	background-color:white;
-	text-allign:center;
+	/*text-allign:center;*/
 	/*background-color:#1076DC;*/
 	
 }
@@ -82,6 +82,16 @@ header img
     color: white;
 }
 
+#header_container > span > a
+{
+    color: white;
+}
+
+#header_container > span > span > a
+{
+    color: white;
+}
+
 #unloggedUser > a
 {
 	color:white;
@@ -114,6 +124,7 @@ input[type=submit]
 {
 	cursor: pointer;
 	background-color:#1076DC;
+	width:400px;
 }
 
  input[type=submit]:hover
@@ -184,6 +195,7 @@ table
 	width:800px;
 	margin-left:auto;
 	margin-right:auto;
+	padding: 20px;	
 }
 
 
@@ -213,18 +225,20 @@ table
 	background-color:white;
     margin: 5px auto; /* 15% from the top and centered */
     border: 1px solid #888;
-    width: 460px; /* Could be more or less, depending on screen size */
-    padding:30px;
+    width: 520px; /* Could be more or less, depending on screen size */
+    /*padding:30px;*/
 }
 
 /* The Close Button */
 .close {
 
-    margin:0px;
+    margin: 0px;
     color: #000;
     font-size: 35px;
     font-weight: bold;
-    float: right;
+    position: relative;
+    left: 480px;
+    
     
 }
 
@@ -252,16 +266,412 @@ table
 }
 
 
-
-
-
 #login_content
 {
-	padding: 0px 40px;
+	padding: 20px 40px;
     width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #login_content > p
 {
 	font-size:20px;
+}
+
+.main_list
+{
+	list-style-type: none;
+	font-size:30px;
+	padding:20px 40px;
+	margin:0;
+}
+
+.main_list > li
+{
+	padding:5px;
+	border-bottom: 1px dotted black;
+}
+
+.main_list > li:last-child
+{
+	padding:5px;
+	border-bottom: none;
+}
+
+.main_list > li:hover
+{
+	background-color:#F5F5F5;
+}
+
+.main_list > li:first-child
+{
+	border-bottom: 1px solid black;
+}
+
+.main_list > li:hover:first-child
+{
+	background-color:white;
+}
+.main_list > li > .name
+{
+	float:left;
+	height:40px;
+	width:250px;
+	margin:5px 10px;
+	
+}
+
+.main_list > li > .city
+{
+	float:left;
+	height:40px;
+	width:200px;
+	margin:5px 10px;
+}
+
+.main_list > li > .address
+{
+	float:left;
+	height:40px;
+	width:220px;
+	margin:5px 10px;
+}
+
+.main_list > li > .phone
+{
+	float:left;
+	height:40px;
+	width:190px;
+	margin:5px 10px;
+}
+
+.main_list > li > .menu_href
+{
+	float:left;
+	height:40px;
+	width:150px;	
+	background-color:#1076DC;
+	border-radius:5px;
+	text-align:center;
+	margin:5px 10px;
+}
+
+.main_list > li > .menu_href:hover
+{
+	background-color:#0056BC;
+}
+
+h2
+{
+	font-size: 40px;
+	margin:0;
+}
+
+.menu_list
+{
+	list-style-type: none;
+	font-size:30px;
+	padding:20px 40px;
+	margin:0;
+}
+
+.menu_list > li
+{
+	padding:5px;
+	border-bottom: 1px dotted black;
+}
+
+.menu_list > li:last-child
+{
+	padding:5px;
+	border-bottom: none;
+}
+
+.menu_list > li:hover
+{
+	background-color:#F5F5F5;
+}
+
+.menu_list > li:first-child
+{
+	border-bottom: 1px solid black;
+}
+
+.menu_list > li:hover:first-child
+{
+	background-color:white;
+}
+.menu_list > li > .name
+{
+	float:left;
+	height:40px;
+	width:250px;
+	margin:5px 10px;
+	
+}
+
+.menu_list > li > .ingredients
+{
+	float:left;
+	height:40px;
+	width:580px;
+	margin:5px 10px;
+}
+
+.menu_list > li > .price
+{
+	float:left;
+	height:40px;
+	width:150px;
+	margin:5px 10px;
+}
+
+
+.menu_list > li > .add_button
+{
+	float:left;
+	height:40px;
+	width:50px;	
+	background-color:#1076DC;
+	border-radius:5px;
+	text-align:center;
+	margin:5px 10px;
+}
+
+.menu_list > li > .add_button:hover
+{
+	background-color:#0056BC;
+}
+
+.background_pizza
+{ 
+	background-image: 
+	linear-gradient(
+	  to bottom,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.8)
+    ), url(../img/pizza.jpg);/* 50% 50% no-repeat; /* 50% 50% centers image in div */
+	width: 1200px;
+	height: 400px;
+}
+
+#restaurant_details 
+{ 
+	position:absolute;
+	background-color: black;
+	color: #fff; 
+	margin: 250px 100px;
+	height:100px;
+}
+
+#restaurant_details >#restaurant_logo
+{
+	background-image:url(OBRAZEK);
+	width: 100px;
+	height: 100px;
+	float:left;
+	
+}
+
+#restaurant_details >#details_right
+{ 
+	float:left;
+	padding:3px 10px;
+	
+}
+
+#details_right >#name
+{ 
+	font-size:30px;
+	font-weight:bold;
+}
+
+
+.icon-location
+{
+	font-size:20px;
+	float:left;
+}
+
+#details_right >#address
+{ 
+	font-size:20px;
+	float:left;
+	
+}
+
+.icon-mobile
+{
+	font-size:20px;
+	float:left;
+}
+
+#details_right >#phone
+{ 
+	font-size:20px;
+	float:left;
+}
+
+.user_order_list
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 40px;
+	
+}
+
+.user_order_list > span > li
+{
+	float:left;
+	padding:10px;
+}
+
+
+#restaraunt_data
+{
+	width:300px;
+}
+
+#restaraunt_data >#name
+{ 
+	font-size:30px;
+	font-weight:bold;
+}
+
+
+.icon-location
+{
+	font-size:20px;
+	float:left;
+}
+
+#restaraunt_data >#address
+{ 
+	font-size:20px;
+	float:left;
+	
+}
+
+.icon-mobile
+{
+	font-size:20px;
+	float:left;
+}
+
+#restaraunt_data >#phone
+{ 
+	font-size:20px;
+	float:left;
+}
+
+#pizza_data > #name
+{
+	font-size:30px;
+	font-weight:bold;
+}
+
+#pizza_data > #ingredients
+{
+	font-size:20px;
+}
+
+#pizza_data
+{
+	width:300px;
+}
+
+#price
+{
+	font-size:20px;
+	width:70px;
+}
+
+.date
+{
+	font-size:20px;
+	
+}
+
+
+
+#blue_button
+{
+	font-size:20px;
+    height: 30px;
+    width: 150px;
+    background-color: #1076DC;
+    border-radius: 5px;
+    text-align: center;
+    margin: 5px 0px;
+    padding: 5px 0px 0px 0px;
+}
+
+#blue_button:hover
+{
+
+    background-color: #0056BC;
+
+}
+
+.socials
+{
+	width:100%;
+	text-align: center;
+	background-color: #eee;
+}
+
+.socialdivs
+{
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fb
+{
+	width: 250px;
+	height: 80px;
+	float:left;
+}
+
+.fb:hover
+{
+	background-color: #3b5998;
+}
+
+.yt
+{
+	width: 250px;
+	height: 80px;
+	float:left;
+}
+
+.yt:hover
+{
+	background-color: #b31217;
+}
+
+.tw
+{
+	width: 250px;
+	height: 80px;
+	float:left;
+}
+
+.tw:hover
+{
+	background-color: #4099FF;
+}
+
+.gplus
+{
+	width: 250px;
+	height: 80px;
+	float:left;
+}
+
+.gplus:hover
+{
+	background-color: #d34836;
 }

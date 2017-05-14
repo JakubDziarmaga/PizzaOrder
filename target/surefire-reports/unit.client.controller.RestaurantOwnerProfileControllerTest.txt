@@ -1,0 +1,28 @@
+-------------------------------------------------------------------------------
+Test set: unit.client.controller.RestaurantOwnerProfileControllerTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 2.745 sec <<< FAILURE! - in unit.client.controller.RestaurantOwnerProfileControllerTest
+post_new_restaurant(unit.client.controller.RestaurantOwnerProfileControllerTest)  Time elapsed: 0.027 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at unit.client.controller.RestaurantOwnerProfileControllerTest.post_new_restaurant(RestaurantOwnerProfileControllerTest.java:105)
+
+post_new_menu(unit.client.controller.RestaurantOwnerProfileControllerTest)  Time elapsed: 0.027 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.RestaurantOwnerProfileControllerTest.post_new_menu(RestaurantOwnerProfileControllerTest.java:175)
+
+post_new_restaurant_with_validation_errors(unit.client.controller.RestaurantOwnerProfileControllerTest)  Time elapsed: 0.022 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.RestaurantOwnerProfileControllerTest.post_new_restaurant_with_validation_errors(RestaurantOwnerProfileControllerTest.java:124)
+
+show_add_restaurant_form(unit.client.controller.RestaurantOwnerProfileControllerTest)  Time elapsed: 0.022 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.RestaurantOwnerProfileControllerTest.show_add_restaurant_form(RestaurantOwnerProfileControllerTest.java:81)
+
+show_add_menu_form(unit.client.controller.RestaurantOwnerProfileControllerTest)  Time elapsed: 0.065 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at unit.client.controller.RestaurantOwnerProfileControllerTest.show_add_menu_form(RestaurantOwnerProfileControllerTest.java:149)
+

@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -78,7 +79,7 @@ public class UserControllerTest {
             		   hasProperty("username", nullValue()),
             		   hasProperty("password", nullValue()),
             		   hasProperty("mail", nullValue()),
-            		   hasProperty("phone", is(0)),
+            		   hasProperty("phone", nullValue()),
             		   hasProperty("role", nullValue())
             		   )));
 
@@ -120,7 +121,7 @@ public class UserControllerTest {
         		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "username"))
         		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "password"))
         		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "mail"))
-        		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "phone"))
+//        		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "phone"))
         		.andExpect(model().attributeHasFieldErrors("nonActivatedUser", "role"));
 
 

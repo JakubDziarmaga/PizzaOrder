@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Homepage</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css" />
-	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
-    <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
-	<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Homepage</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="../fontello/css/fontello.css" />
+<link href="https://fonts.googleapis.com/css?family=Dosis:200,400"
+	rel="stylesheet" />
+<link rel="icon" type="image/png" sizes="16x16"
+	href="../img/favicon-16x16.png" />
 
 <script>
-    function klikaj(i) {
-        document.getElementById(i).style.display = 'block';
-    }
+	function klikaj(i) {
+		document.getElementById(i).style.display = 'block';
+	}
 </script>
-	
+
 </head>
 <body>
 
-<header>
+	<header>
 		<div id="header_container">
-			 <a th:href="@{'/'}"> 
-	 			<img id="logo" src="../img/pizza.png"/>
+			<a th:href="@{'/'}"> <img id="logo" src="../img/logo.png" />
 				<h1>PizzaOrder</h1>
 			</a>
-			
+
 			<div id="unloggedUser" th:if="${actualUser} == null">
 				<div class="icon-login" onclick="klikaj('id01')">Login</div>
 				<a th:href="@{'/registration'}">
@@ -34,46 +36,17 @@
 			<div id="loggedUser" th:if="${actualUser} != null">
 				<a th:href="@{'/user'}">
 					<div class="icon-user">Profile</div>
-				</a>				
-				<a th:href="@{'/logout'}">
+				</a> <a th:href="@{'/logout'}">
 					<div class="icon-logout">Logout</div>
 				</a>
 				<div class="clear"></div>
 			</div>
 		</div>
-	<!-- </a> -->
-</header>
- <div id="container">
-
-
-
-<!-- <p th:text="${error}"></p>  -->
-
-<!-- Part for logged users -->
-<!-- 
-	<div th:if="${actualUser} != null">	
-		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
-				<a th:href="@{'/user'}">userPage</a>
-		</div>
-		
-		<div th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}">
-				<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
-		</div>		
-		
-		<form th:action="@{/logout}" method="POST">
-			<input type="submit" value="Logout" />
-		</form>
-	</div>
-	 -->
-<!-- Part for unlogged users -->
-<!-- 
-	<div th:if="${actualUser} == null">
-				<a th:href="@{'/login'}">Login</a>
-				<a th:href="@{'/registration'}">Register</a>				
-	</div>
- -->
-<!-- Shows list of all available restaurants -->
-	<table>
+		<!-- </a> -->
+	</header>
+	<div id="container">
+		<!-- Shows list of all available restaurants -->
+		<!--<table>
 		<tr th:each="restaurant : ${restaurants}">
 			<td th:text="${restaurant.city}">RestaurantCity</td>
 			<td th:text="${restaurant.address}">RestaurantAddress</td>
@@ -82,45 +55,95 @@
 			<td><a th:href="@{'/restaurant/' + ${restaurant.id}}">Check menu</a></td>
 		</tr>
 	</table>
-	
-	
-	
-	
-	<!-- The Modal -->
-	<div id="id01" class="modal">
-		<div class="modal-content animate">
+-->
+		<ol class="main_list">
+			<li>
+				<div class="name">
+					<h2>Name</h2>
+				</div>
+				<div class="city">
+					<h2>City</h2>
+				</div>
+				<div class="address">
+					<h2>Address</h2>
+				</div>
+				<div class="phone">
+					<h2>Phone</h2>
+				</div>
+				<div class="clear"></div>
+			</li>
+			<li th:each="restaurant : ${restaurants}">
+				<div class="name" th:text="${restaurant.name}">RestaurantName></div>
+				<div class="city" th:text="${restaurant.city}">RestaurantCity</div>
+				<div class="address" th:text="'ul. '+${restaurant.address}">RestaurantAddress</div>
+				<div class="phone" th:text="${restaurant.phone}">RestaurantPhone></div>
+				<div class="menu_href">
+					<a th:href="@{'/restaurant/' + ${restaurant.id}}">Check menu</a>
+				</div>
+				<div class="clear"></div>
+			</li>
+		</ol>
 
+
+
+		<!-- The Modal -->
+		<div id="id01" class="modal">
+			<div class="modal-content animate">
+
+				<div onclick="document.getElementById('id01').style.display='none'"
+					class="close" title="Close Modal">&times;</div>
+				<!-- Modal Content -->
+				<div id="login_content">
+
+
+					<form id="login_form" th:action="@{/login}" method="post">
+						<input type="text" id="username" name="username"
+							autofocus="autofocus" placeholder="Login" /> <br /> <input
+							type="password" id="password" name="password"
+							placeholder="Password" /> <br /> <input type="submit"
+							value="Log in" />
+					</form>
+					<p>
+						Don't have an account yet? <a href="/registration"><b>Register
+								now!</b></a>
+					</p>
+				</div>
+			</div>
+		</div>
 		
-			  <!-- Modal Content -->
-			<div id="login_content">
-				<div onclick="document.getElementById('id01').style.display='none'" 
-				class="close" title="Close Modal">&times;</div>
-				 
-				<form id="login_form" th:action="@{/login}" method="post">
-					<input type="text" id="username" name="username" autofocus="autofocus" placeholder="Login"/> <br /> 
-					<input type="password" id="password" name="password" placeholder="Password"/> <br /> 
-					<input type="submit" value="Log in" />
-				</form>
-				<p>Don't have an account yet? <a href="/registration"><b>Register now!</b></a></p>
-			</div>	
+	</div>
+		
+	<div class="socials">
+		<div class="socialdivs">
+			<div class="fb">
+				<i class="icon-facebook"></i>
+			</div>
+			<div class="yt">
+				<i class="icon-youtube"></i>
+			</div>
+			<div class="tw">
+				<i class="icon-twitter"></i>
+			</div>
+			<div class="gplus">
+				<i class="icon-gplus"></i>
+			</div>
+			<div style="clear:both"></div>
 		</div>
 	</div>
-	
-	
-		
+
+
+
 	<script>
 		// Get the modal
 		var modal = document.getElementById('id01');
 
 		// When the user clicks anywhere outside of the modal, close it
 		window.onclick = function(event) {
-		    if (event.target == modal) {
-		        modal.style.display = "none";
-		    }
-		}	
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
 	</script>
-	</div>
-	
-	
+
 </body>
 </html>

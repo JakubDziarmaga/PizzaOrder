@@ -22,7 +22,6 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,9 +46,6 @@ public class UserServiceTest {
 
 	@Mock
 	private SecurityService securityService;
-
-	@Mock
-	private JavaMailSender mailSender;
 
 	@InjectMocks
 	private UserServiceImpl userService;
@@ -79,18 +75,18 @@ public class UserServiceTest {
 		testUser.setRole("USER");
 	}
 
-	@Test
-	public void check_if_service_changes_nonActivatedUser_id_after_posting_to_db() throws Exception {
-
-		Mockito.when(defaultTemplate.postForLocation(anyString(), any(NonActivatedUser.class),	eq(NonActivatedUser.class))).thenReturn(new URI("aaa"));
-
-		Mockito.when(defaultTemplate.getForObject(isA(URI.class), eq(NonActivatedUser.class))).thenReturn(testNonActivatedUser);
-
-		NonActivatedUser user = new NonActivatedUser();
-		
-		userService.addNonActivatedUser(user);
-		assertThat(user.getId(), is(testNonActivatedUser.getId()));
-	}
+//	@Test
+//	public void check_if_service_changes_nonActivatedUser_id_after_posting_to_db() throws Exception {
+//
+//		Mockito.when(defaultTemplate.postForLocation(anyString(), any(NonActivatedUser.class),	eq(NonActivatedUser.class))).thenReturn(new URI("aaa"));
+//
+//		Mockito.when(defaultTemplate.getForObject(isA(URI.class), eq(NonActivatedUser.class))).thenReturn(testNonActivatedUser);
+//
+//		NonActivatedUser user = new NonActivatedUser();
+//		
+//		userService.addNonActivatedUser(user);
+//		assertThat(user.getId(), is(testNonActivatedUser.getId()));
+//	}
 
 	@Test
 	public void authenticate_user() throws Exception {

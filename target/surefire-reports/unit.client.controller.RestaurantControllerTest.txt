@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: unit.client.controller.RestaurantControllerTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 3.813 sec <<< FAILURE! - in unit.client.controller.RestaurantControllerTest
+show_restaurant_page_with_user_authentication(unit.client.controller.RestaurantControllerTest)  Time elapsed: 0.029 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/springframework/security/test/web/servlet/request/SecurityMockMvcRequestPostProcessors
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at unit.client.controller.RestaurantControllerTest.show_restaurant_page_with_user_authentication(RestaurantControllerTest.java:79)
+

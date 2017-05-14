@@ -2,7 +2,6 @@ package pizzaOrder.client.controller;
 
 import java.util.List;
 
-import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ public class HomeController extends AbstractController{
 	 * @throws MessagingException 
 	 */	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String showAllRestaurants(Model model) throws MessagingException {
+	public String showAllRestaurants(Model model) {
 
 		List<Restaurant> restaurantList = restaurantService.getAllRestaurantsList();
 		model.addAttribute("restaurants", restaurantList); 

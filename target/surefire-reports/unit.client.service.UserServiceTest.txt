@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: unit.client.service.UserServiceTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.001 sec <<< FAILURE! - in unit.client.service.UserServiceTest
+check_if_service_changes_nonActivatedUser_id_after_posting_to_db(unit.client.service.UserServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at org.springframework.mail.javamail.MimeMessageHelper.createMimeMultiparts(MimeMessageHelper.java:344)
+	at org.springframework.mail.javamail.MimeMessageHelper.<init>(MimeMessageHelper.java:290)
+	at org.springframework.mail.javamail.MimeMessageHelper.<init>(MimeMessageHelper.java:247)
+	at org.springframework.mail.javamail.MimeMessageHelper.<init>(MimeMessageHelper.java:226)
+	at pizzaOrder.client.service.implementation.UserServiceImpl.sendActivatingMail(UserServiceImpl.java:63)
+	at pizzaOrder.client.service.implementation.UserServiceImpl.addNonActivatedUser(UserServiceImpl.java:52)
+	at unit.client.service.UserServiceTest.check_if_service_changes_nonActivatedUser_id_after_posting_to_db(UserServiceTest.java:91)
+
