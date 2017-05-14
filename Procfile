@@ -1,1 +1,1 @@
- java -Dserver.port=$PORT -jar target/RestService-0.0.1-SNAPSHOT.war
+web: java -Dserver.port=$PORT -jar target/RestService-0.0.1-SNAPSHOT.war
