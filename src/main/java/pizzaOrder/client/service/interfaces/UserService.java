@@ -8,7 +8,7 @@ import pizzaOrder.restService.model.users.User;
 
 public interface UserService {
 
-	void addNonActivatedUser(NonActivatedUser user) ;
+	void addNonActivatedUser(NonActivatedUser user) throws MessagingException ;
 	void sendActivatingMail(NonActivatedUser user) throws MessagingException;
 	void activateUser(Long nonActivatedUserId);
 	Long getActualUserId();

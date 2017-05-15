@@ -43,9 +43,10 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * Post new NonActivatedUser to db
 	 * Get its id from db and put it in NonActivatedUser entity
+	 * @throws MessagingException 
 	 */
 	@Override
-	public void addNonActivatedUser(NonActivatedUser user){
+	public void addNonActivatedUser(NonActivatedUser user) throws MessagingException{
 //		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
 		URI nonActivatedUserUri = defaultTemplate.postForLocation("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
