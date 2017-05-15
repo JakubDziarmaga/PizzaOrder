@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pl"  xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
+    <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
+	<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png"/>
+
+
+<script>
+    function klikaj(i) {
+        document.getElementById(i).style.display = 'block';
+    }
+</script>
+</head>
+<body>
+	<header>
+			<div id="header_container">
+				 <a th:href="@{'/'}"> 
+		 			<img id="logo" src="../img/logo.png"/>
+					<h1>PizzaOrder</h1>
+				</a>
+	
+				<span th:if="${actualUser} == null">
+					<div class="icon-login" onclick="klikaj('id01')">Login</div>
+					<a th:href="@{'/registration'}">
+						<div class="icon-user">Register</div>
+					</a>
+					<div class="clear"></div>			
+				</span>
+				
+				
+				<span th:if="${actualUser} != null">	
+					<span th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
+						<a th:href="@{'/user'}">
+							<div class="icon-user">Profile</div>
+						</a>
+					</span>
+					
+					<span th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}">
+						<a th:href="@{'/restaurantOwner'}">
+							<div class="icon-user">Profile</div>
+						</a>
+					</span>		
+					
+					<a th:href="@{'/logout'}">
+						<div class="icon-logout">Logout</div>
+					</a>
+					<div class="clear"></div>
+				</span>
+	
+
+				
+			</div>
+		<!-- </a> -->
+	</header>
+
+
+ <div id="container">
+ 
+ 	<div class="background_pizza">
+ 		<div id="restaurant_details">
+ 			<div id="restaurant_logo"></div>
+ 			<div id="details_right">
+	 			<div id="name" th:text="${restaurant.name}"></div>
+				<div class="icon-location"></div>
+				<div id="address" th:text="${restaurant.city}+' ul.'+${restaurant.address}"></div> 
+				<div class="clear"></div>
+				<div class="icon-mobile"></div>
+				<div id="phone" th:text="${restaurant.phone}"></div>
+				<div class="clear"></div>
+			</div>
+ 		</div>
+ 	</div>
+	
+<!-- Data about chosen restaurant -->
+<!--
+	<span th:text="${restaurant.name}"></span>
+	<span th:text="${restaurant.city}"></span> ul.
+	<span th:text="${restaurant.address}"></span> tel.:
+	<span th:text="${restaurant.phone}"></span>
+  -->
+<!-- List of all menu with ingredients -->
+<!-- 
+	<table>
+		<tr th:each="menu : ${menu}">
+			<td th:text="${menu.name}">1</td>
+			<td th:each="ingredients : ${menu.getIngredients()}">
+				<p th:text="${ingredients.name}">ingredientName</p>
+			</td>
+			<td th:text="${menu.price}">zł</td>
+			
+			<td>
+				<div th:if="${actualUser} != null">
+					<div th:if = "${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
+						<form th:action="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}" method="GET">
+							<input type="submit" value="Add to cart" />
+						</form>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+ -->
+
+	<ol class="menu_list">
+		<li>
+			<div class="name"><h2>Name</h2></div>
+			<div class="ingredients" ><h2>Ingredients</h2></div>
+			<div class="price"><h2>Price</h2></div>
+			<div class="clear"></div>
+		</li>
+		<li th:each="menu : ${menu}">
+			<div class="name" th:text="${menu.name}">Name</div>
+			<div class="ingredients" >
+				<span th:each="ingredients : ${menu.getIngredients()}">
+					<span th:text="${ingredients.name}"></span>
+				</span>
+			</div>			
+			<div class="price" th:text="${menu.price}+'zł'"><b>Price</b></div>		
+			<div class="add_button"><a th:href="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}"><i class="icon-plus"></i></a></div>	
+			<div class="clear"></div>
+		</li>
+	</ol>
+</div>
+<div class="socials">
+	<div class="socialdivs">
+		<div class="fb">
+			<i class="icon-facebook"></i>
+		</div>
+		<div class="yt">
+			<i class="icon-youtube"></i>
+		</div>
+		<div class="tw">
+			<i class="icon-twitter"></i>
+		</div>
+		<div class="gplus">
+			<i class="icon-gplus"></i>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+</div>
+
+
+	<!-- The Modal -->
+	<div id="id01" class="modal">
+		<div class="modal-content animate">
+
+			<div onclick="document.getElementById('id01').style.display='none'" 
+				class="close" title="Close Modal">&times;</div>
+				
+			  <!-- Modal Content -->
+			<div id="login_content">
+				 
+				<form id="login_form" th:action="@{/login}" method="post">
+					<input type="text" id="username" name="username" autofocus="autofocus" placeholder="Login"/> <br /> 
+					<input type="password" id="password" name="password" placeholder="Password"/> <br /> 
+					<input type="submit" value="Log in" />
+				</form>
+				<p>Don't have an account yet? <a href="/registration"><b>Register now!</b></a></p>
+			</div>	
+		</div>
+	</div>
+	<script>
+		// Get the modal
+		var modal = document.getElementById('id01');
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function(event) {
+		    if (event.target == modal) {
+		        modal.style.display = "none";
+		    }
+		}	
+	</script>
+
+
+</body>
+</html>

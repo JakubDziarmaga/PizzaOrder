@@ -2,8 +2,13 @@ package pizzaOrder.client.service.implementation;
 
 import java.net.URI;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -31,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private SecurityService securityService;
+	
+	@Autowired
+	private JavaMailSender mailSender;
 
 	/**
 	 * Post new NonActivatedUser to db
@@ -42,6 +50,26 @@ public class UserServiceImpl implements UserService {
 		URI nonActivatedUserUri = defaultTemplate.postForLocation("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
+//		sendActivatingMail(user); //TODO uncomment in production
+	}
+
+	/**
+	 * Send to NonActivatedUser mail with activating link
+	 * Activation link -> "http://localhost:8080/activate/" + user.getId()
+	 * @see pizzaOrder.client.mail.MailConfig.java
+	 */
+	@Override
+	public void sendActivatingMail(NonActivatedUser nonActivatedUser) throws MessagingException{
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+		helper.setFrom("pizza0rd3r@gmail.com");
+		helper.setTo(nonActivatedUser.getMail());
+		helper.setSubject("PizzaOrder");
+		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: http://localhost:8080/activate/"
+				+ nonActivatedUser.getId());
+
+		mailSender.send(message);
 	}
 
 
