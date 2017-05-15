@@ -63,13 +63,16 @@ public class IndentServiceImpl implements IndentService {
 	public void payForIndent(Long idIndent) {
 		checkIfIndentExists(idIndent);
 		checkIfActualUserIsOwnerOfIndent(idIndent);
-		Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{id}", Indent.class, idIndent);
-		
+//		Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{id}", Indent.class, idIndent);
+		Indent indent = defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/indents/{id}", Indent.class, idIndent);
+
 		if (indent.isPaid())
 			throw new IndentAlreadyPaid(idIndent);
 		
 		indent.setPaid(true);
-		defaultTemplate.put("http://localhost:8080/indents/{id}", indent, idIndent);
+//		defaultTemplate.put("http://localhost:8080/indents/{id}", indent, idIndent);
+		defaultTemplate.put("https://limitless-eyrie-45489.herokuapp.com//indents/{id}", indent, idIndent);
+
 	}
 
 	/**
@@ -80,7 +83,9 @@ public class IndentServiceImpl implements IndentService {
 	public void checkIfIndentExists(Long idIndent) {
 
 		try {
-			defaultTemplate.getForObject("http://localhost:8080/indents/{idIndent}", Indent.class, idIndent);
+//			defaultTemplate.getForObject("http://localhost:8080/indents/{idIndent}", Indent.class, idIndent);
+			defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/indents/{idIndent}", Indent.class, idIndent);
+
 		} catch (HttpClientErrorException e) {
 			throw new IndentNotFoundException(idIndent);
 		}
@@ -95,7 +100,9 @@ public class IndentServiceImpl implements IndentService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 
-		String userUrl = halTemplate.getForObject("http://localhost:8080/indents/{id}", PagedResources.class, idIndent)
+//		String userUrl = halTemplate.getForObject("http://localhost:8080/indents/{id}", PagedResources.class, idIndent)
+//				.getLink("user").getHref();
+		String userUrl = halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/indents/{id}", PagedResources.class, idIndent)
 				.getLink("user").getHref();
 		if (!username.equals(halTemplate.getForObject(userUrl, User.class).getUsername()))
 			throw new NotPermittedException();
@@ -110,7 +117,9 @@ public class IndentServiceImpl implements IndentService {
 		checkIfIndentExists(idIndent);
 		checkIfActualUserIsOwnerOfIndent(idIndent);
 
-		halTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
+//		halTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
+		halTemplate.delete("https://limitless-eyrie-45489.herokuapp.com/indents/{idIndent}", idIndent);
+
 	}
 	
 	/**
@@ -130,20 +139,27 @@ public class IndentServiceImpl implements IndentService {
 
 		Indent indent = new Indent();
 		indent.setDate(new Date());																					//add CURRENT data to entity
-		URI newIndentURI = defaultTemplate.postForLocation("http://localhost:8080/indents/", indent);
+//		URI newIndentURI = defaultTemplate.postForLocation("http://localhost:8080/indents/", indent);
+		URI newIndentURI = defaultTemplate.postForLocation("https://limitless-eyrie-45489.herokuapp.com/indents/", indent);
+
 		
 		//Posting restaurant to indent
-		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
+//		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
+		HttpEntity<String> restaurantEntity = new HttpEntity<String>("https://limitless-eyrie-45489.herokuapp.com/restaurants/" + idRestaurant, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
 
 		//Posting user to indent
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
-		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/" + userId, reqHeaders);
+//		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
+		Long userId = defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/users/search/names?username={username}",User.class, auth.getName()).getId();
+//		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/" + userId, reqHeaders);
+		HttpEntity<String> userEntity = new HttpEntity<String>("https://limitless-eyrie-45489.herokuapp.com/users/" + userId, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/user", HttpMethod.PUT, userEntity, String.class);
 
 		//Posting menu to indent
-		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/" + idMenu, reqHeaders);
+//		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/" + idMenu, reqHeaders);
+		HttpEntity<String> menuEntity = new HttpEntity<String>("https://limitless-eyrie-45489.herokuapp.com/menu/" + idMenu, reqHeaders);
+
 		defaultTemplate.exchange(newIndentURI + "/menu", HttpMethod.PUT, menuEntity, String.class);		
 	}
 	
@@ -152,7 +168,9 @@ public class IndentServiceImpl implements IndentService {
 	 */
 	@Override
 	public List<Indent> getPayedIndentsByRestaurantId(Long restaurantId) {
-		Collection<?> indentsHal =   halTemplate.getForObject("http://localhost:8080/restaurants/{restaurantId}/indent",PagedResources.class,restaurantId).getContent();
+//		Collection<?> indentsHal =   halTemplate.getForObject("http://localhost:8080/restaurants/{restaurantId}/indent",PagedResources.class,restaurantId).getContent();
+		Collection<?> indentsHal =   halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/restaurants/{restaurantId}/indent",PagedResources.class,restaurantId).getContent();
+
 		List<Indent> indents = mapper.convertValue(indentsHal, new TypeReference<List<Indent>>() {});
 	
 		List<Indent> payedIndents = new ArrayList<Indent>();
@@ -161,13 +179,18 @@ public class IndentServiceImpl implements IndentService {
 			if(!indent.isPaid()) continue;
 			
 			//Get user entity
-			User user = halTemplate.getForObject("http://localhost:8080/indents/{id}/user", User.class,indent.getId());
+//			User user = halTemplate.getForObject("http://localhost:8080/indents/{id}/user", User.class,indent.getId());
+			User user = halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/indents/{id}/user", User.class,indent.getId());
+
 			
 			//Get menu entity
-			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
+//			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
+			Menu menu = halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/indents/{id}/menu", Menu.class,indent.getId());
 
 			//Get ingredients entity
-			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,menu.getId()).getContent();
+//			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,menu.getId()).getContent();
+			Collection<?> ingredientsHal =halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/menu/{id}/ingredients", PagedResources.class,menu.getId()).getContent();
+
 			List<Ingredients> tempIngredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients> >() {});
 			
 			//Link entities
@@ -185,19 +208,25 @@ public class IndentServiceImpl implements IndentService {
 	 */
 	@Override
 	public List<Indent> getIndentsByUsername(String username) {
-		String indentUrl = halTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",PagedResources.class, username).getLink("indent").getHref();
+//		String indentUrl = halTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",PagedResources.class, username).getLink("indent").getHref();
+		String indentUrl = halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/users/search/names?username={username}",PagedResources.class, username).getLink("indent").getHref();
+
 		Collection<?> indentsHal = halTemplate.getForObject(indentUrl, PagedResources.class).getContent();		
 		List<Indent> indents = mapper.convertValue(indentsHal, new TypeReference<List<Indent>>() {});
 
 		for(Indent indent : indents){
 			//Get restaurant entity
-			Restaurant restaurant = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/restaurant", Restaurant.class,indent.getId());
+//			Restaurant restaurant = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/restaurant", Restaurant.class,indent.getId());
+			Restaurant restaurant = halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/indents/{indentId}/restaurant", Restaurant.class,indent.getId());
 			
 			//Get menu entity
-			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/menu", Menu.class,indent.getId());
-			
+//			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/menu", Menu.class,indent.getId());
+			Menu menu = halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/indents/{indentId}/menu", Menu.class,indent.getId());
+
 			//Get ingredients entity
-			Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();			
+//			Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();		
+			Collection<?> ingredientsHal = halTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();			
+
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			
 			//Link entities

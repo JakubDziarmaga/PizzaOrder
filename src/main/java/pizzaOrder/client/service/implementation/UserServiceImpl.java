@@ -38,7 +38,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void addNonActivatedUser(NonActivatedUser user){
-		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
+//		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
+		URI nonActivatedUserUri = defaultTemplate.postForLocation("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
 	}
@@ -50,9 +51,11 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void activateUser(Long nonActivatedUserId) {
-		User user = defaultTemplate.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
+//		User user = defaultTemplate.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
+		User user = defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
 		user.setId(null);																							//id in NonActivatedUser table and in User tables should't be the same
-		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
+//		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
+		defaultTemplate.delete("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
 		userSecurityService.save(user);
 		securityService.autologin(user.getUsername(), user.getPassword());
 	}
@@ -65,13 +68,17 @@ public class UserServiceImpl implements UserService {
 	public Long getActualUserId(){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
+//		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
+		return defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/users/search/names?username={username}", User.class, auth.getName()).getId();
+
 	}
 
 	@Override
 	public User getUserByUsername(String username) {
 		
-		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username);
+//		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username);
+		return defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/users/search/names?username={username}", User.class, username);
+
 	}
 
 
