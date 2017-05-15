@@ -48,5 +48,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/maven dependencies/postgresql-9.3-1102.jdbc41.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/spring-boot-starter-mail-1.5.3.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/maven dependencies/spring-context-support-4.3.8.RELEASE.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
