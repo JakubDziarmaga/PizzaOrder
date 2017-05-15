@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 		URI nonActivatedUserUri = defaultTemplate.postForLocation("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
-//		sendActivatingMail(user); //TODO uncomment in production
+		sendActivatingMail(user); //TODO uncomment in production
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 		helper.setFrom("pizza0rd3r@gmail.com");
 		helper.setTo(nonActivatedUser.getMail());
 		helper.setSubject("PizzaOrder");
-		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: http://localhost:8080/activate/"
+		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: https://limitless-eyrie-45489.herokuapp.com/activate/"
 				+ nonActivatedUser.getId());
 
 		mailSender.send(message);
