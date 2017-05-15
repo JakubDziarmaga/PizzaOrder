@@ -1,6 +1,7 @@
 package pizzaOrder.client.controller;
 
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,10 @@ public class UserController {//extends AbstractController{
 	 * @see pizzaOrder.client.validator.UserValidator.class
 	 * @return register view if posted entity isn't valid
 	 * @return "redirect:/" if entity was valid
+     * @throws MessagingException 
 	 */
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model) {
+    public String registration(@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model) throws MessagingException {
     	
         userValidator.validate(nonActivatedUser, bindingResult);
 
