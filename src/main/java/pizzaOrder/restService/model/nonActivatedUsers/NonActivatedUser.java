@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Max;
@@ -43,6 +44,8 @@ public class NonActivatedUser {
 	@NotBlank (message = "Please select your role.")
 	private String role;
 
+	@Lob
+	private byte[] photo;
 
 	//
 	//CONSTRUCTORS
@@ -118,5 +121,13 @@ public class NonActivatedUser {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 }

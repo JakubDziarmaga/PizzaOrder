@@ -33,7 +33,9 @@ public class User {
 	@Fetch(value = FetchMode.SELECT)
 	private List<Indent> indent;
 
-	private String role;	
+	private String role;		
+	private byte[] photo;
+
 	
 	//
 	//CONSTRUCTORS
@@ -95,5 +97,13 @@ public class User {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 }

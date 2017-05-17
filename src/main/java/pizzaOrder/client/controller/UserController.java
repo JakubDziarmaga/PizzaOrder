@@ -2,15 +2,20 @@ package pizzaOrder.client.controller;
 
 
 import javax.mail.MessagingException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.client.validator.UserValidator;
@@ -25,6 +30,15 @@ public class UserController {//extends AbstractController{
     
     @Autowired
     private UserValidator userValidator;
+    
+    @InitBinder
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+    		throws ServletException {
+
+    		// Convert multipart object to byte[]
+    		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+
+    }
     
     /**
      * Show registration form
@@ -50,11 +64,12 @@ public class UserController {//extends AbstractController{
         userValidator.validate(nonActivatedUser, bindingResult);
 
     	if(bindingResult.hasErrors()){
+    		System.out.println("blad");
     		model.addAttribute("nonActivatedUser",nonActivatedUser);
     		return "register";
     	}
     	userService.addNonActivatedUser(nonActivatedUser);
-
+    	System.out.println("photo: "+nonActivatedUser.getPhoto().toString());
         return "redirect:/";
     }
 

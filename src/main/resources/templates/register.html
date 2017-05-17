@@ -44,7 +44,7 @@
 </header>
  
  <div id="container">
- <form action="#" th:action="@{/registration}" th:object="${nonActivatedUser}" method="post">
+ <form action="#" th:action="@{/registration}" th:object="${nonActivatedUser}" enctype="multipart/form-data" method="post">
             <table>
                 <tr>
                     <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="Username" th:field="*{username}" /></td>
@@ -75,7 +75,11 @@
             				</select>
             		</td>
             		<td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</td>
-          		</tr>         	   
+          		</tr>    
+          	 	<tr>
+                    <td><span class="asterisk"> &#42;</span> <input id="photo" type="file" th:field="*{photo}" /></td>                 
+                    <td th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}">Photo Error</td> 
+                </tr>     	   
                 <tr>                	
                     <td><span class="asterisk" style="opacity:0;"> &#42;</span>
                     <input type="submit" value="Submit"/></td>
