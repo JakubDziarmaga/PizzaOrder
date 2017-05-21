@@ -52,6 +52,7 @@ public class Restaurant {
 	@Fetch(value = FetchMode.SELECT)
 	private List<Indent> indent;
 	
+	private byte[] photo;
 
 	//
 	//CONSTRUCTORS
@@ -126,6 +127,12 @@ public class Restaurant {
 
 	public void setMenu(List<Menu> menu) {
 		this.menu = menu;
+	}
+	public byte[] getPhoto() {
+		return photo;
+	}
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 
 //	public List<Indent> getIndent() {

@@ -16,6 +16,8 @@
    		<maven.compiler.target>1.8</maven.compiler.target>
 	    <skipTests>true</skipTests>
 	    <maven.test.skip>true</maven.test.skip>
+	    <property name="hibernate.jdbc.use_streams_for_binary" value="true"/>
+	    
 	</properties>
 
 	<parent>

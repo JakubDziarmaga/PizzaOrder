@@ -4,19 +4,27 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -31,6 +39,7 @@ import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.users.User;
 
 @Controller
 @SessionAttributes({"actualUser","ingredients"})//,"restaurant"})
@@ -58,6 +67,15 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	@Autowired 
 	private MenuValidator menuValidator;
 	
+    @InitBinder
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+    		throws ServletException {
+
+    		// Convert multipart object to byte[]
+    		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+
+    }
+	
 	/**
 	 * Show restaurantOwnerPage
 	 * Redirect to /addRestaurant page when actual user doesn't already have restaurant
@@ -83,7 +101,6 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	
 		List<Indent> indentList =indentService.getPayedIndentsByRestaurantId(restaurant.getId());
 		model.addAttribute("indents",indentList);
-
 		return "restaurantOwner";
 	}
 
@@ -156,4 +173,6 @@ public class RestaurantOwnerProfileController extends AbstractController{
 
 		return "redirect:/restaurantOwner";
 	}
+	
+
 }

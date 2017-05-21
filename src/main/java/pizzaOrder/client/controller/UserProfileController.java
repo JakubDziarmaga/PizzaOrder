@@ -51,4 +51,6 @@ public class UserProfileController extends AbstractController{
 		
 		return user.getPhoto();
 	}
+	
+	
 }

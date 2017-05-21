@@ -1,48 +1,115 @@
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+<head> 
+    <title>Profile</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
+    <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
+	<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png"/>
 
-<title>Restaurant Owner</title>
 </head>
 <body>
 
-	<a th:href="@{'/'}">home</a>
+<header>
+		<div id="header_container">
+			 <a th:href="@{'/'}"> 
+	 			<img id="logo" src="../img/logo.png"/>
+				<h1>PizzaOrder</h1>
+			</a>
 
-	<p th:text="${actualUser.getUsername()}"></p>
-	<form th:action="@{/logout}" method="POST">
-		<input type="submit" value="Logout" />
-	</form>
+			<a th:href="@{'/restaurantOwner'}">
+				<div class="icon-user">Profile</div>
+			</a>				
+			<a th:href="@{'/logout'}">
+				<div class="icon-logout">Logout</div>
+			</a>
+			<div class="clear"></div>
+		</div>
+	<!-- </a> -->
+</header>
 
-<!-- Show restaurant data -->
-	<span th:text="${restaurant.name}"></span>
-	<span th:text="${restaurant.city}"></span> ul.
-	<span th:text="${restaurant.address}"></span> tel.:
-	<span th:text="${restaurant.phone}"></span>
+ <div id="container">
 
+<!-- Show list of all indents belong to user -->
+
+<div class="user_profile">
+	<img src="/image.png" alt="user_image"/>
+	<div class = "user_data">
+		<div id="username" th:text="${restaurant.name}"></div>
+		<div class="icon-mobile" th:text="${restaurant.phone}"></div> 
+		<span th:text="${restaurant.city}"></span> ul.<span th:text="${restaurant.address}"></span> 
+		<div id="blue_button">Change password</div>
+		<div id="blue_button">Change mail</div>
+	</div>
+	<div class="clear"/>
+</div>
+ 
+<div th:if="${!indents.empty}">
 <!-- Show list of payed indents -->
-	<table>
-		<tr th:each="indent : ${indents}">
-			<td th:text="${indent.getUser().getUsername()}"></td>
-			<td th:text="${indent.getMenu().getName()}"></td>
-			<td th:each="ingredient : ${indent.getMenu().getIngredients()}">
-				<p th:text="${ingredient.getName()}">1</p>
-			</td>
-			<td th:text="${indent.getFormattedDate()}"></td>
-		</tr>
-	</table>
+<h2 style="text-align:center;">INDENTS</h2>
 
+	<ol class="restaurant_order_list">
+		<li>
+			<div class="user_info"><h2>User info</h2></div>
+			<div class="pizza_name" ><h2>Pizza name</h2></div>
+			<div class="pizza_price"><h2>Price</h2></div>
+			<div class="order_date"><h2>Order date</h2></div>
+			<div class="clear"></div>
+		</li>
+		<li th:each="indent : ${indents}">
+			<div class="user_info" th:text="${indent.getUser().getUsername()}+' tel.:'+${indent.getUser().getPhone()}"></div>
+			<div class="pizza_name" th:text="${indent.getMenu().getName()}"></div>
+			<div class="pizza_price" th:text="${indent.getMenu().getPrice()}"></div>
+			<div class="order_date" th:text="${indent.getFormattedDate()}"></div>
+			<div class="clear"></div>
+		</li>
+	</ol>
+</div>
 <!-- Show list of menu belong to restaurant -->
-	<table>
-		<tr th:each="menu : ${menu}">
-			<td th:text="${menu.name}"></td>
-			<td th:each="ingredient : ${menu.getIngredients()}">
-				<p th:text="${ingredient.name}">1</p>
-			</td>
-			<td th:text="${menu.price}">zł.</td>
-		</tr>
-	</table>
-	<a th:href="@{'/restaurantOwner/' + ${restaurant.id}} + '/addmenu'">Add	menu</a>
+<h2 style="text-align:center;">MENU</h2>
+	<ol class="menu_list">
+		<li>
+			<div class="name"><h2>Name</h2></div>
+			<div class="ingredients" ><h2>Ingredients</h2></div>
+			<div class="price"><h2>Price</h2></div>
+			<div class="clear"></div>
+		</li>
+		<li th:each="menu : ${menu}">
+			<div class="name" th:text="${menu.name}">Name</div>
+			<div class="ingredients" >
+				<span th:each="ingredients : ${menu.getIngredients()}">
+					<span th:text="${ingredients.name}"></span>
+				</span>
+			</div>			
+			<div class="price" th:text="${menu.price}+'zł'"><b>Price</b></div>		
+			<div class="clear"></div>
+		</li>
+	</ol>
+	<a th:href="@{'/restaurantOwner/' + ${restaurant.id}} + '/addmenu'">
+		<div id = "add_menu_button">Add new menu</div>
+	</a>
+
+</div>
+
+<div class="socials">
+	<div class="socialdivs">
+		<div class="fb">
+			<i class="icon-facebook"></i>
+		</div>
+		<div class="yt">
+			<i class="icon-youtube"></i>
+		</div>
+		<div class="tw">
+			<i class="icon-twitter"></i>
+		</div>
+		<div class="gplus">
+			<i class="icon-gplus"></i>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+</div>
 </body>
 </html>

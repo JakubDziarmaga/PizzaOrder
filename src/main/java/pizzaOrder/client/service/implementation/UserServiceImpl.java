@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void addNonActivatedUser(NonActivatedUser user) throws MessagingException{
 //		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
-		URI nonActivatedUserUri = defaultTemplate.postForLocation("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers", user,NonActivatedUser.class);
+		URI nonActivatedUserUri = defaultTemplate.postForLocation("https://pizzaindent.herokuapp.com/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
 		sendActivatingMail(user); //TODO uncomment in production
@@ -67,9 +67,10 @@ public class UserServiceImpl implements UserService {
 		helper.setFrom("pizza0rd3r@gmail.com");
 		helper.setTo(nonActivatedUser.getMail());
 		helper.setSubject("PizzaOrder");
-		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: https://limitless-eyrie-45489.herokuapp.com/activate/"
+		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: https://pizzaindent.herokuapp.com/activate/"
 				+ nonActivatedUser.getId());
-
+//		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: http://localhost:8080/activate/"
+//				+ nonActivatedUser.getId());
 		mailSender.send(message);
 	}
 
@@ -81,10 +82,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void activateUser(Long nonActivatedUserId) {
 //		User user = defaultTemplate.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
-		User user = defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
+		User user = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
 		user.setId(null);																							//id in NonActivatedUser table and in User tables should't be the same
 //		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
-		defaultTemplate.delete("https://limitless-eyrie-45489.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
+		defaultTemplate.delete("https://pizzaindent.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
 		userSecurityService.save(user);
 		securityService.autologin(user.getUsername(), user.getPassword());
 	}
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 //		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
-		return defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/users/search/names?username={username}", User.class, auth.getName()).getId();
+		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, auth.getName()).getId();
 
 	}
 
@@ -106,7 +107,7 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUsername(String username) {
 		
 //		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username);
-		return defaultTemplate.getForObject("https://limitless-eyrie-45489.herokuapp.com/users/search/names?username={username}", User.class, username);
+		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, username);
 
 	}
 

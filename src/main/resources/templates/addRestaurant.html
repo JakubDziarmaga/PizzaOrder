@@ -1,54 +1,75 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Add restaurant</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+<head> 
+    <title>Add restaurant</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../../fontello/css/fontello.css" />
+	<link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png"/>
+	<link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
 
 </head>
 <body>
-	<a th:href="@{'/'}">home</a>
 
-	<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
+<header>
+		<div id="header_container">
+			 <a th:href="@{'/'}"> 
+	 			<img id="logo" src="../../img/logo.png"/>
+				<h1>PizzaOrder</h1>
+			</a>
 
-	<form th:action="@{/logout}" method="POST">
-		<input type="submit" value="Logout" />
-	</form>
-
-<!-- Add restaurant to actual logged restaurantOwner -->
-	<form action="#" th:action="@{/addRestaurant}"
-		th:object="${restaurant}" method="post">
-		<table>
-			<tr>
-				<td>Name:</td>
-				<td><input type="text" th:field="*{name}" /></td>
-				<td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name
-					Error</td>
-			</tr>
-			<tr>
-				<td>City:</td>
-				<td><input type="text" th:field="*{city}" /></td>
-				<td th:if="${#fields.hasErrors('city')}" th:errors="*{city}">Password
-					Error</td>
-			</tr>
-			<tr>
-				<td>Address:</td>
-				<td><input type="text" th:field="*{address}" /></td>
-				<td th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Email
-					Error</td>
-			</tr>
-			<tr>
-				<td>Phone:</td>
-				<td><input type="number" th:field="*{phone}" /></td>
-				<td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone
-					Error</td>
-			</tr>
-			<tr>
-				<td><button type="submit">Submit</button></td>
-			</tr>
-		</table>
-	</form>
+			<a th:href="@{'/restaurantOwner'}">
+				<div class="icon-user">Profile</div>
+			</a>				
+			<a th:href="@{'/logout'}">
+				<div class="icon-logout">Logout</div>
+			</a>
+			<div class="clear"></div>
+		</div>
+</header>
+ <div id="container">
 
 
+ <form action="#" th:action="@{/addRestaurant}" enctype="multipart/form-data" th:object="${restaurant}" method="post" >
+            <table>
+                <tr>
+                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="Name" th:field="*{name}" /></td>
+                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                </tr>
+                <tr>
+                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="City" th:field="*{city}" /></td>
+                    <td th:if="${#fields.hasErrors('city')}" th:errors="*{city}">City Error</td> 
+                </tr>
+                <tr>
+                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="Address" th:field="*{address}" /></td>
+                    <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</td>
+                </tr>
+                <tr>
+                    <td><span class="asterisk"> &#42;</span> <input id="phone" type="number" placeholder='Phone' th:field="*{phone}" /></td>
+                    <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</td>
+                </tr>  
+          	 	<tr>
+                    <td>                    	
+                    	<div class="fileUpload btn btn-primary" style="margin:0px; width:400px;">
+                    			<span class="asterisk"> &#42;</span>
+							    <div class="icon-upload-3" style="display:inline-block">Upload restaurant logo</div>
+							    <input type="file" class="upload" name="photo" />
+						</div>
+                    </td>                 
+                    <td th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}">Photo Error</td> 
+                </tr>     	   
+                <tr>                	
+                    <td><span class="asterisk" style="opacity:0;"> &#42;</span>
+                    <input type="submit" value="Submit"/></td>
+                </tr>
+            </table>
+        </form>
+
+</div>
+<script type="text/javascript"> 
+  document.getElementById("phone").setAttribute('value','');
+</script>
 </body>
 </html>

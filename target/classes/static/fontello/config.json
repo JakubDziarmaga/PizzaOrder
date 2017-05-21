@@ -71,6 +71,12 @@
       "css": "youtube",
       "code": 61799,
       "src": "fontawesome"
+    },
+    {
+      "uid": "44199a54057e6e264fde61a49b034171",
+      "css": "upload-3",
+      "code": 59406,
+      "src": "entypo"
     }
   ]
 }

@@ -1,31 +1,43 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Add menu</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
 
+<head> 
+    <title>Add menu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../../fontello/css/fontello.css" />
+	<link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png"/>
+	<link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
 </head>
 <body>
-	<a th:href="@{'/'}">home</a>
 
-	<a th:href="@{'/restaurantOwner'}">restaurantOwnerPage</a>
-	<form th:action="@{/logout}" method="POST">
-		<input type="submit" value="Logout" />
-	</form>
+<header>
+		<div id="header_container">
+			 <a th:href="@{'/'}"> 
+	 			<img id="logo" src="../../img/logo.png"/>
+				<h1>PizzaOrder</h1>
+			</a>
 
+			<a th:href="@{'/restaurantOwner'}">
+				<div class="icon-user">Profile</div>
+			</a>				
+			<a th:href="@{'/logout'}">
+				<div class="icon-logout">Logout</div>
+			</a>
+			<div class="clear"></div>
+		</div>
+</header>
 
-<!-- Add new menu to restaurant -->
-	<form method="POST" th:object="${menu}">
-		<table>
+<div id="container">
+ 	<form method="POST" th:object="${menu}">
+		<table id="add_menu">
 			<tr>
-				<td>Name:</td>
-				<td><input type="text" th:field="*{name}" /></td>
+				<td><input type="text" th:field="*{name}" placeholder="Name"/></td>
 				<td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
 			</tr>
 			<tr>
-				<td>Price:</td>
-				<td><input type="number" th:field="*{price}" /></td>
+				<td><input type="number" th:field="*{price}" placeholder="Price" /></td>
 				<td th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</td>
 			</tr>
 			<tr>
@@ -34,14 +46,33 @@
 					th:errors="*{ingredients}">Ingredients Error</td>
 			</tr>
 			<tr th:each="ingredient : ${ingredients}">
-				<td><input type="checkbox" th:field="${menu.ingredients}"
-					th:value="${ingredient.id}" /><label th:text="${ingredient.name}">Name of ingredient</label></td>
+				<td>
+				<input type="checkbox" th:field="${menu.ingredients}" th:value="${ingredient.id}" th:text="${ingredient.name}"/>
+				</td>
 			</tr>
 			<tr>
-				<td><button type="submit">Add</button></td>
+				<td> <input type="submit" id="blue_button" value="Add"/></td>
 			</tr>
 		</table>
 	</form>
+</div>     
+<div class="socials">
+	<div class="socialdivs">
+		<div class="fb">
+			<i class="icon-facebook"></i>
+		</div>
+		<div class="yt">
+			<i class="icon-youtube"></i>
+		</div>
+		<div class="tw">
+			<i class="icon-twitter"></i>
+		</div>
+		<div class="gplus">
+			<i class="icon-gplus"></i>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+</div>    
 
 </body>
 </html>

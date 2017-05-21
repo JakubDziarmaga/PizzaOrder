@@ -15,6 +15,7 @@ body
 header
 {
 	background-color:#1076DC;
+	width:100%;
 	
 }
 #container
@@ -23,6 +24,7 @@ header
 	margin-left:auto;
 	margin-right:auto;
 	background-color:white;
+	padding-bottom: 10px;
 	/*text-allign:center;*/
 	/*background-color:#1076DC;*/
 	
@@ -313,23 +315,44 @@ table
 {
 	background-color:white;
 }
-.main_list > li > .name
+
+li > #restaurant_info
 {
+	width:500px;
+	padding:10px;
 	float:left;
+}
+
+li > #restaurant_logo
+{
+	width:100px;
+	height:100px;
+	padding:10px;
+	float:left;
+}
+#restaurant_info > .name
+{
 	height:40px;
-	width:250px;
+	width:450px;
+	font-weight:700;
 	margin:5px 10px;
 	
 }
 
-.main_list > li > .city
+#restaurant_info > .city
 {
-	float:left;
 	height:40px;
-	width:200px;
+	width:450px;
 	margin:5px 10px;
 }
 
+#restaurant_info > .icon-location
+{
+	font-size:30px;
+	
+}
+
+do usuniecia
 .main_list > li > .address
 {
 	float:left;
@@ -343,7 +366,8 @@ table
 	float:left;
 	height:40px;
 	width:190px;
-	margin:5px 10px;
+	margin:15px 20px;
+	
 }
 
 .main_list > li > .menu_href
@@ -354,7 +378,8 @@ table
 	background-color:#1076DC;
 	border-radius:5px;
 	text-align:center;
-	margin:5px 10px;
+	margin:15px 20px;
+	padding:3px;
 }
 
 .main_list > li > .menu_href:hover
@@ -414,7 +439,6 @@ h2
 .menu_list > li > .ingredients
 {
 	float:left;
-	height:40px;
 	width:580px;
 	margin:5px 10px;
 }
@@ -459,7 +483,6 @@ h2
 #restaurant_details 
 { 
 	position:absolute;
-	background-color: black;
 	color: #fff; 
 	margin: 250px 100px;
 	height:100px;
@@ -467,11 +490,17 @@ h2
 
 #restaurant_details >#restaurant_logo
 {
-	background-image:url(OBRAZEK);
+	
+	width: 90px;
+	height: 90px;
+	float:left;
+	padding:5px;
+}
+
+#restaurant_logo > img
+{
 	width: 100px;
 	height: 100px;
-	float:left;
-	
 }
 
 #restaurant_details >#details_right
@@ -481,7 +510,7 @@ h2
 	
 }
 
-#details_right >#name
+#details_right >#restaurant_name
 { 
 	font-size:30px;
 	font-weight:bold;
@@ -504,7 +533,6 @@ h2
 .icon-mobile
 {
 	font-size:20px;
-	float:left;
 }
 
 #details_right >#phone
@@ -528,38 +556,42 @@ h2
 }
 
 
-#restaraunt_data
+#restaurant_data
 {
 	width:300px;
 }
 
-#restaraunt_data >#name
+#restaurant_data >#name
 { 
 	font-size:30px;
 	font-weight:bold;
 }
 
 
-.icon-location
+span > li > .icon-location
 {
 	font-size:20px;
 	float:left;
 }
 
-#restaraunt_data >#address
+#restaurunt_data >#address
 { 
 	font-size:20px;
 	float:left;
 	
 }
 
-.icon-mobile
+#restaurant_data > .icon-mobile
 {
 	font-size:20px;
-	float:left;
 }
 
-#restaraunt_data >#phone
+.mobile
+{
+	float:left
+}
+
+#restaurunt_data >#phone
 { 
 	font-size:20px;
 	float:left;
@@ -675,3 +707,228 @@ h2
 {
 	background-color: #d34836;
 }
+
+.user_profile
+{
+	
+}
+
+.user_profile > img
+{
+	width:300px;
+	height:300px;
+	float:left;
+	margin:50px;
+}
+
+.user_data
+{
+	float:left;	
+	margin:50px;
+	
+}
+
+.user_data > #username
+{
+	font-size:30px;
+	font-weight:bold;
+}
+
+input[type="checkbox"]
+{
+	width:20px;
+}
+
+#restaurant_name
+{
+	width:300px;
+}
+
+#buttons_container
+{
+	width:400px;
+	height:35px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#buttons_container > #blue_button
+{
+	margin:0;
+	float:left;
+	background-color:#1076DC;
+	width: 200px;
+}
+
+#buttons_container > #white_button
+{
+	margin:0;
+	float:left;
+	font-size: 20px;
+    height: 30px;
+    width: 200px;
+    text-align: center;
+    margin: 5px 0px;
+    cursor:pointer;
+}
+
+b
+{
+	cursor:pointer;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    background-color:red;
+}
+
+.icon-upload-3
+{
+	font-size:20px;
+	cursor:pointer;
+	
+}
+
+
+#search_background
+{
+	background:url(../img/searchByCityBackground.jpg) center;
+	background-size: cover;
+	width: 100%;
+	padding-top: 34.68%;
+
+}
+
+#search_container
+{
+	width:660px;
+	margin-left:auto;
+	margin-right:auto;
+	position:relative;
+	bottom:200px;
+}
+
+#search_container > h1
+{
+	color:white;
+	background-color:black;
+	width:480px;
+	text-align:center;
+	float:none;
+	padding:10px;
+	margin:5px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#search_container > h2
+{
+	color:white;
+	background-color:black;
+	clear:both;
+	text-align:center;
+	padding:10px;
+	margin:5px;
+	margin-left:auto;
+	margin-right:auto;	
+	width:440px;
+}
+
+#search_form
+{
+	margin-left:auto;
+	margin-right:auto;
+	width:503px;
+
+}
+
+
+#search_container > form > input[type=text]
+{
+	width:400px;
+	height:50px;
+}
+
+#search_container > form > input[type=submit]
+{
+	width:100px;
+	height:50px;
+}
+
+#add_menu_button
+{
+	font-size:20px;
+    height: 30px;
+    width: 150px;
+    background-color: #1076DC;
+    border-radius: 5px;
+    text-align: center;
+    margin: 15px 10px;
+    padding: 5px 0px 0px 0px;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+.restaurant_order_list
+{
+	list-style-type: none;
+	font-size:30px;
+	padding: 20px 40px;
+    margin: 0;
+}
+
+.restaurant_order_list > li:first-child 
+{
+    border-bottom: 1px solid black;
+}
+
+.restaurant_order_list > li {
+    padding: 5px;
+    border-bottom: 1px dotted black;
+}
+    
+.user_info
+{
+	float:left;
+	width:320px;
+	height: 40px;
+    margin: 5px 10px;
+}
+
+.pizza_name
+{
+	float:left;
+	width:320px;
+	height: 40px;
+    margin: 5px 10px;
+}
+
+.pizza_price
+{
+	float:left;
+	width:90px;
+	height: 40px;
+    margin: 5px 10px;
+	
+}
+
+.order_date
+{
+	float:left;
+	width:300px;
+	height: 40px;
+    margin: 5px 10px;
+}
+

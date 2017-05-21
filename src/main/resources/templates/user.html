@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head> 
-    <title>Registration</title>
+    <title>Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
@@ -32,44 +32,26 @@
  <div id="container">
 
 <!-- Show list of all indents belong to user -->
-<!-- 
-	<table>
-		<tr th:each="indent : ${indents}">
-			<td th:text="${indent.isPaid()}">indentIsPaid</td>
-			<td th:text="${indent.getMenu().getName()}">indentName</td>
-			<td th:text="${indent.getMenu().getPrice()}">indentPrice</td>
-			<td th:each="ingredients : ${indent.getMenu().getIngredients()}">
-				<p th:text="${ingredients.name}">ingredientName</p>
-			</td>
-			<td>
-				<div th:unless="${indent.isPaid()}">
-					<form th:action="@{'/indent/pay/'+${(indent.getId())}}"
-						method="GET">
-						<input type="submit" value="Pay" />
-					</form>
-					<form th:action="@{'indent/delete/'+${(indent.getId())}}"
-						method="GET">
-						<input type="submit" value="Delete" />
-					</form>
-				</div>
-				<div th:if="${indent.isPaid()}">
-					<p th:text="${indent.getFormattedDate()}">Date</p>
-				</div>
-			</td>
-		</tr>
-	</table>
--->
-<span th="${user.username}"></span>
-<img src="/image.png" alt="car_image"/>
+<div class="user_profile">
+	<img src="/image.png" alt="user_image"/>
+	<div class = "user_data">
+		<div id="username" th:text="${user.username}"></div>
+		<div class="icon-mobile" th:text="${user.phone}" ></div> 
+		<div id="blue_button">Change password</div>
+		<div id="blue_button">Change mail</div>
+	</div>
+	<div class="clear"/>
+</div>
+
 
 <ol class="user_order_list">
 	<span th:each="indent : ${indents}">
-		<li id="restaraunt_data">
+		<li id="restaurant_data">
 			<div id="name" th:text="${indent.restaurant.name}"></div>
 			<div class="icon-location"></div>
 			<div id="address" th:text="${indent.restaurant.city}+' ul.'+${indent.restaurant.address}"></div> 
 			<div class="clear"></div>
-			<div class="icon-mobile"></div>
+			<div class ="mobile"><div class="icon-mobile"></div></div>
 			<div id="phone" th:text="${indent.restaurant.phone}"></div>
 			<div class="clear"></div>			
 		</li>
@@ -84,11 +66,11 @@
 		<li id="price" th:text="${indent.getMenu().getPrice()}+'zl'">
 		</li>
 		<li>
-			<div th:unless="${indent.isPaid()}" class="buttons">
+			<div id="red_indent" th:unless="${indent.isPaid()}" class="buttons">
 				<a th:href="@{'/indent/pay/'+${indent.id}}"><div id="blue_button">Pay</div></a>
 				<a th:href="@{'indent/delete/'+${indent.id}}"><div id="blue_button">Delete</div></a>
 			</div>
-				<div th:if="${indent.isPaid()}" class="date" th:text="${indent.getFormattedDate()}">
+			<div id="green_indent" th:if="${indent.isPaid()}" class="date" th:text="${indent.getFormattedDate()}" >
 			</div>
 		</li>
 		<div class="clear"></div>

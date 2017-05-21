@@ -11,4 +11,5 @@ public interface RestaurantService {
 	Restaurant getRestaurantByOwnerId(Long ownerId);
 //	void checkIfRestaurantExists(Long restaurantId);
 	void addRestaurant(Restaurant restaurant);
+	List<Restaurant> getRestaurantsByCity(String city);
 }

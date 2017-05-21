@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl"  xmlns:th="http://www.thymeleaf.org">
 <head> 
-    <title>Registration</title>
+    <title>Restaurant</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="../css/style.css" />
 	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
@@ -62,13 +62,16 @@
  
  	<div class="background_pizza">
  		<div id="restaurant_details">
- 			<div id="restaurant_logo"></div>
+ 			<img id="restaurant_logo" th:src="'/restaurant/'+${idRestaurant}+'/image.png'" alt="restaurant_image"/>
  			<div id="details_right">
-	 			<div id="name" th:text="${restaurant.name}"></div>
+	 			<div id="restaurant_name" th:text="${restaurant.name}"></div>
 				<div class="icon-location"></div>
 				<div id="address" th:text="${restaurant.city}+' ul.'+${restaurant.address}"></div> 
 				<div class="clear"></div>
-				<div class="icon-mobile"></div>
+				<div class ="mobile">
+					<div class="icon-mobile">
+					</div>
+				</div>
 				<div id="phone" th:text="${restaurant.phone}"></div>
 				<div class="clear"></div>
 			</div>
@@ -76,35 +79,6 @@
  	</div>
 	
 <!-- Data about chosen restaurant -->
-<!--
-	<span th:text="${restaurant.name}"></span>
-	<span th:text="${restaurant.city}"></span> ul.
-	<span th:text="${restaurant.address}"></span> tel.:
-	<span th:text="${restaurant.phone}"></span>
-  -->
-<!-- List of all menu with ingredients -->
-<!-- 
-	<table>
-		<tr th:each="menu : ${menu}">
-			<td th:text="${menu.name}">1</td>
-			<td th:each="ingredients : ${menu.getIngredients()}">
-				<p th:text="${ingredients.name}">ingredientName</p>
-			</td>
-			<td th:text="${menu.price}">zł</td>
-			
-			<td>
-				<div th:if="${actualUser} != null">
-					<div th:if = "${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
-						<form th:action="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}" method="GET">
-							<input type="submit" value="Add to cart" />
-						</form>
-					</div>
-				</div>
-			</td>
-		</tr>
-	</table>
- -->
-
 	<ol class="menu_list">
 		<li>
 			<div class="name"><h2>Name</h2></div>

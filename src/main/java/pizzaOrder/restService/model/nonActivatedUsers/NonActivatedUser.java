@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -43,8 +44,8 @@ public class NonActivatedUser {
 	
 	@NotBlank (message = "Please select your role.")
 	private String role;
-
-	@Lob
+	
+	@Size(min = 1 ,max = 2097152, message = "Please select profile photo.")
 	private byte[] photo;
 
 	//
