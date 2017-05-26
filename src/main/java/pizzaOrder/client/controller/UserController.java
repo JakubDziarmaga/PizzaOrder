@@ -31,14 +31,6 @@ public class UserController {//extends AbstractController{
     @Autowired
     private UserValidator userValidator;
     
-    @InitBinder
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-    		throws ServletException {
-
-    		// Convert multipart object to byte[]
-    		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
-
-    }
     
     /**
      * Show registration form
@@ -69,7 +61,6 @@ public class UserController {//extends AbstractController{
     		return "register";
     	}
     	userService.addNonActivatedUser(nonActivatedUser);
-    	System.out.println("photo: "+nonActivatedUser.getPhoto().toString());
         return "redirect:/";
     }
 

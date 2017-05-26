@@ -17,15 +17,15 @@ public class DataSourceConfiguration {
 	@Bean 
 	public DataSource dataSource(){
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//		dataSource.setUrl("jdbc:mysql://localhost:3306/sys");		
-//		dataSource.setUsername("root");
-//		dataSource.setPassword("smieja123");
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/sys");		
+		dataSource.setUsername("root");
+		dataSource.setPassword("smieja123");
 		
-		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl("jdbc:postgresql://ec2-54-227-237-223.compute-1.amazonaws.com:5432/d7n32in7ipk62h?sslmode=require");		
-		dataSource.setUsername("zkhmuezlaztgpk");
-		dataSource.setPassword("5da64a63148284176a523b752b197379ecc98e6683443caa4de1192ed61eff35");
+//		dataSource.setDriverClassName("org.postgresql.Driver");
+//		dataSource.setUrl("jdbc:postgresql://ec2-54-227-237-223.compute-1.amazonaws.com:5432/d7n32in7ipk62h?sslmode=require");		
+//		dataSource.setUsername("zkhmuezlaztgpk");
+//		dataSource.setPassword("5da64a63148284176a523b752b197379ecc98e6683443caa4de1192ed61eff35");
 		return dataSource;
 	}
 }

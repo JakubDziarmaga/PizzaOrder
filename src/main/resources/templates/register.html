@@ -7,12 +7,6 @@
     <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
 	<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png"/>
 
-<script>
-    function klikaj(i) {
-        document.getElementById(i).style.display = 'block';
-    }
-</script>
-	
 </head>
 <body>
 
@@ -44,45 +38,44 @@
 </header>
  
  <div id="container">
- <form action="#" th:action="@{/registration}" th:object="${nonActivatedUser}" enctype="multipart/form-data" method="post">
+ <form action="#" th:action="@{/registration}" th:object="${nonActivatedUser}" enctype="multipart/form-data" method="post"  onsubmit="return validateForm();">
             <table>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="Username" th:field="*{username}" /></td>
-                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
+                    <td><span class="asterisk"> &#42;</span> <input type="text" id="register_username" placeholder="Username" th:field="*{username}" /></td>
+                    <td id="user_null_name_error">Please enter username</td>
+                    <td id="user_length_name_error">Username must have between 6 and 20 digits</td>
                 </tr>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input type="password" placeholder="Password" th:field="*{password}" /></td>
-                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td> 
+                    <td><span class="asterisk"> &#42;</span> <input type="password" id="register_password" placeholder="Password" th:field="*{password}" /></td>
+                    <td id="user_null_password_error">Please enter password</td>
+                    <td id="user_length_password_error">Password must have between 6 and 20 digits</td>
                 </tr>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input type="password" placeholder="Confirm password" th:field="*{passwordConfirm}" /></td>
-                    <td th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">PasswordConfirm Error</td>
+                    <td><span class="asterisk"> &#42;</span> <input type="password" id="register_password_confirm" placeholder="Confirm password" th:field="*{passwordConfirm}" /></td>
+                    <td id="user_wrong_confirm_password_error">Password aren't the same</td>
                 </tr>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input type="email" placeholder="Email" th:field="*{mail}" /></td>
-                    <td th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Email Error</td>
+                    <td><span class="asterisk"> &#42;</span> <input type="email" id="register_email" placeholder="Email" th:field="*{mail}" /></td>
+                    <td id="user_null_email_error">Please enter email</td>
                 </tr>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input id="phone" type="number" placeholder='Phone' th:field="*{phone}" /></td>
-                    <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</td>
+                    <td><span class="asterisk"> &#42;</span> <input type="number" id="register_phone" placeholder='Phone' th:field="*{phone}" /></td>
+                    <td id="user_null_phone_error">Please enter phone number</td>
+                    <td id="user_length_phone_error">Restaurant phone must have between 7 and 9 digits</td>
                 </tr>
           		<tr>
           			<td><span class="asterisk"> &#42;</span>
           			        <select id="role" name="role">
-          			            <option value="" selected="selected" >Select role:</option>
+          			            <option value="" selected="selected" disabled="disabled">Select role:</option>
                 				<option value="ROLE_USER" >User</option>
               					<option value="ROLE_RESTAURANT_OWNER">Restaurant owner</option>
             				</select>
             		</td>
-            		<td th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</td>
-          		</tr>    
-          	 	<tr>
-                    <td><span class="asterisk"> &#42;</span> <input id="photo" type="file" th:field="*{photo}" /></td>                 
-                    <td th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}">Photo Error</td> 
-                </tr>     	   
+            		<td id="user_null_role_error">Please choose role</td>
+          		</tr>    	   
                 <tr>                	
                     <td><span class="asterisk" style="opacity:0;"> &#42;</span>
-                    <input type="submit" value="Submit"/></td>
+                    <input type="submit" value="Submit" /></td>
                 </tr>
             </table>
         </form>
@@ -105,40 +98,79 @@
 	</div>
 </div>    
 
-	<!-- The Modal -->
-	<div id="id01" class="modal">
-		<div class="modal-content animate">
 
-			<div onclick="document.getElementById('id01').style.display='none'" 
-				class="close" title="Close Modal">&times;</div>
-				
-			  <!-- Modal Content -->
-			<div id="login_content">
-
-				 
-				<form id="login_form" th:action="@{/login}" method="post">
-					<input type="text" id="username" name="username" autofocus="autofocus" placeholder="Login"/> <br /> 
-					<input type="password" id="password" name="password" placeholder="Password"/> <br /> 
-					<input type="submit" value="Log in" />
-				</form>
-				<p>Don't have an account yet? <a href="/registration"><b>Register now!</b></a></p>
-			</div>	
-		</div>
-	</div>
-
-<script type="text/javascript"> 
-  document.getElementById("phone").setAttribute('value','');
-</script>
-	<script>
-		// Get the modal
-		var modal = document.getElementById('id01');
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-		    if (event.target == modal) {
-		        modal.style.display = "none";
-		    }
-		}	
-	</script>
 </body>
+<script type="text/javascript">
+
+    //<![CDATA[
+		function validateForm()
+		{
+			var error=false;
+			document.getElementById('user_null_name_error').style.display="none";
+			document.getElementById('user_length_name_error').style.display="none";
+			document.getElementById('user_null_password_error').style.display="none";
+			document.getElementById('user_length_password_error').style.display="none";
+			document.getElementById('user_wrong_confirm_password_error').style.display="none";	       	
+			document.getElementById('user_null_email_error').style.display="none";
+			document.getElementById('user_null_phone_error').style.display="none";
+		    document.getElementById("user_length_phone_error").style.display='none';
+		    document.getElementById("user_null_role_error").style.display='none';
+
+		    var name = document.getElementById('register_username');		    
+		    if(name.value.length == 0){		  
+		    	document.getElementById('user_null_name_error').style.display="block";
+		    	error=true;
+		    }
+		    else if(name.value.length < 6 || name.value.length > 20){		  
+		    	document.getElementById('user_length_name_error').style.display="block";		
+		    	error=true;
+		    }		    
+
+		    var password = document.getElementById('register_password');
+		    var confirm_password = document.getElementById('register_password_confirm');		    
+
+		    if(password.value.length == 0){		  
+		    	document.getElementById('user_null_password_error').style.display="block";		  
+		    	error=true;
+		    }		    
+		    else if(password.value.length < 6 || password.value.length > 20){		   
+		    	document.getElementById('user_length_password_error').style.display="block";		
+		    	error=true;
+		    }		    
+		    else if(confirm_password != password){
+		    	document.getElementById('user_wrong_confirm_password_error').style.display="block";		
+		    	error=true;
+			}
+		    
+		    var email = document.getElementById('register_email');		    
+		    if(email.value.length == 0){		  
+		    	document.getElementById('user_null_email_error').style.display="block";		  
+		    	error=true;
+		    }
+		    
+		    var phone = document.getElementById('register_phone');		  		    
+		    if(phone.value ==''){		  
+		    	document.getElementById('user_null_phone_error').style.display="block";		  
+		    	error=true;
+		    }		    
+		    else if(phone.value < 1000000 || phone.value > 999999999){		   
+		    	document.getElementById('user_length_phone_error').style.display="block";		
+		    	error=true;
+		    }
+		    
+		    var select = document.getElementById('role');
+		    if (!select.value) {
+		    	document.getElementById('user_null_role_error').style.display="block";		
+		    	error=true;
+		    }
+		    
+		   
+		    
+		    if(error)		    
+				return false;
+		    else
+		    	return true;
+		}
+	//]]>
+</script>	
 </html>

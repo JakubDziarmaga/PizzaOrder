@@ -22,7 +22,7 @@ public class IndentController {
 
 		indentService.addIndents(idRestaurant, idMenu);
 
-		return "redirect:/user";
+		return "redirect:/restaurant/{idRestaurant}";
 	}
 	
 

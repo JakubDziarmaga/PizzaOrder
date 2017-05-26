@@ -32,23 +32,27 @@
  <div id="container">
 
 
- <form action="#" th:action="@{/addRestaurant}" enctype="multipart/form-data" th:object="${restaurant}" method="post" >
+ <form action="#" th:action="@{/addRestaurant}" enctype="multipart/form-data" th:object="${restaurant}" method="post" onsubmit="return validateForm();">
             <table>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="Name" th:field="*{name}" /></td>
-                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                    <td><span class="asterisk"> &#42;</span> <input type="text" id="add_restaurant_name" placeholder="Name" th:field="*{name}" /></td>
+                    <td id="restaurant_null_name_error">Please enter restaurant name</td>
+                    <td id="restaurant_length_name_error">Restaurant name must have between 3 and 20 digits</td>                    
                 </tr>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="City" th:field="*{city}" /></td>
-                    <td th:if="${#fields.hasErrors('city')}" th:errors="*{city}">City Error</td> 
+                    <td><span class="asterisk"> &#42;</span> <input type="text" id="restaurant_city" placeholder="City" th:field="*{city}" /></td>
+                    <td id="restaurant_null_city_error">Please enter restaurant city</td>
+                    <td id="restaurant_length_city_error">City must have between 3 and 30 digits</td>
                 </tr>
                 <tr>
-                    <td><span class="asterisk"> &#42;</span> <input type="text" placeholder="Address" th:field="*{address}" /></td>
-                    <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</td>
+                    <td><span class="asterisk"> &#42;</span> <input type="text" id="address" placeholder="Address" th:field="*{address}" /></td>
+                    <td id="restaurant_null_address_error">Please enter restaurant address</td>
+                    <td id="restaurant_length_address_error">Address must have between 3 and 40 digits</td>
                 </tr>
                 <tr>
                     <td><span class="asterisk"> &#42;</span> <input id="phone" type="number" placeholder='Phone' th:field="*{phone}" /></td>
-                    <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</td>
+                    <td id="restaurant_null_phone_error">Please enter restaurant phone</td>
+                    <td id="restaurant_length_phone_error">Restaurant phone must have between 7 and 9 digits</td>                 
                 </tr>  
           	 	<tr>
                     <td>                    	
@@ -58,7 +62,9 @@
 							    <input type="file" class="upload" name="photo" />
 						</div>
                     </td>                 
-                    <td th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}">Photo Error</td> 
+                    <td id="photo_not_upload_error">Please add restaurant logo</td> 
+                    <td id="photo_too_big_error">Photo is too big</td> 
+                    <td id="photo_wrong_extension_error">Please add photo with extensions: jpeg, jpg or png</td>                  
                 </tr>     	   
                 <tr>                	
                     <td><span class="asterisk" style="opacity:0;"> &#42;</span>
@@ -70,6 +76,104 @@
 </div>
 <script type="text/javascript"> 
   document.getElementById("phone").setAttribute('value','');
+</script>
+<script type="text/javascript">
+
+    //<![CDATA[
+		function validateForm()
+		{
+			var error=false;
+			document.getElementById('restaurant_null_name_error').style.display="none";
+			document.getElementById('restaurant_length_name_error').style.display="none";
+			document.getElementById('restaurant_null_city_error').style.display="none";
+			document.getElementById('restaurant_length_city_error').style.display="none";
+			document.getElementById('restaurant_null_address_error').style.display="none";
+			document.getElementById('restaurant_length_address_error').style.display="none";
+			document.getElementById('restaurant_null_phone_error').style.display="none";
+			document.getElementById('restaurant_length_phone_error').style.display="none";
+		    document.getElementById("photo_not_upload_error").style.display='none';
+		    document.getElementById("photo_too_big_error").style.display='none';
+	       	document.getElementById("photo_wrong_extension_error").style.display='none';  
+	       	
+		    var name = document.getElementById('add_restaurant_name');		    
+		    if(name.value.length == 0){		  
+		    	document.getElementById('restaurant_null_name_error').style.display="block";
+		    	error=true;
+		    }
+		    else if(name.value.length < 3 || name.value.length > 20){		  
+		    	document.getElementById('restaurant_length_name_error').style.display="block";		
+		    	error=true;
+		    }		    
+
+		    var city = document.getElementById('restaurant_city');		    
+		    if(city.value ==''){		  
+		    	document.getElementById('restaurant_null_city_error').style.display="block";		  
+		    	error=true;
+		    }		    
+		    else if(city.value.length < 3 || city.value.length > 30){		   
+		    	document.getElementById('restaurant_length_city_error').style.display="block";		
+		    	error=true;
+		    }
+		    
+		    var address = document.getElementById('address');		    
+		    if(address.value ==''){		  
+		    	document.getElementById('restaurant_null_address_error').style.display="block";		  
+		    	error=true;
+		    }		    
+		    else if(address.value.length < 3 || address.value.length > 40){		   
+		    	document.getElementById('restaurant_length_address_error').style.display="block";		
+		    	error=true;
+		    }
+		    
+		    
+		    var phone = document.getElementById('phone');		    
+		    if(phone.value ==''){		  
+		    	document.getElementById('restaurant_null_phone_error').style.display="block";		  
+		    	error=true;
+		    }		    
+		    else if(phone.value < 1000000 || phone.value > 999999999){		   
+		    	document.getElementById('restaurant_length_phone_error').style.display="block";		
+		    	error=true;
+		    }
+		  
+		    
+		    var allowed_extensions = new Array("jpg","png","jpeg");
+		    var input = document.getElementsByClassName('upload')[0].files[0];		   	
+			var enstension_error = true;
+
+			if(input==null)
+			{
+			   	document.getElementById("photo_not_upload_error").style.display='block';
+			}		    
+			else if(input.size>2097152)
+		    {
+		      	document.getElementById("photo_too_big_error").style.display='block';
+	        }
+		    else
+		    {
+			    var file_extension = input.name.split('.').pop(); 
+				for(var i = 0; i <= allowed_extensions.length; i++)
+				{
+				    if(allowed_extensions[i]==file_extension)
+				    {
+				    	enstension_error = false;
+				    	break;
+				    }
+				 }
+			    if(enstension_error)
+					document.getElementById("photo_wrong_extension_error").style.display='block';
+		    }
+
+
+		    
+		   
+		    
+		    //if(error||enstension_error)		    
+				return false;
+		    //else
+		    	//return true;
+		}
+	//]]>
 </script>
 </body>
 </html>

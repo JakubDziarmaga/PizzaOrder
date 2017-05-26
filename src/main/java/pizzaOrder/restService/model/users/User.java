@@ -34,7 +34,6 @@ public class User {
 	private List<Indent> indent;
 
 	private String role;		
-	private byte[] photo;
 
 	
 	//
@@ -99,11 +98,4 @@ public class User {
 		this.role = role;
 	}
 
-	public byte[] getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
-	}
 }

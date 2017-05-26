@@ -44,9 +44,7 @@ public class NonActivatedUser {
 	
 	@NotBlank (message = "Please select your role.")
 	private String role;
-	
-	@Size(min = 1 ,max = 2097152, message = "Please select profile photo.")
-	private byte[] photo;
+
 
 	//
 	//CONSTRUCTORS
@@ -122,13 +120,5 @@ public class NonActivatedUser {
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	public byte[] getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
 	}
 }

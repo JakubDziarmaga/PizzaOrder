@@ -18,43 +18,28 @@
 <body>
 	<header>
 			<div id="header_container">
-				 <a th:href="@{'/'}"> 
-		 			<img id="logo" src="../img/logo.png"/>
-					<h1>PizzaOrder</h1>
-				</a>
-	
-				<span th:if="${actualUser} == null">
-					<div class="icon-login" onclick="klikaj('id01')">Login</div>
-					<a th:href="@{'/registration'}">
-						<div class="icon-user">Register</div>
-					</a>
-					<div class="clear"></div>			
-				</span>
-				
-				
-				<span th:if="${actualUser} != null">	
-					<span th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}">
-						<a th:href="@{'/user'}">
-							<div class="icon-user">Profile</div>
-						</a>
-					</span>
-					
-					<span th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}">
-						<a th:href="@{'/restaurantOwner'}">
-							<div class="icon-user">Profile</div>
-						</a>
-					</span>		
-					
-					<a th:href="@{'/logout'}">
-						<div class="icon-logout">Logout</div>
-					</a>
-					<div class="clear"></div>
-				</span>
-	
+			<a th:href="@{'/'}"> <img id="logo" src="../img/logo.png" />
+				<h1>PizzaOrder</h1>
+			</a>
 
-				
+			<div id="unloggedUser" th:if="${actualUser} == null">
+				<div class="icon-login" onclick="show_login_form()">Login</div>
+				<div class="icon-user" onclick="show_register_form()">Register</div>
+				<div class="clear"></div>
 			</div>
-		<!-- </a> -->
+			<div id="loggedUser" th:if="${actualUser} != null">
+				<a th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}" th:href="@{'/user'}">
+					<div class="icon-user">Profile</div>
+				</a> 
+				<a th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}" th:href="@{'/restaurantOwner'}">
+					<div class="icon-user">Profile</div>
+				</a> 
+				<a th:href="@{'/logout'}">
+					<div class="icon-logout">Logout</div>
+				</a>
+				<div class="clear"></div>
+			</div>
+		</div>
 	</header>
 
 
@@ -121,32 +106,74 @@
 	<!-- The Modal -->
 	<div id="id01" class="modal">
 		<div class="modal-content animate">
-
-			<div onclick="document.getElementById('id01').style.display='none'" 
-				class="close" title="Close Modal">&times;</div>
-				
-			  <!-- Modal Content -->
+			<div onclick="document.getElementById('id01').style.display='none'"
+				class="close" title="Close Modal">&times;
+			</div>
+			<!-- Modal Content -->
+			<div id="buttons_container">
+				<div id="blue_button">Log in</div>
+				<div id="white_button" onclick="show_register_form()">Register</div>
+			</div>
+			<div id="login_content">		
+				<div id="user_login">
+					<form id="login_form" th:action="@{/login}" method="post">
+									<input type="text" id="username" name="username"
+										autofocus="autofocus" placeholder="Login" /> <br /> <input
+										type="password" id="password" name="password"
+										placeholder="Password" /> <br /> <input type="submit"
+										value="Log in" />
+					</form>
+				</div>
+				<p>
+					Don't have an account yet? <b onclick="show_register_form()">Register now!</b>
+				</p>
+			</div>
+		</div>
+	</div>
+		
+	<!-- The Modal -->
+	<div id="id02" class="modal">
+		<div class="modal-content animate">
+				<div onclick="document.getElementById('id02').style.display='none'"
+				class="close" title="Close Modal">&times;
+			</div>
+			<!-- Modal Content -->
+			<div id="buttons_container">
+				<div id="white_button" onclick="show_login_form()">Zaloguj</div>
+				<div id="blue_button">Register</div>
+			</div>
 			<div id="login_content">
-				 
-				<form id="login_form" th:action="@{/login}" method="post">
-					<input type="text" id="username" name="username" autofocus="autofocus" placeholder="Login"/> <br /> 
-					<input type="password" id="password" name="password" placeholder="Password"/> <br /> 
-					<input type="submit" value="Log in" />
-				</form>
-				<p>Don't have an account yet? <a href="/registration"><b>Register now!</b></a></p>
-			</div>	
+				<div id="user_register">
+					<form action="#" th:action="@{/registration}" enctype="multipart/form-data" method="post">
+			            <input type="text" placeholder="Username" id="username" name="username" />
+						<input type="password" placeholder="Password" id="password" name="password"/>
+			            <input type="password" placeholder="Confirm password" id="passwordConfirm" name="passwordConfirm"/>
+			            <input type="email" placeholder="Email" id="mail" name="mail"/>
+			            <input id="phone" type="number" placeholder='Phone' name="phone" />
+			            <select id="role" name="role">
+			          			<option value="" selected="selected" >Select role:</option>
+			                	<option value="ROLE_USER" >User</option>
+			              		<option value="ROLE_RESTAURANT_OWNER">Restaurant owner</option>
+			            </select>
+
+			            
+			            <input type="submit" value="Register"/>
+			        </form>
+		        </div>
+    		</div>
 		</div>
 	</div>
 	<script>
-		// Get the modal
-		var modal = document.getElementById('id01');
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-		    if (event.target == modal) {
-		        modal.style.display = "none";
-		    }
-		}	
+		function show_login_form() {
+			document.getElementById('id01').style.display = 'block';
+			document.getElementById('id02').style.display = 'none';
+		}
+	</script>
+	<script>
+		function show_register_form() {
+			document.getElementById('id02').style.display = 'block';
+			document.getElementById('id01').style.display = 'none';
+		}
 	</script>
 
 

@@ -42,15 +42,7 @@ public class UserProfileController extends AbstractController{
 		return "user";
 	}
 	
-	@RequestMapping(value = "/image")
-	@ResponseBody
-	public byte[] helloWorld()  {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.getUserByUsername(auth.getName());
-		
-		return user.getPhoto();
-	}
+
 	
 	
 }

@@ -29,8 +29,7 @@ public class UserValidator implements Validator {
 		
 		checkIfPhoneNumberIsValid(errors, user);
 		checkIfPasswordEqualsPasswordConfirm(errors, user.getPassword(), user.getPasswordConfirm());
-//		checkIfUsernameIsAlreadyTaken(errors, user, template);
-//	TODO UNCOMMENT
+		checkIfUsernameIsAlreadyTaken(errors, user, template);
 	}
 	
 	private void checkIfPhoneNumberIsValid(Errors errors,NonActivatedUser user){

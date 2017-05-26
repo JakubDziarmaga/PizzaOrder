@@ -713,14 +713,6 @@ span > li > .icon-location
 	
 }
 
-.user_profile > img
-{
-	width:300px;
-	height:300px;
-	float:left;
-	margin:50px;
-}
-
 .user_data
 {
 	float:left;	
@@ -785,13 +777,12 @@ b
 .fileUpload input.upload {
     position: absolute;
     top: 0;
-    right: 0;
     margin: 0;
     padding: 0;
     font-size: 20px;
     cursor: pointer;
     opacity: 0;
-    background-color:red;
+    right:0px;
 }
 
 .icon-upload-3
@@ -932,3 +923,19 @@ b
     margin: 5px 10px;
 }
 
+#photo_not_upload_error, #photo_too_big_error, #photo_wrong_extension_error,
+#menu_null_name_error,#menu_length_name_error,#menu_null_price_error,
+#menu_price_value_error,#menu_ingredients_error,
+#restaurant_null_name_error,#restaurant_length_name_error,
+#restaurant_null_city_error,#restaurant_length_city_error,
+#restaurant_null_address_error,#restaurant_length_address_error,
+#restaurant_null_phone_error,#restaurant_length_phone_error,
+#user_null_name_error,#user_length_name_error,
+#user_null_password_error,#user_length_password_error,
+#user_wrong_confirm_password_error,
+#user_null_email_error,#user_wrong_email_error,
+#user_null_phone_error,#user_length_phone_error,
+#user_null_role_error
+{
+	display:none;
+}
