@@ -637,6 +637,7 @@ span > li > .icon-location
     text-align: center;
     margin: 5px 0px;
     padding: 5px 0px 0px 0px;
+    cursor:pointer;
 }
 
 #blue_button:hover

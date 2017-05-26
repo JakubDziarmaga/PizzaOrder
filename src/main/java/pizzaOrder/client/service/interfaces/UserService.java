@@ -13,4 +13,6 @@ public interface UserService {
 	void activateUser(Long nonActivatedUserId);
 	Long getActualUserId();
 	User getUserByUsername(String username);
+	boolean changePassword(String oldPassword, String newPassword);
+	void changeMail(String newMail);
 }

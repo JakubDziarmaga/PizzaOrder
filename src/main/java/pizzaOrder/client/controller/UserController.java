@@ -22,8 +22,7 @@ import pizzaOrder.client.validator.UserValidator;
 import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 
 @Controller
-//@SessionAttributes("user")
-public class UserController {//extends AbstractController{
+public class UserController {
 	
     @Autowired 
     private UserService userService;
@@ -54,9 +53,7 @@ public class UserController {//extends AbstractController{
     public String registration(@Valid NonActivatedUser nonActivatedUser, BindingResult bindingResult,Model model) throws MessagingException {
     	
         userValidator.validate(nonActivatedUser, bindingResult);
-
     	if(bindingResult.hasErrors()){
-    		System.out.println("blad");
     		model.addAttribute("nonActivatedUser",nonActivatedUser);
     		return "register";
     	}
@@ -89,5 +86,15 @@ public class UserController {//extends AbstractController{
 
     }
 
+    
+    @RequestMapping(value = "/changeMail",method = RequestMethod.POST)
+    public String activateUser(String newMail, Model model){
+
+    	userService.changeMail(newMail);
+    	
+        return "redirect:/";
+
+    }
+    
 
 }

@@ -26,7 +26,6 @@
 			</a>
 			<div class="clear"></div>
 		</div>
-	<!-- </a> -->
 </header>
 
  <div id="container">
@@ -37,7 +36,7 @@
 		<div id="username" th:text="${user.username}"></div>
 		<div class="icon-mobile" th:text="${user.phone}" ></div> 
 		<div id="blue_button">Change password</div>
-		<div id="blue_button">Change mail</div>
+		<div id="blue_button" onclick="show_change_mail_form()">Change mail</div>
 	</div>
 	<div class="clear"/>
 </div>
@@ -95,5 +94,29 @@
 		<div style="clear:both"></div>
 	</div>
 </div>
+
+<!-- The Modal -->
+	<div id="id01" class="modal">
+		<div class="modal-content animate">
+			<div onclick="document.getElementById('id01').style.display='none'"	class="close" title="Close Modal">&times;
+			</div>
+			<!-- Modal Content -->
+			<div id="login_content">		
+				<div id="user_login">
+					<form id="login_form" th:action="@{/changeMail}" method="post">
+						<h2 th:text="${user.mail}">Your actual email is:</h2>
+						<input type="email" id="text" name="newMail" placeholder="New mail" /> <br /> 
+						<input type="submit" value="Chane mail" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
+<script>
+	function show_change_mail_form() {
+		document.getElementById('id01').style.display = 'block';
+		//document.getElementById('id02').style.display = 'none';
+	}
+</script>
 </html>

@@ -44,6 +44,7 @@
                     <td><span class="asterisk"> &#42;</span> <input type="text" id="register_username" placeholder="Username" th:field="*{username}" /></td>
                     <td id="user_null_name_error">Please enter username</td>
                     <td id="user_length_name_error">Username must have between 6 and 20 digits</td>
+                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
                 </tr>
                 <tr>
                     <td><span class="asterisk"> &#42;</span> <input type="password" id="register_password" placeholder="Password" th:field="*{password}" /></td>
@@ -137,8 +138,8 @@
 		    	document.getElementById('user_length_password_error').style.display="block";		
 		    	error=true;
 		    }		    
-		    else if(confirm_password != password){
-		    	document.getElementById('user_wrong_confirm_password_error').style.display="block";		
+		    else if(confirm_password.value != password.value){
+		    	document.getElementById('user_wrong_confirm_password_error').style.display="block";
 		    	error=true;
 			}
 		    

@@ -1,9 +1,11 @@
 package pizzaOrder.security;
 
+import java.net.URI;
+
+import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 import pizzaOrder.restService.model.users.User;
 
 public interface UserSecurityService {
 	
-    void save(User user);
-    User findByUsername(String username);
+	URI save(NonActivatedUser user);
 }

@@ -99,8 +99,8 @@ public class UserServiceTest {
 		verify(defaultTemplate, times(1)).delete(anyString(), anyLong());
 		verifyNoMoreInteractions(defaultTemplate);
 
-		verify(userSecurityService, times(1)).save(any(User.class));
-		verifyNoMoreInteractions(userSecurityService);
+//		verify(userSecurityService, times(1)).save(any(User.class));
+//		verifyNoMoreInteractions(userSecurityService);
 
 		verify(securityService, times(1)).autologin(anyString(), anyString());
 		verifyNoMoreInteractions(securityService);

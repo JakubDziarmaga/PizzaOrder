@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void addNonActivatedUser(NonActivatedUser user) throws MessagingException{
-		URI nonActivatedUserUri = defaultTemplate.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
+		URI nonActivatedUserUri = userSecurityService.save(user); 
 //		URI nonActivatedUserUri = defaultTemplate.postForLocation("https://pizzaindent.herokuapp.com/nonactivatedusers", user,NonActivatedUser.class);
 		Long id = defaultTemplate.getForObject(nonActivatedUserUri, NonActivatedUser.class).getId();
 		user.setId(id);
-		sendActivatingMail(user); //TODO uncomment in production
+		sendActivatingMail(user); 
 	}
 
 	/**
@@ -86,7 +86,8 @@ public class UserServiceImpl implements UserService {
 		user.setId(null);																							//id in NonActivatedUser table and in User tables should't be the same
 		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
 //		defaultTemplate.delete("https://pizzaindent.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
-		userSecurityService.save(user);
+//		userSecurityService.save(user);
+		defaultTemplate.postForLocation("http://localhost:8080/users", user,User.class);
 		securityService.autologin(user.getUsername(), user.getPassword());
 	}
 	
@@ -110,6 +111,21 @@ public class UserServiceImpl implements UserService {
 //		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, username);
 
 	}
+
+	@Override
+	public boolean changePassword(String oldPassword, String newPassword) {
+		return false;
+	}
+
+	@Override
+	public void changeMail(String newMail) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName());
+
+		user.setMail(newMail);
+		defaultTemplate.put("http://localhost:8080/users/{id}",user,user.getId());	
+	}
+
 
 
 
