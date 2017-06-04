@@ -3,6 +3,7 @@ package pizzaOrder.client.service.interfaces;
 import java.util.List;
 
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.stars.Stars;
 
 public interface RestaurantService {
 
@@ -12,4 +13,6 @@ public interface RestaurantService {
 //	void checkIfRestaurantExists(Long restaurantId);
 	void addRestaurant(Restaurant restaurant);
 	List<Restaurant> getRestaurantsByCity(String city);
+	Stars getStarsByRestaurantId(Long idRestaurant);
+	void addStar(Long restaurantId, int rating);
 }

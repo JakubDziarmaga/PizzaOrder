@@ -2,17 +2,24 @@ package pizzaOrder.client.controller;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.client.service.interfaces.RestaurantService;
 import pizzaOrder.restService.model.menu.Menu;
+import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.stars.Stars;
 
 @Controller
 public class RestaurantController extends AbstractController{
@@ -32,11 +39,14 @@ public class RestaurantController extends AbstractController{
 
 		Restaurant restaurant = restaurantService.getRestaurantById(idRestaurant);
 		model.addAttribute("restaurant",restaurant);
-		
+
 		getActualUser(model);
 		
 		List<Menu> menuList = menuService.getMenuByRestaurantId(idRestaurant);
 		model.addAttribute("menu", menuList);
+
+		Stars stars = restaurantService.getStarsByRestaurantId(idRestaurant);
+		model.addAttribute("stars", stars);
 
 		return "restaurant";
 	}
@@ -49,5 +59,12 @@ public class RestaurantController extends AbstractController{
 		
 		return restaurant.getPhoto();
 	}
-
+	
+	@RequestMapping(value = "/restaurant/{idRestaurant}/score", method = RequestMethod.POST)
+    public String registration(Integer rating, Model model,@PathVariable("idRestaurant") Long restaurantId) {
+    	        
+		restaurantService.addStar(restaurantId, rating);
+		
+        return "redirect:/restaurant/{idRestaurant}";
+    }
 }

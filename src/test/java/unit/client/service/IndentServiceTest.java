@@ -200,9 +200,9 @@ public class IndentServiceTest {
 		Indent secondIndent = new Indent(2L, false, new User(), new Restaurant(), new Menu(), new Date());
 		Indent thirdIndent = new Indent(3L, true, new User(), new Restaurant(), new Menu(), new Date());
 
-		Restaurant firstRestaurant = new Restaurant(4L, "firstRestaurantName", null, null, 0, null);
-		Restaurant secondRestaurant = new Restaurant(5L, "secondRestaurantName", null, null, 0, null);
-		Restaurant thirdRestaurant = new Restaurant(6L, "thirdRestaurantName", null, null, 0, null);
+		Restaurant firstRestaurant = new Restaurant();
+		Restaurant secondRestaurant = new Restaurant();
+		Restaurant thirdRestaurant = new Restaurant();
 
 		Menu firstMenu = new Menu(7L, 10.0, null, null, null);
 		Menu secondMenu = new Menu(8L, 20.0, null, null, null);

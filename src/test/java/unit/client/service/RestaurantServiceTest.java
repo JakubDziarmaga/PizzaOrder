@@ -57,13 +57,13 @@ public class RestaurantServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		expectedRestaurant = new Restaurant(1L, "first", "firstCity", "firstAddress", 12, 1L);
+		expectedRestaurant = new Restaurant();
 	}
 
 	@Test
 	public void get_all_restaurant_list() throws Exception {
-		Restaurant first = new Restaurant(1L, "first", "firstCity", "firstAddress", 12, 1L);
-		Restaurant second = new Restaurant(2L, "second", "secondcity", "secondAddress", 23, 2L);
+		Restaurant first = new Restaurant();
+		Restaurant second = new Restaurant();
 
 		PagedResources<Restaurant> persistentEntityResource = new PagedResources<Restaurant>(
 				Arrays.asList(first, second), new PageMetadata(1, 0, 10));

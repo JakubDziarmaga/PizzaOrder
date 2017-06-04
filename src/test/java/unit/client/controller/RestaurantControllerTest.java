@@ -61,7 +61,7 @@ public class RestaurantControllerTest {
 	@Test
 	public void show_restaurant_page_with_user_authentication() throws Exception{
 		final Long restaurantId = 4L;
-		Restaurant restaurant = new Restaurant(restaurantId, "restaurantName", "restaurantCity", "restaurantAddress", 123456, 3L);
+		Restaurant restaurant = new Restaurant();
         when(restaurantServiceMock.getRestaurantById(restaurantId)).thenReturn(restaurant);
         
         Menu firstMenu = new Menu();
@@ -94,7 +94,7 @@ public class RestaurantControllerTest {
 	@Test
 	public void show_restaurant_page_without_authentication() throws Exception{
 		final Long restaurantId = 4L;
-		Restaurant restaurant = new Restaurant(restaurantId, "restaurantName", "restaurantCity", "restaurantAddress", 123456, 3L);
+		Restaurant restaurant = new Restaurant();
         when(restaurantServiceMock.getRestaurantById(restaurantId)).thenReturn(restaurant);
         
         Menu firstMenu = new Menu();

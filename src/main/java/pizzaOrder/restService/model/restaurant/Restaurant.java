@@ -9,7 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -17,8 +19,11 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.menu.Menu;
+import pizzaOrder.restService.model.stars.Stars;
 
 @Entity
 public class Restaurant {
@@ -53,6 +58,10 @@ public class Restaurant {
 	private List<Indent> indent;
 	
 	private byte[] photo;
+	
+	@OneToOne
+	@JoinColumn(name="id_stars")
+	private Stars stars;
 
 	//
 	//CONSTRUCTORS
@@ -60,7 +69,7 @@ public class Restaurant {
 	public Restaurant() {
 		super();
 	}
-	public Restaurant(Long id, String name, String city, String address, int phone, Long ownerId) {
+	public Restaurant(Long id, String name, String city, String address, int phone, Long ownerId, Stars stars) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -68,6 +77,7 @@ public class Restaurant {
 		this.address = address;
 		this.phone = phone;
 		this.ownerId = ownerId;
+		this.stars = stars;
 	}
 	
 	//
@@ -143,4 +153,10 @@ public class Restaurant {
 //		this.indent = indent;
 //	}
 
+	public Stars getStars() {
+		return stars;
+	}
+	public void setStars(Stars stars) {
+		this.stars = stars;
+	}
 }

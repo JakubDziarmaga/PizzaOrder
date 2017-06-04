@@ -59,8 +59,8 @@ public class HomeControllerTest {
 	
 	@Test
 	public void showHomePageWithListOfRestaurant() throws Exception {
-		Restaurant first = new Restaurant(1L, "FirstName", "FirstCity", "FirstAddress",1111, 4L);
-		Restaurant second = new Restaurant(2L, "SecondName", "SecondCity", "SecondAddress",2222, 5L);
+		Restaurant first = new Restaurant();
+		Restaurant second = new Restaurant();
  
         when(restaurantServiceMock.getAllRestaurantsList()).thenReturn(Arrays.asList(first, second));
  
@@ -113,8 +113,8 @@ public class HomeControllerTest {
 	
 	@Test 
 	public void showHomePageWithListOfRestaurantWithActivatedUser() throws Exception {
-		Restaurant first = new Restaurant(1L, "FirstName", "FirstCity", "FirstAddress",1111, 4L);
-		Restaurant second = new Restaurant(2L, "SecondName", "SecondCity", "SecondAddress",2222, 5L);
+		Restaurant first = new Restaurant();
+		Restaurant second = new Restaurant();
  
         when(restaurantServiceMock.getAllRestaurantsList()).thenReturn(Arrays.asList(first, second));
 

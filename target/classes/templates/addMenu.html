@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<head> 
+    <title>Add menu</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../../fontello/css/fontello.css" />
+	<link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png"/>
+	<link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
+
+</head>
+<body>
+
+<header>
+		<div id="header_container">
+			 <a th:href="@{'/'}"> 
+	 			<img id="logo" src="../../img/logo.png"/>
+				<h1>PizzaOrder</h1>
+			</a>
+
+			<a th:href="@{'/restaurantOwner'}">
+				<div class="icon-user">Profile</div>
+			</a>				
+			<a th:href="@{'/logout'}">
+				<div class="icon-logout">Logout</div>
+			</a>
+			<div class="clear"></div>
+		</div>
+</header>
+
+<div id="container">
+ 	<form method="POST" th:object="${menu}" onsubmit="return validateForm();">
+		<table id="add_menu">
+			<tr>
+				<td><input type="text" id="menu_name" th:field="*{name}" placeholder="Name" onchange="validate_ingredients()"/></td>
+				<td id="menu_null_name_error">Please enter the name</td>
+				<td id="menu_length_name_error">Name must have between 3 and 20 digits</td>
+			</tr>
+			<tr>
+				<td><input type="number" id="price" th:field="*{price}" placeholder="Price" /></td>
+				<td id="menu_null_price_error">Please enter the price</td>
+				<td id="menu_price_value_error">Price can't be negative</td>
+			</tr>
+			<tr>
+				<td>Ingredients:</td>
+				<td id="menu_ingredients_error">Please choose at least one ingredient.</td>
+			</tr>
+			<tr th:each="ingredient : ${ingredients}">
+				<td>
+				<input name="ingredients" type="checkbox" th:field="${menu.ingredients}" th:value="${ingredient.id}" 
+						th:text="${ingredient.name}" onchange="validate_ingredients()"/>
+				</td>
+				
+			</tr>
+			<tr>
+				<td> <input type="submit" id="blue_button" value="Add"/></td>
+			</tr>
+		</table>
+	</form>
+</div>     
+<div class="socials">
+	<div class="socialdivs">
+		<div class="fb">
+			<i class="icon-facebook"></i>
+		</div>
+		<div class="yt">
+			<i class="icon-youtube"></i>
+		</div>
+		<div class="tw">
+			<i class="icon-twitter"></i>
+		</div>
+		<div class="gplus">
+			<i class="icon-gplus"></i>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+</div>    
+
+</body>
+	<script type="text/javascript">
+    //<![CDATA[
+		function validateForm()
+		{
+			var error=false;
+			document.getElementById('menu_null_name_error').style.display="none";
+			document.getElementById('menu_length_name_error').style.display="none";
+			document.getElementById('menu_null_price_error').style.display="none";
+			document.getElementById('menu_price_value_error').style.display="none";
+			document.getElementById('menu_ingredients_error').style.display="none";
+			
+		    var name = document.getElementById('menu_name');		    
+		    if(name.value.length == 0){		  
+		    	document.getElementById('menu_null_name_error').style.display="block";
+		    	error=true;
+		    }
+		    else if(name.value.length < 3 || name.value.length > 20){		  
+		    	document.getElementById('menu_length_name_error').style.display="block";		
+		    	error=true;
+		    }		    
+
+		    var price = document.getElementById('price');		    
+		    if(price.value ==''){		  
+		    	document.getElementById('menu_null_price_error').style.display="block";		  
+		    	error=true;
+		    }		    
+		    else if(price.value < 0 || price.value > 1000 ){		  
+		    	document.getElementById('menu_price_value_error').style.display="block";		
+		    	error=true;
+		    }
+		    
+		    
+		    var ingredients = document.querySelectorAll('input[type="checkbox"]');
+		    var okay=false;
+		    for(var i=0,l=ingredients.length;i<l;i++)
+		    {
+		        if(ingredients[i].checked)
+		        {
+		            okay=true;
+		            break;
+		        }
+		    }
+		    if(!okay)
+		    {
+		    	document.getElementById('menu_ingredients_error').style.display="block";		    
+		    	error=true;
+		    }
+		    
+		    if(error)		    
+				return false;
+		    else
+		    	return true;
+		}
+	//]]>
+	</script>
+</html>

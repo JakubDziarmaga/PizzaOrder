@@ -64,7 +64,7 @@ public class MenuServiceTest {
 		Ingredients secondIngredient = new Ingredients("pieczarki");
 		
 		testMenu = new Menu(5L, 10.0, null, Arrays.asList(firstIngredient,secondIngredient), null);
-		testRestaurant = new Restaurant(1L, "testName", "testCity", "testAddress", 123456, 10L);
+		testRestaurant = new Restaurant();
 	}
 	
 	@Test(expected = MenuNotFoundException.class)
@@ -84,7 +84,7 @@ public class MenuServiceTest {
     	menuHal.add(new Link("restaurantUrl","restaurant"));   
     	
     	Mockito.when(halTemplate.getForObject(Matchers.anyString(), Matchers.eq(PagedResources.class),eq(expectedMenuId))).thenReturn(menuHal);
-    	Restaurant restaurant = new Restaurant(expectedRestaurantId, null, null, null, 0, null);
+    	Restaurant restaurant = new Restaurant();
     	Mockito.when(halTemplate.getForObject(Matchers.eq("restaurantUrl"), Matchers.eq(Restaurant.class))).thenReturn(restaurant);
 		
 		menuService.checkIfMenuBelongsToRestaurant(expectedRestaurantId,expectedMenuId);
@@ -104,7 +104,7 @@ public class MenuServiceTest {
     	menuHal.add(new Link("restaurantUrl","restaurant"));   
     	
     	Mockito.when(halTemplate.getForObject(Matchers.anyString(), Matchers.eq(PagedResources.class),eq(expectedMenuId))).thenReturn(menuHal);
-    	Restaurant restaurant = new Restaurant(expectedRestaurantId+1, null, null, null, 0, null);									//Make sure restaurant id is different than expectedRestaurantId
+    	Restaurant restaurant = new Restaurant();									//Make sure restaurant id is different than expectedRestaurantId
     	Mockito.when(halTemplate.getForObject(Matchers.eq("restaurantUrl"), Matchers.eq(Restaurant.class))).thenReturn(restaurant);
 		
 		menuService.checkIfMenuBelongsToRestaurant(expectedRestaurantId,expectedMenuId);

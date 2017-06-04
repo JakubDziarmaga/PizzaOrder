@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/users/**", "/registration","/restaurants/**","/menu/**", "/ingredients/**","/indents/**","/role/**","/nonactivatedusers/**" //rest url's
-                    		,"/activate/**","/restaurant/**","/city").permitAll()
+                    		,"/activate/**","/restaurant/**","/city","/stars/**").permitAll()
                     .antMatchers("/css/**","/img/**","/fontello/**").permitAll()
                     .antMatchers("/restaurantOwner/**","/addRestaurant").hasRole("RESTAURANT_OWNER")
                     .antMatchers("/indent/**","/user","/addindents/**","/indent/delete/**","/indent/pay/**").hasRole("USER")                 
