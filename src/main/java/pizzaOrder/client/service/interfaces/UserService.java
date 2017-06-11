@@ -15,4 +15,5 @@ public interface UserService {
 	User getUserByUsername(String username);
 	boolean changePassword(String oldPassword, String newPassword);
 	void changeMail(String newMail);
+	Integer getAmountOfUnpayedIndents();
 }

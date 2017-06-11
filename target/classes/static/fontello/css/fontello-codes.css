@@ -10,4 +10,6 @@
 .icon-twitter:before { content: '\f099'; } /* '' */
 .icon-facebook:before { content: '\f09a'; } /* '' */
 .icon-gplus:before { content: '\f0d5'; } /* '' */
+.icon-circle-empty:before { content: '\f10c'; } /* '' */
 .icon-youtube:before { content: '\f167'; } /* '' */
+.icon-dot-circled:before { content: '\f192'; } /* '' */

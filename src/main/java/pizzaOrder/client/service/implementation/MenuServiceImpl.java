@@ -24,6 +24,7 @@ import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.size.Size;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -82,7 +83,7 @@ public class MenuServiceImpl implements MenuService {
 
 		Menu tempMenu = new Menu();
 		tempMenu.setName(menu.getName());
-		tempMenu.setPrice(menu.getPrice());
+//		tempMenu.setPrice(menu.getPrice());
 		//Post new Menu
 		URI newMenuURI = defaultemplate.postForLocation("http://localhost:8080/menu/", tempMenu);
 //		URI newMenuURI = defaultemplate.postForLocation("https://pizzaindent.herokuapp.com/menu/", tempMenu);
@@ -119,7 +120,8 @@ public class MenuServiceImpl implements MenuService {
 		List<Menu> menu = mapper.convertValue(menuHal, new TypeReference<List<Menu>>() {});
 
 		getIngredientsByMenu(menu);
-
+		getSizeByMenu(menu);
+		
 		return menu;
 	}
 	
@@ -135,5 +137,15 @@ public class MenuServiceImpl implements MenuService {
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			m.setIngredients(ingredients);
 		}
+	}
+	
+	@Override
+	public void getSizeByMenu(List<Menu>  menu) {
+		for (Menu m : menu) {
+			Collection<Size> sizeHal = halTemplate.getForObject("http://localhost:8080/menu/{id}/size", PagedResources.class, m.getId()).getContent();
+			List<Size> sizeList = mapper.convertValue(sizeHal, new TypeReference<List<Size>>() {});
+		
+			m.setSize(sizeList);
+		}			
 	}
 }

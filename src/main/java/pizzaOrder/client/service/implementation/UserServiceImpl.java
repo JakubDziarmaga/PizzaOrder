@@ -1,12 +1,15 @@
 package pizzaOrder.client.service.implementation;
 
 import java.net.URI;
+import java.util.Collection;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
@@ -14,8 +17,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import pizzaOrder.client.service.interfaces.UserService;
+import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
+import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.users.User;
 import pizzaOrder.security.SecurityService;
 import pizzaOrder.security.UserSecurityService;
@@ -30,6 +38,10 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	@Qualifier("halTemplate")
 	private RestTemplate halTemplate;
+	
+	@Autowired
+	@Qualifier("halObjectMapper")
+	private ObjectMapper mapper;
 	
 	@Autowired
 	private UserSecurityService userSecurityService;
@@ -98,7 +110,15 @@ public class UserServiceImpl implements UserService {
 	@Override 
 	public Long getActualUserId(){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
+		System.out.println(auth.getPrincipal());
+		if(auth.getPrincipal().equals("[anonymousUser]")){
+			System.out.println("KRZYCZ");
+			return null;
+		}
+		if(auth.getPrincipal().equals("anonymousUser")){
+			System.out.println("TRYBSON");
+			return null;
+		}
 		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
 //		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, auth.getName()).getId();
 
@@ -126,7 +146,21 @@ public class UserServiceImpl implements UserService {
 		defaultTemplate.put("http://localhost:8080/users/{id}",user,user.getId());	
 	}
 
-
-
-
+	@Override
+	public Integer getAmountOfUnpayedIndents() {
+		Long id = getActualUserId();
+		if(id==null) return 0;
+		
+		Collection<Indent> indentHal = halTemplate.getForObject("http://localhost:8080/users/{id}/indent", PagedResources.class,id).getContent();
+		List<Indent> indentList = mapper.convertValue(indentHal, new TypeReference<List<Indent>>() {});
+		
+		int amount = 0;
+		
+		for(Indent indent:indentList){
+			if(!indent.isPaid()) amount++;
+			
+		}
+		return amount;
+	}
+	
 }

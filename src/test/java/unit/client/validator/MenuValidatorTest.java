@@ -35,7 +35,7 @@ public class MenuValidatorTest {
 		
 		Menu menu = new Menu();
 		menu.setName("");						//Name is null
-		menu.setPrice(3.0);						//Price is OK
+		//menu.setPrice(3.0);						//Price is OK
 		menu.setIngredients(ingredientsList);	//IngredientsList is OK
 		
         BindException errors = new BindException(menu, "menu");
@@ -57,7 +57,7 @@ public class MenuValidatorTest {
 		
 		Menu menu = new Menu();
 		menu.setName("qwertyuioqwertyuiopqwertgyhujik");		//Name is too long
-		menu.setPrice(3.0);										//Price is OK
+		//menu.setPrice(3.0);										//Price is OK
 		menu.setIngredients(ingredientsList);					//IngredientsList is OK
 		
         BindException errors = new BindException(menu, "menu");
@@ -79,7 +79,7 @@ public class MenuValidatorTest {
 		
 		Menu menu = new Menu();
 		menu.setName("qw");										//Name is too short
-		menu.setPrice(3.0);										//Price is OK
+		//menu.setPrice(3.0);										//Price is OK
 		menu.setIngredients(ingredientsList);					//IngredientsList is OK
 		
         BindException errors = new BindException(menu, "menu");
@@ -122,7 +122,7 @@ public class MenuValidatorTest {
 		
 		Menu menu = new Menu();
 		menu.setName("qwertyuio");									//Name is OK
-		menu.setPrice(-3.0);										//Price is negative
+		//menu.setPrice(-3.0);										//Price is negative
 		menu.setIngredients(ingredientsList);						//IngredientsList is OK
 		
         BindException errors = new BindException(menu, "menu");
@@ -140,7 +140,7 @@ public class MenuValidatorTest {
 		
 		Menu menu = new Menu();
 		menu.setName("qwertyuio");									//Name is OK
-		menu.setPrice(3.0);											//Price is OK
+		//menu.setPrice(3.0);											//Price is OK
 		menu.setIngredients(new ArrayList<Ingredients>());			//IngredientsList is empty
 
         BindException errors = new BindException(menu, "menu");
@@ -162,7 +162,7 @@ public class MenuValidatorTest {
 		
 		Menu menu = new Menu();
 		menu.setName("qwertyuio");
-		menu.setPrice(3.0);
+		//menu.setPrice(3.0);
 		menu.setIngredients(ingredientsList);
 		
         BindException errors = new BindException(menu, "menu");

@@ -7,7 +7,22 @@
 	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
     <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
 	<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+//<![CDATA[
+	$(document).ready(function() {
+		var li = document.getElementsByClassName("user_order_list")[0].getElementsByTagName("LI");
 
+		for(var i = 0,j=li.length;i<j;i++){
+			if(li[i].getElementsByClassName("indents_buttons")[0].getElementsByClassName("red_indent").length>0)
+				li[i].style.backgroundColor  = "#ffe6e6";
+			else
+				li[i].style.backgroundColor  = "#e6ffe6";
+
+		}
+	});
+//]]>
+</script>
 </head>
 <body>
 
@@ -43,38 +58,39 @@
 
 
 <ol class="user_order_list">
-	<span th:each="indent : ${indents}">
-		<li id="restaurant_data">
-			<div id="name" th:text="${indent.restaurant.name}"></div>
+	<li th:each="indent : ${indents}">
+		<div class="restaurant_data">
+			<div class="name" th:text="${indent.restaurant.name}"></div>
 			<div class="icon-location"></div>
-			<div id="address" th:text="${indent.restaurant.city}+' ul.'+${indent.restaurant.address}"></div> 
+			<div class="address" th:text="${indent.restaurant.city}+' ul.'+${indent.restaurant.address}"></div> 
 			<div class="clear"></div>
 			<div class ="mobile"><div class="icon-mobile"></div></div>
-			<div id="phone" th:text="${indent.restaurant.phone}"></div>
+			<div class="phone" th:text="${indent.restaurant.phone}"></div>
 			<div class="clear"></div>			
-		</li>
-		<li id="pizza_data">
-			<div id="name" th:text="${indent.menu.name}">Name</div>
-			<div id="ingredients" >
+		</div>
+		<div class="pizza_data">
+			<div class="name" th:text="${indent.menu.name}">Name</div>
+			<div class="pizza_size" th:text="${indent.size.name}">Size</div>
+			<div class="ingredients" >
 				<span th:each="ingredient : ${indent.menu.getIngredients()}">
 					<span th:text="${ingredient.name}"></span>
 				</span>
 			</div>		
-		</li>
-		<li id="price" th:text="${indent.getMenu().getPrice()}+'zl'">
-		</li>
-		<li>
-			<div id="red_indent" th:unless="${indent.isPaid()}" class="buttons">
+		</div>
+		<div class="price" th:text="${indent.size.price}+'zl'">
+		</div>
+		<div class="indents_buttons">
+			<div class="red_indent" th:unless="${indent.isPaid()}" >
 				<a th:href="@{'/indent/pay/'+${indent.id}}"><div id="blue_button">Pay</div></a>
 				<a th:href="@{'indent/delete/'+${indent.id}}"><div id="blue_button">Delete</div></a>
 			</div>
-			<div id="green_indent" th:if="${indent.isPaid()}" class="date" th:text="${indent.getFormattedDate()}" >
+			<div class="green_indent" th:if="${indent.isPaid()}" th:text="${indent.getFormattedDate()}" >
 			</div>
-		</li>
+		</div>
 		<div class="clear"></div>
-	</span>
+	</li>
 </ol>
-
+<div class="claer"></div>
 </div>
 
 <div class="socials">

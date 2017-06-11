@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pizzaOrder.client.service.interfaces.RestaurantService;
+import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.restService.model.restaurant.Restaurant;
 
 @Controller
@@ -20,6 +21,9 @@ public class HomeController extends AbstractController{
 	
 	@Autowired
 	private RestaurantService restaurantService;
+	
+	@Autowired
+	private UserService userService;
 	
 	/**
 	 * Homepage
@@ -31,6 +35,8 @@ public class HomeController extends AbstractController{
 
 		List<Restaurant> restaurantList = restaurantService.getAllRestaurantsList();
 		model.addAttribute("restaurants", restaurantList); 
+
+
 
 		getActualUser(model);
 		

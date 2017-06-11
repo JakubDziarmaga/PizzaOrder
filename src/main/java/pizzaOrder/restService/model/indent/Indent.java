@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.size.Size;
+import pizzaOrder.restService.model.stars.Stars;
 import pizzaOrder.restService.model.users.User;
 
 @Entity
@@ -51,6 +54,11 @@ public class Indent
     @Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+	//@JsonBackReference
+	@JoinColumn(name = "id_size")
+	private Size size;
+	
 	@JsonIgnore
 	public String getFormattedDate(){
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -64,7 +72,7 @@ public class Indent
 	public Indent(){		
 	}
 	
-	public Indent(Long id, boolean isPaid, User user, Restaurant restaurant, Menu menu, Date date) {
+	public Indent(Long id, boolean isPaid, User user, Restaurant restaurant, Menu menu, Date date,Size size) {
 		super();
 		this.id = id;
 		this.isPaid = isPaid;
@@ -72,6 +80,7 @@ public class Indent
 		this.restaurant = restaurant;
 		this.menu = menu;
 		this.date = date;
+		this.size = size;
 	}	
 	
 	//
@@ -113,6 +122,14 @@ public class Indent
 	}
 	public void setDate(Date dateTime) {
 		this.date = dateTime;
+	}
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
 	}	
 
 }

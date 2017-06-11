@@ -17,10 +17,10 @@ public class IndentController {
 	/**
 	 * Add indent to user cart
 	 */
-	@RequestMapping(value = "/addindents/{idRestaurant}/{idMenu}")
-	public String addIndents(@PathVariable("idRestaurant") Long idRestaurant, @PathVariable("idMenu") Long idMenu) {
+	@RequestMapping(value = "/addindents/{idRestaurant}/{idMenu}/{idSize}")
+	public String addIndents(@PathVariable("idRestaurant") Long idRestaurant, @PathVariable("idMenu") Long idMenu, @PathVariable("idSize") Long idSize) {
 
-		indentService.addIndents(idRestaurant, idMenu);
+		indentService.addIndents(idRestaurant, idMenu, idSize);
 
 		return "redirect:/restaurant/{idRestaurant}";
 	}

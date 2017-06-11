@@ -21,6 +21,7 @@ import org.hibernate.annotations.FetchMode;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.size.Size;
 
 @Entity
 public class Menu {
@@ -31,7 +32,6 @@ public class Menu {
 
 	private String name;
 	
-	private Double price;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_restaurant")
@@ -46,22 +46,19 @@ public class Menu {
 	@Fetch(value = FetchMode.SELECT)
 	private List<Indent> indent;
 
+	@OneToMany(mappedBy = "menu", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@Fetch(value = FetchMode.SELECT)
+	private List<Size> size;
+	
 	//
 	//CONSTRUCTORS
 	//
 	public Menu() {
 	}
 
-	public Menu(Double price) {
-		super();
-		this.price = price;
-	}
-	
-
 	public Menu(Long id, Double price, Restaurant restaurant, List<Ingredients> ingredients, List<Indent> indent) {
 		super();
 		this.id = id;
-		this.price = price;
 		this.restaurant = restaurant;
 		this.ingredients = ingredients;
 		this.indent = indent;
@@ -86,14 +83,6 @@ public class Menu {
 		this.name = name;
 	}
 
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
@@ -116,6 +105,14 @@ public class Menu {
 
 	public void setIndent(List<Indent> indent) {
 		this.indent = indent;
+	}
+
+	public List<Size> getSize() {
+		return size;
+	}
+
+	public void setSize(List<Size> size) {
+		this.size = size;
 	}
 
 }

@@ -2,7 +2,9 @@ package pizzaOrder.client.service.interfaces;
 
 import java.util.List;
 
+import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.size.Size;
 import pizzaOrder.restService.model.stars.Stars;
 
 public interface RestaurantService {

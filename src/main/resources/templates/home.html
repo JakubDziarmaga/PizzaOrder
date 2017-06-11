@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css"	href="../fontello/css/fontello.css" />
 <link href="https://fonts.googleapis.com/css?family=Dosis:200,400"	rel="stylesheet" />
 <link rel="icon" type="image/png" sizes="16x16"	href="../img/favicon-16x16.png" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script>
 	function show_login_form() {
@@ -20,6 +21,120 @@
 		document.getElementById('id01').style.display = 'none';
 	}
 </script>
+	<script>
+    //<![CDATA[
+		function sort_by_amount_of_votes()
+		{
+			
+			var list = document.getElementsByClassName("main_list");
+			var li = list[0].getElementsByTagName("LI");
+
+			var tempAmount = [];
+			var tempLi = [];
+			for(var i = 0,j=li.length;i<j;i++){
+				tempAmount.push(li[i].getElementsByClassName("home_star_rating")[0].getElementsByClassName("star_amount")[0].innerHTML.replace(" votes", ""));
+				tempLi.push(li[i]);
+			}
+			
+			tempAmount.sort(function (a, b) {  return a - b;  });
+			tempAmount.reverse();
+
+			for(var i = 0,j=li.length;i<j;i++){
+				for(var k = i; k<j;k++){
+					if(tempAmount[i]==tempLi[k].getElementsByClassName("home_star_rating")[0].getElementsByClassName("star_amount")[0].innerHTML.replace(" votes", "")){
+						$('ol li').eq( k ).insertBefore("ol li:eq("+i+")");
+						break;
+					}
+				}
+			}
+		}
+	//]]>
+	</script>
+	<script>
+    //<![CDATA[
+		function sort_by_rate()
+		{
+			var list = document.getElementsByClassName("main_list");
+			var li = list[0].getElementsByTagName("LI");
+			var tempRate = [];
+			var tempLi = [];
+
+			for(var i = 0,j=li.length;i<j;i++){
+				tempRate.push(li[i].getElementsByClassName("home_star_rating")[0].getElementsByClassName("home_star_rating_top")[0].style.getPropertyValue("width").replace("%", ""));
+				tempLi.push(li[i]);
+			}
+			
+			tempRate.sort(function (a, b) {  return a - b;  });
+			tempRate.reverse();
+
+			for(var i = 0,j=li.length;i<j;i++){
+				for(var k = i; k<j;k++){
+					if(tempRate[i]==tempLi[k].getElementsByClassName("home_star_rating")[0].getElementsByClassName("home_star_rating_top")[0].style.getPropertyValue("width").replace("%", "")){
+						$('ol li').eq( k ).insertBefore("ol li:eq("+i+")");
+						break;
+					}
+				}
+			}
+		}
+	//]]>
+	</script>
+	<script>
+    //<![CDATA[
+		function sort_by_name()
+		{
+			var list = document.getElementsByClassName("main_list");
+			var li = list[0].getElementsByTagName("LI");
+			var tempName = [];
+			var tempLi = [];
+
+			for(var i = 0,j=li.length;i<j;i++){
+				tempName.push(li[i].getElementsByClassName("restaurant_info")[0].getElementsByClassName("name")[0].innerHTML.toLowerCase());
+				tempLi.push(li[i]);
+			}
+			
+			tempName.sort();
+
+			for(var i = 0,j=li.length;i<j;i++){
+				for(var k = i; k<j;k++){
+					if(tempName[i]==tempLi[k].getElementsByClassName("restaurant_info")[0].getElementsByClassName("name")[0].innerHTML.toLowerCase()){
+						$('ol li').eq( k ).insertBefore("ol li:eq("+i+")");
+						break;
+					}
+				}
+			}
+		}
+	//]]>
+	</script>
+	<script>
+	$('input[name=radios]').mouseup(function(){
+	   $('input[name=radios]:checked').removeAttr('checked');
+	})
+	</script>
+	<script>
+    //<![CDATA[
+
+	$(document).ready(function() {
+	var NavY = $('#sort_container').offset().top;
+	var stickyNav = function(){
+	var ScrollY = $(window).scrollTop();
+	console.log(NavY); 
+	if (ScrollY > NavY-20) { 
+		$('#sort_container').addClass('sticky');
+	} else {
+		$('#sort_container').removeClass('sticky'); 
+	}
+	};
+	 
+	stickyNav();
+	 
+	$(window).scroll(function() {
+		stickyNav();
+	});
+	});
+	
+
+	//]]>
+	</script>
 </head>
 <body>
 
@@ -36,12 +151,15 @@
 			</div>
 			<div id="loggedUser" th:if="${actualUser} != null">
 				<a th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}" th:href="@{'/user'}">
+					<div class="amount_of_unpayed_indents" th:if="${unpayedIndents}>0" th:text="${unpayedIndents}"></div>
 					<div class="icon-user">Profile</div>
 				</a> 
 				<a th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}" th:href="@{'/restaurantOwner'}">
 					<div class="icon-user">Profile</div>
 				</a> 
+				<div class="clear"></div>
 				<a th:href="@{'/logout'}">
+					<div class="amount_of_unpayed_indents" th:if="${unpayedIndents}>0" th:text="${unpayedIndents}" style="opacity:0;"></div>			
 					<div class="icon-logout">Logout</div>
 				</a>
 				<div class="clear"></div>
@@ -60,25 +178,41 @@
 		</div>
 	</div>
 	<div id="container">
-
+	<div id="sort_container">
+		<h2>Sort by:</h2>
+		  <input type="radio" name="sort" onchange="sort_by_name()">Name</input><br />
+		  <input type="radio" name="sort" onchange="sort_by_rate()">Rating</input><br />
+		  <input type="radio" name="sort" onchange="sort_by_amount_of_votes()">Popularity</input><br />
+		  <input type="hidden" id="radio-previous" name="radio-previous" />
+	</div>
+	
 
 		<ol class="main_list">
 			<li th:each="restaurant : ${restaurants}">
 				<img id="restaurant_logo" th:src="'/restaurant/'+${restaurant.id}+'/image.png'" alt="restaurant_image"/>
-				<div id="restaurant_info">
+				<div class="restaurant_info">
 					<div class="name" th:text="${restaurant.name}"></div>
 					<div class="icon-location"></div>
 					<div class="city" th:text="${restaurant.city}+', ul. '+${restaurant.address}">RestaurantAddress</div>
+					<div class="icon-mobile"></div>
+					<div class="phone" th:text="${restaurant.phone}">RestaurantPhone></div>
 				</div>
-				<div class="phone" th:text="${restaurant.phone}">RestaurantPhone></div>
+				<div class = "home_star_rating">
+					<div class="home_star_rating_top" th:style="'width:'+${restaurant.stars.mean}/5*100+'%'">
+					<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+					<div class="home_star_rating_bottom">		
+					<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+					</div>
+					<div class="clear"></div>
+					<div class="star_amount" th:text="${restaurant.stars.amount}+' votes'"></div>
+				</div>
 				<div class="menu_href">
 					<a th:href="@{'/restaurant/' + ${restaurant.id}}">Check menu</a>
 				</div>
 				<div class="clear"></div>
 			</li>
 		</ol>
-
-
+	<div class="clear"></div>
 
 		<!-- The Modal -->
 		<div id="id01" class="modal">
@@ -174,7 +308,7 @@
 			}
 		}
 	</script>
-	
+
 
 </body>
 </html>

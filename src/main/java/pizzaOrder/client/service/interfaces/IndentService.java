@@ -13,7 +13,7 @@ public interface IndentService {
 	void payForIndent(Long idIndent);
 	void checkIfActualUserIsOwnerOfIndent(Long idIndent);
 	void deleteIndent(Long idIndent);
-	void addIndents(Long idRestaurant, Long idMenu);
+	void addIndents(Long idRestaurant, Long idMenu, Long idSize);
 	List<Indent> getPayedIndentsByRestaurantId(Long restaurantId);
 	List<Indent> getIndentsByUsername(String username);
 

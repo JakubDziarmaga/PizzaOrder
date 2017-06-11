@@ -7,12 +7,24 @@
 	<link rel="stylesheet" type="text/css" href="../fontello/css/fontello.css" />
     <link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
 	<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png"/>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+	
 
 <script>
     function klikaj(i) {
         document.getElementById(i).style.display = 'block';
     }
+</script>
+<script>
+	function choose_size(i) {
+		$('.menu_size').each(function(){
+		    $(this).css("display","none");
+		 });
+		$(i).find(".menu_size").css("display", "block");
+
+
+	}
 </script>
 </head>
 <body>
@@ -29,12 +41,15 @@
 			</div>
 			<div id="loggedUser" th:if="${actualUser} != null">
 				<a th:if="${actualUser.getAuthorities().toString().equals('[ROLE_USER]')}" th:href="@{'/user'}">
+					<div class="amount_of_unpayed_indents" th:if="${unpayedIndents}>0" th:text="${unpayedIndents}"></div>
 					<div class="icon-user">Profile</div>
 				</a> 
 				<a th:if="${actualUser.getAuthorities().toString().equals('[ROLE_RESTAURANT_OWNER]')}" th:href="@{'/restaurantOwner'}">
 					<div class="icon-user">Profile</div>
 				</a> 
+				<div class="clear"></div>
 				<a th:href="@{'/logout'}">
+					<div class="amount_of_unpayed_indents" th:if="${unpayedIndents}>0" th:text="${unpayedIndents}" style="opacity:0;"></div>			
 					<div class="icon-logout">Logout</div>
 				</a>
 				<div class="clear"></div>
@@ -63,7 +78,7 @@
 			<div class="star-ratings-css" style="float:left;">
 				<div class="star-ratings-css-top" th:style="'width:'+${stars.mean}/5*100+'%'"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
 				<div class="star-ratings-css-bottom">		
-					<form th:action="'/restaurant/'+${restaurant.id}+'/score'" method="post">			
+					<form th:action="'/score/'+${restaurant.id}" method="post">			
 						<fieldset class="rating">
 						    <input type="radio" onChange='this.form.submit();' id="star5" name="rating" value="5" /><label class = "full" for="star5" >★</label>
 						    <input type="radio" onChange='this.form.submit();' id="star4" name="rating" value="4" /><label class = "full" for="star4" >★</label>
@@ -85,18 +100,33 @@
 			<div class="price"><h2>Price</h2></div>
 			<div class="clear"></div>
 		</li>
-		<li th:each="menu : ${menu}">
+		<li th:each="menu : ${menu}" onclick="choose_size(this);">
 			<div class="name" th:text="${menu.name}">Name</div>
 			<div class="ingredients" >
 				<span th:each="ingredients : ${menu.getIngredients()}">
 					<span th:text="${ingredients.name}"></span>
 				</span>
 			</div>			
-			<div class="price" th:text="${menu.price}+'zł'"><b>Price</b></div>		
-			<div class="add_button"><a th:href="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}"><i class="icon-plus"></i></a></div>	
+			<!-- <div class="price" th:text="${menu.price}+'zł'"><b>Price</b></div>		 -->
+			<div class="add_button" onclick="choose_size('${restaurant.id}');"><i class="icon-plus"></i>
+			<!-- <a th:href="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}"><i class="icon-plus"></i></a>-->
+			</div>	
 			<div class="clear"></div>
+			<ol class="menu_size">
+				<li th:each="size : ${menu.size}" >
+					<div class="size_name" th:text="${size.name}"></div>
+					<div class="size_price" th:text="${size.price}"></div>
+					<div class="add_button" onclick="choose_size('${restaurant.id}');">
+					<a th:href="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}+'/'+${size.id}}"><i class="icon-plus"></i></a>
+					</div>	
+					<div class="clear"></div>
+				</li>
+			</ol>
 		</li>
 	</ol>
+	
+
+	
 </div>
 <div class="socials">
 	<div class="socialdivs">

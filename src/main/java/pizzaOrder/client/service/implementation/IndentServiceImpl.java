@@ -32,6 +32,7 @@ import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.size.Size;
 import pizzaOrder.restService.model.users.User;
 
 @Service
@@ -127,7 +128,7 @@ public class IndentServiceImpl implements IndentService {
 	 * Link it with actual user, menu and restaurant
 	 */
 	@Override
-	public void addIndents(Long idRestaurant, Long idMenu) {
+	public void addIndents(Long idRestaurant, Long idMenu, Long idSize) {
 		
 		restaurantService.getRestaurantById(idRestaurant);
 		menuService.checkIfMenuExists(idMenu);
@@ -148,6 +149,11 @@ public class IndentServiceImpl implements IndentService {
 //		HttpEntity<String> restaurantEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/restaurants/" + idRestaurant, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
 
+		//Posting size to indent
+		HttpEntity<String> sizeEntity = new HttpEntity<String>("http://localhost:8080/size/" + idSize, reqHeaders);
+		defaultTemplate.exchange(newIndentURI + "/size", HttpMethod.PUT, sizeEntity, String.class);
+
+		
 		//Posting user to indent
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
@@ -229,10 +235,12 @@ public class IndentServiceImpl implements IndentService {
 
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			
+			Size size = defaultTemplate.getForObject("http://localhost:8080/indents/{indentId}/size", Size.class,indent.getId());
 			//Link entities
 			menu.setIngredients(ingredients);			
 			indent.setMenu(menu);
 			indent.setRestaurant(restaurant);
+			indent.setSize(size);
 		}
 		return indents;
 	}

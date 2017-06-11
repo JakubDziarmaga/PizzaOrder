@@ -39,6 +39,7 @@ public class UserProfileController extends AbstractController{
 		
 		List<Indent> indentsList = indentService.getIndentsByUsername(auth.getName());
 		model.addAttribute("indents", indentsList);
+		
 		return "user";
 	}
 	

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.client.service.interfaces.RestaurantService;
+import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 import pizzaOrder.restService.model.restaurant.Restaurant;
@@ -30,6 +31,8 @@ public class RestaurantController extends AbstractController{
 	@Autowired
 	private MenuService menuService;
 	
+	@Autowired
+	private UserService userService;
 	/**
 	 * Show restaurant data with id = idRestaurant
 	 * Show list of menu belong to restaurant
@@ -60,7 +63,7 @@ public class RestaurantController extends AbstractController{
 		return restaurant.getPhoto();
 	}
 	
-	@RequestMapping(value = "/restaurant/{idRestaurant}/score", method = RequestMethod.POST)
+	@RequestMapping(value = "/score/{idRestaurant}", method = RequestMethod.POST)
     public String registration(Integer rating, Model model,@PathVariable("idRestaurant") Long restaurantId) {
     	        
 		restaurantService.addStar(restaurantId, rating);

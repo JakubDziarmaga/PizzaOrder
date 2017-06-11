@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -23,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.menu.Menu;
+import pizzaOrder.restService.model.size.Size;
 import pizzaOrder.restService.model.stars.Stars;
 
 @Entity
@@ -33,17 +33,18 @@ public class Restaurant {
 	@Column(name="id_restaurant")
 	private Long id;
 	
-	@Size(min = 3, max = 30, message = "Please enter your name.")
+	//TODO make sure size is in validation packages
+//	@Size(min = 3, max = 30, message = "Please enter your name.")
 	private String name;
 	
-	@Size(min = 3, max = 20, message = "Please enter your city.")
+//	@Size(min = 3, max = 20, message = "Please enter your city.")
 	private String city;
 	
-	@Size(min = 3, max = 30, message = "Please enter your address.")
+//	@Size(min = 3, max = 30, message = "Please enter your address.")
 	private String address;
 	
-	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")
-	@Max(value = 999999999, message="Phone number must have between 7 and 9 digits")
+//	@Min(value = 1000000, message="Phone number must have between 7 and 9 digits")
+//	@Max(value = 999999999, message="Phone number must have between 7 and 9 digits")
 	private int phone;
 	
 	@Column(name="id_owner")
@@ -62,7 +63,10 @@ public class Restaurant {
 	@OneToOne
 	@JoinColumn(name="id_stars")
 	private Stars stars;
+	
 
+	
+	
 	//
 	//CONSTRUCTORS
 	//
@@ -145,13 +149,13 @@ public class Restaurant {
 		this.photo = photo;
 	}
 
-//	public List<Indent> getIndent() {
-//		return indent;
-//	}
-//
-//	public void setIndent(List<Indent> indent) {
-//		this.indent = indent;
-//	}
+	public List<Indent> getIndent() {
+		return indent;
+	}
+
+	public void setIndent(List<Indent> indent) {
+		this.indent = indent;
+	}
 
 	public Stars getStars() {
 		return stars;

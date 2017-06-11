@@ -27,6 +27,7 @@ header
 	padding-bottom: 10px;
 	/*text-allign:center;*/
 	/*background-color:#1076DC;*/
+	height:4000px;
 	
 }
 
@@ -62,20 +63,20 @@ header img
 .icon-user
 {
 	float:left;	
-	width:150px;
+	width:136px;
 	height:30px;
 	font-size:18px;
-	padding:5px;
+	padding:5px 5px 5px 0px;
 	cursor: pointer;
 }
 
 .icon-logout
 {
 	float:left;	
-	width:150px;
+	width:136px;
 	height:30px;
 	font-size:18px;
-	padding:5px;
+	padding:5px 5px 5px 0px;
 	cursor: pointer;
 }
 
@@ -285,8 +286,10 @@ table
 {
 	list-style-type: none;
 	font-size:30px;
-	padding:20px 40px;
+	padding:20px 20px;
 	margin:0;
+	width:900px;
+	float:right;
 }
 
 .main_list > li
@@ -306,19 +309,12 @@ table
 	background-color:#F5F5F5;
 }
 
-.main_list > li:first-child
-{
-	border-bottom: 1px solid black;
-}
 
-.main_list > li:hover:first-child
-{
-	background-color:white;
-}
 
-li > #restaurant_info
+
+li > .restaurant_info
 {
-	width:500px;
+	width:280px;
 	padding:10px;
 	float:left;
 }
@@ -328,30 +324,45 @@ li > #restaurant_logo
 	width:100px;
 	height:100px;
 	padding:10px;
+	margin-top:10px;
 	float:left;
 }
-#restaurant_info > .name
+.restaurant_info > .name
 {
 	height:40px;
-	width:450px;
+	width:260px;
 	font-weight:700;
 	margin:5px 10px;
 	
 }
 
-#restaurant_info > .city
+.restaurant_info > .city
 {
-	height:40px;
-	width:450px;
+	height:30px;
+	width:260px;
 	margin:5px 10px;
+	font-size:20px;
 }
 
-#restaurant_info > .icon-location
+.restaurant_info > .icon-location
 {
-	font-size:30px;
+	font-size:20px;
 	
 }
 
+.restaurant_info > .phone
+{
+	height:30px;
+	width:260px;
+	margin:5px 10px;
+	font-size:20px;
+}
+
+.restaurant_info > .icon-mobile
+{
+	font-size:20px;
+	float:left;
+}
 do usuniecia
 .main_list > li > .address
 {
@@ -430,7 +441,6 @@ h2
 .menu_list > li > .name
 {
 	float:left;
-	height:40px;
 	width:250px;
 	margin:5px 10px;
 	
@@ -446,16 +456,14 @@ h2
 .menu_list > li > .price
 {
 	float:left;
-	height:40px;
 	width:150px;
 	margin:5px 10px;
 }
 
 
-.menu_list > li > .add_button
+.menu_size > li > .add_button
 {
 	float:left;
-	height:40px;
 	width:50px;	
 	background-color:#1076DC;
 	border-radius:5px;
@@ -463,7 +471,7 @@ h2
 	margin:5px 10px;
 }
 
-.menu_list > li > .add_button:hover
+.menu_size > li > .add_button:hover
 {
 	background-color:#0056BC;
 }
@@ -545,43 +553,45 @@ h2
 {
 	list-style-type: none;
 	margin: 0;
-	padding: 40px;
-	
+	padding: 35px;
+	width:880px;
+	float:left;
 }
 
-.user_order_list > span > li
+.user_order_list  > li
 {
 	float:left;
 	padding:10px;
 }
 
 
-#restaurant_data
+.restaurant_data
 {
+	float:left;
 	width:300px;
 }
 
-#restaurant_data >#name
+.restaurant_data >.name
 { 
 	font-size:30px;
 	font-weight:bold;
 }
 
 
-span > li > .icon-location
+ li > .icon-location
 {
 	font-size:20px;
 	float:left;
 }
 
-#restaurunt_data >#address
+.restaurunt_data >.address
 { 
 	font-size:20px;
 	float:left;
 	
 }
 
-#restaurant_data > .icon-mobile
+.restaurant_data > .icon-mobile
 {
 	font-size:20px;
 }
@@ -591,30 +601,35 @@ span > li > .icon-location
 	float:left
 }
 
-#restaurunt_data >#phone
+.restaurunt_data >.phone
 { 
 	font-size:20px;
 	float:left;
 }
 
-#pizza_data > #name
+.pizza_data > .name
 {
 	font-size:30px;
 	font-weight:bold;
 }
-
-#pizza_data > #ingredients
+.pizza_data > .pizza_size
 {
-	font-size:20px;
+	font-size:22px;
+}
+.pizza_data > .ingredients
+{
+	font-size:18px;
 }
 
-#pizza_data
+.pizza_data
 {
+	float:left;
 	width:300px;
 }
 
-#price
+.price
 {
+	float:left;
 	font-size:20px;
 	width:70px;
 }
@@ -625,7 +640,11 @@ span > li > .icon-location
 	
 }
 
-
+.indents_buttons{
+	width:150px;
+	padding: 0px 20px;
+	float:left;
+}
 
 #blue_button
 {
@@ -711,7 +730,8 @@ span > li > .icon-location
 
 .user_profile
 {
-	
+	width:250px;	
+	float:left;
 }
 
 .user_data
@@ -996,3 +1016,90 @@ b
 .rating> label:hover, /* hover current star */
 .rating> label:hover ~ label { color: #FFD700; opacity:1; } /* hover previous stars in list */
 
+.home_star_rating {
+  unicode-bidi: bidi-override;
+  font-size: 40px;
+  width: 166.55px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0;
+  text-shadow: 0px 1px 0 #a2a2a2;
+  margin: 20px 50px 27px 50px;
+  float:left;
+}
+.home_star_rating_top {
+    color: #FFD700;
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+ }
+ 
+.home_star_rating_bottom {
+    padding: 0;
+    color: #b5b5b5;
+    display: block;
+    z-index: 0;
+    opacity: 0.2;
+ }
+ 
+ .star_amount{
+ 	font-size:16px;
+ 	text-align:center;
+ }
+ 
+ #sort_container{
+	width: 180px;
+    margin: 20px;
+    float: left;
+    padding: 20px;
+    background-color:#FBB917;
+    font-size:18px;
+    border-radius:10px;
+ }
+ 
+ input[type="radio"]{
+ 	width:10px;
+ 	margin:8px 5px;
+ }
+ 
+.sticky{
+	width:100%;
+	position:fixed;
+	top:0;
+	z-index:100;
+	float:left;
+}
+
+.amount_of_unpayed_indents{
+	background-color:red;
+	float:left;
+	padding:0px 4px;
+	min-width: 4px;
+	font-size:14px;
+}
+
+#loggedUser,#unloggedUser{
+	width:160px;
+	float:left;
+}
+
+.menu_size{
+	display:none;
+	list-style-type:none;
+}
+
+.size_name{
+	float:left;
+	width:200px;
+}
+
+.size_price{
+	float:left;
+	width:200px;
+	
+	
+}

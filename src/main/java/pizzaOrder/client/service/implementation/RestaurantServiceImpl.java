@@ -26,6 +26,7 @@ import pizzaOrder.client.service.interfaces.RestaurantService;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.size.Size;
 import pizzaOrder.restService.model.stars.Stars;
 import pizzaOrder.restService.model.users.User;
 
@@ -48,7 +49,15 @@ public class RestaurantServiceImpl implements RestaurantService {
 	 * @return List of all restaurants in db
 	 */
 	public List<Restaurant> getAllRestaurantsList() {
-		return new ArrayList<Restaurant>(halTemplate.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent());
+		Collection<Restaurant> restaurantsHal = halTemplate.getForObject("http://localhost:8080/restaurants", PagedResources.class).getContent();
+		List<Restaurant> restaurantList = mapper.convertValue(restaurantsHal, new TypeReference<List<Restaurant>>() {});
+
+		for(Restaurant restaurant:restaurantList){
+			Stars stars = defaultTemplate.getForObject("http://localhost:8080/restaurants/{restaurantId}/stars", Stars.class, restaurant.getId());
+			restaurant.setStars(stars);
+			System.out.println(stars.getMean());
+		}
+		return restaurantList;
 //		return new ArrayList<Restaurant>(halTemplate.getForObject("https://pizzaindent.herokuapp.com/restaurants", PagedResources.class).getContent());
 	}
 
@@ -114,7 +123,17 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Override
 	public List<Restaurant> getRestaurantsByCity(String city) {
-		return new ArrayList<Restaurant>(halTemplate.getForObject("http://localhost:8080/restaurants/search/city?city={city}", PagedResources.class, city).getContent());
+		Collection<Restaurant> restaurantsHal = halTemplate.getForObject("http://localhost:8080/restaurants/search/city?city={city}", PagedResources.class, city).getContent();
+		List<Restaurant> restaurantList = mapper.convertValue(restaurantsHal, new TypeReference<List<Restaurant>>() {});
+
+		for(Restaurant restaurant:restaurantList){
+			Stars stars = defaultTemplate.getForObject("http://localhost:8080/restaurants/{restaurantId}/stars", Stars.class, restaurant.getId());
+			restaurant.setStars(stars);
+			System.out.println(stars.getMean());
+		}
+		return restaurantList;
+		
+		//return new ArrayList<Restaurant>(halTemplate.getForObject("http://localhost:8080/restaurants/search/city?city={city}", PagedResources.class, city).getContent());
 //		return new ArrayList<Restaurant>(halTemplate.getForObject("https://pizzaindent.herokuapp.com/restaurants/search/city?city={city}", PagedResources.class, city).getContent());
 
 	}
@@ -162,4 +181,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 		HttpEntity<String> userEntity = new HttpEntity<String>(userHref, reqHeaders);
 		defaultTemplate.exchange(starsHref +"/users", HttpMethod.POST, userEntity, String.class);
 	}
+
+
 }

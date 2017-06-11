@@ -7,13 +7,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 
+import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.security.SecurityService;
 
 public abstract class AbstractController {
 	
 	@Autowired
 	protected SecurityService securityService;
-
+	
+	@Autowired
+	private UserService userService;
 	/**
 	 * Get actual user from SecurityContext
 	 * If actual user exists add it to model
@@ -23,6 +26,9 @@ public abstract class AbstractController {
 		if (auth.getPrincipal() != "anonymousUser") {
 			User actualUser = (User) auth.getPrincipal();
 			model.addAttribute("actualUser", actualUser);
+			
+			int amountOfUnpayedIndents = userService.getAmountOfUnpayedIndents();
+			model.addAttribute("unpayedIndents",amountOfUnpayedIndents ); 
 		}
 	}
 }
