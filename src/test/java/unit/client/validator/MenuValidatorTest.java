@@ -34,7 +34,7 @@ public class MenuValidatorTest {
 		ingredientsList.add(ingredient);
 		
 		Menu menu = new Menu();
-		menu.setName("");						//Name is null
+		menu.setNameMenu("");						//Name is null
 		//menu.setPrice(3.0);						//Price is OK
 		menu.setIngredients(ingredientsList);	//IngredientsList is OK
 		
@@ -56,7 +56,7 @@ public class MenuValidatorTest {
 		ingredientsList.add(ingredient);
 		
 		Menu menu = new Menu();
-		menu.setName("qwertyuioqwertyuiopqwertgyhujik");		//Name is too long
+		menu.setNameMenu("qwertyuioqwertyuiopqwertgyhujik");		//Name is too long
 		//menu.setPrice(3.0);										//Price is OK
 		menu.setIngredients(ingredientsList);					//IngredientsList is OK
 		
@@ -78,7 +78,7 @@ public class MenuValidatorTest {
 		ingredientsList.add(ingredient);
 		
 		Menu menu = new Menu();
-		menu.setName("qw");										//Name is too short
+		menu.setNameMenu("qw");										//Name is too short
 		//menu.setPrice(3.0);										//Price is OK
 		menu.setIngredients(ingredientsList);					//IngredientsList is OK
 		
@@ -100,7 +100,7 @@ public class MenuValidatorTest {
 		ingredientsList.add(ingredient);
 		
 		Menu menu = new Menu();
-		menu.setName("qwertyuio");								//Name is OK
+		menu.setNameMenu("qwertyuio");								//Name is OK
 		menu.setIngredients(ingredientsList);					//IngredientsList is OK
 																//Price is Null
         BindException errors = new BindException(menu, "menu");
@@ -121,7 +121,7 @@ public class MenuValidatorTest {
 		ingredientsList.add(ingredient);
 		
 		Menu menu = new Menu();
-		menu.setName("qwertyuio");									//Name is OK
+		menu.setNameMenu("qwertyuio");									//Name is OK
 		//menu.setPrice(-3.0);										//Price is negative
 		menu.setIngredients(ingredientsList);						//IngredientsList is OK
 		
@@ -139,7 +139,7 @@ public class MenuValidatorTest {
 	public void ingredientList_ist_empty() throws Exception{
 		
 		Menu menu = new Menu();
-		menu.setName("qwertyuio");									//Name is OK
+		menu.setNameMenu("qwertyuio");									//Name is OK
 		//menu.setPrice(3.0);											//Price is OK
 		menu.setIngredients(new ArrayList<Ingredients>());			//IngredientsList is empty
 
@@ -161,7 +161,7 @@ public class MenuValidatorTest {
 		ingredientsList.add(ingredient);
 		
 		Menu menu = new Menu();
-		menu.setName("qwertyuio");
+		menu.setNameMenu("qwertyuio");
 		//menu.setPrice(3.0);
 		menu.setIngredients(ingredientsList);
 		

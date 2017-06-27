@@ -16,5 +16,10 @@ public interface IndentService {
 	void addIndents(Long idRestaurant, Long idMenu, Long idSize);
 	List<Indent> getPayedIndentsByRestaurantId(Long restaurantId);
 	List<Indent> getIndentsByUsername(String username);
-
+	Indent getIndentsByUsernameAndRestaurant(Long idRestaurant);
+	void addNewMenuToIndent(Long idIndent, Long idMenu, Long idSize);
+	void deleteMenuFromCart(Long idIndents, Long idCart);
+	void incrementMenuInCart(Long idCart);
+	void decrementMenuInCart(Long idCart);
+	void changeIndentPrice(Double change);
 }

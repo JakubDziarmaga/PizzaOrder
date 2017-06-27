@@ -74,7 +74,7 @@ public class MenuServiceImpl implements MenuService {
 	 * Add menu to restaurant with id = idRestaurant
 	 */
 	@Override
-	public void addMenu(Menu menu, Long idRestaurant)  {
+	public String addMenu(Menu menu, Long idRestaurant)  {
 		
 		//Configure HttpHeaders
 		HttpHeaders reqHeaders = new HttpHeaders();
@@ -82,7 +82,7 @@ public class MenuServiceImpl implements MenuService {
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
 
 		Menu tempMenu = new Menu();
-		tempMenu.setName(menu.getName());
+		tempMenu.setNameMenu(menu.getNameMenu());
 //		tempMenu.setPrice(menu.getPrice());
 		//Post new Menu
 		URI newMenuURI = defaultemplate.postForLocation("http://localhost:8080/menu/", tempMenu);
@@ -92,7 +92,7 @@ public class MenuServiceImpl implements MenuService {
 		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
 //		HttpEntity<String> restaurantEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/restaurants/" + idRestaurant, reqHeaders);
 		defaultemplate.exchange(newMenuURI +"/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
-	
+
 		//Add Ingredient to Menu entity
 		HttpEntity<String> ingredientsEntity;
 		for (Ingredients i : menu.getIngredients()) {
@@ -100,6 +100,8 @@ public class MenuServiceImpl implements MenuService {
 //			ingredientsEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/ingredients/" + i.getId(), reqHeaders);
 			defaultemplate.exchange(newMenuURI + "/ingredients", HttpMethod.POST, ingredientsEntity, String.class);
 		}
+
+		return newMenuURI.toString(); 
 	}
 
 	/**
@@ -148,4 +150,31 @@ public class MenuServiceImpl implements MenuService {
 			m.setSize(sizeList);
 		}			
 	}
+	
+	@Override
+	public void addSizeToMenu(List<Size> size, String menuURI){
+		System.out.println(5);
+		//Configure HttpHeaders
+		HttpHeaders reqHeaders = new HttpHeaders();
+		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
+		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
+
+		HttpEntity<String> menuEntity = new HttpEntity<String>(menuURI, reqHeaders);
+
+		for(Size s:size){
+			if(s.getName().isEmpty()||s.getPrice().equals(null)){
+				System.out.println("null");
+				continue;
+			}
+			//Post new Menu
+			URI newSizeURI = defaultemplate.postForLocation("http://localhost:8080/size/", s);
+
+
+			defaultemplate.exchange(newSizeURI +"/menu", HttpMethod.PUT, menuEntity, String.class);	
+		}
+
+
+
+	}
+
 }

@@ -12,10 +12,12 @@
 
 <header>
 		<div id="header_container">
-			 <a th:href="@{'/'}"> 
-	 			<img id="logo" src="../img/logo.png"/>
-				<h1>PizzaOrder</h1>
-			</a>
+			 <div id="header_container_left">
+				<a th:href="@{'/'}"> 
+					<img id="logo" src="../img/logo.png" />
+					<h1>PizzaOrder</h1>
+				</a>
+			</div>
 			
 			<div id="unloggedUser" th:if="${actualUser} == null">
 				<div class="icon-login" onclick="klikaj('id01')">Login</div>
@@ -117,13 +119,18 @@
 		    document.getElementById("user_length_phone_error").style.display='none';
 		    document.getElementById("user_null_role_error").style.display='none';
 
-		    var name = document.getElementById('register_username');		    
+		    
+		    
+		    var name = document.getElementById('register_username');		
+		    console.log(name.value.length);
+		    
 		    if(name.value.length == 0){		  
 		    	document.getElementById('user_null_name_error').style.display="block";
 		    	error=true;
 		    }
 		    else if(name.value.length < 6 || name.value.length > 20){		  
-		    	document.getElementById('user_length_name_error').style.display="block";		
+		    	document.getElementById('user_length_name_error').style.display="block";
+		    	console.log("CZEMU?");
 		    	error=true;
 		    }		    
 

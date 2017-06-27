@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import pizzaOrder.client.service.interfaces.IndentService;
 import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.client.service.interfaces.RestaurantService;
 import pizzaOrder.client.service.interfaces.UserService;
+import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.nonActivatedUsers.NonActivatedUser;
 import pizzaOrder.restService.model.restaurant.Restaurant;
@@ -33,6 +35,9 @@ public class RestaurantController extends AbstractController{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private IndentService indentService;
 	/**
 	 * Show restaurant data with id = idRestaurant
 	 * Show list of menu belong to restaurant
@@ -50,7 +55,9 @@ public class RestaurantController extends AbstractController{
 
 		Stars stars = restaurantService.getStarsByRestaurantId(idRestaurant);
 		model.addAttribute("stars", stars);
-
+		
+		Indent indent = indentService.getIndentsByUsernameAndRestaurant(idRestaurant);
+		model.addAttribute("indent", indent);
 		return "restaurant";
 	}
 	
@@ -70,4 +77,6 @@ public class RestaurantController extends AbstractController{
 		
         return "redirect:/restaurant/{idRestaurant}";
     }
+
+
 }

@@ -42,4 +42,28 @@ public class IndentController {
 		
 		return "redirect:/user";
 	}
+	
+	@RequestMapping(value = "/indent/delete/{idIndent}/{idCart}", method = RequestMethod.GET)
+	public String deleteMenuFromCart(@PathVariable("idIndent") Long idIndent,@PathVariable("idCart") Long idCart) {
+
+		indentService.deleteMenuFromCart(idIndent,idCart);
+		
+		return "redirect:/user";
+	}
+	
+	@RequestMapping(value = "/{idRestaurant}/cart/{idCart}/increment", method = RequestMethod.GET)
+	public String incrementMenuInCart(@PathVariable("idCart")Long idCart,@PathVariable("idRestaurant") Long restaurantId){
+
+		indentService.incrementMenuInCart(idCart);
+		
+		return "redirect:/restaurant/{idRestaurant}";
+	}
+	
+	@RequestMapping(value = "/{idRestaurant}/cart/{idCart}/decrement", method = RequestMethod.GET)
+	public String decrementMenuInCart(@PathVariable("idCart")Long idCart,@PathVariable("idRestaurant") Long restaurantId){
+
+		indentService.decrementMenuInCart(idCart);
+		
+		return "redirect:/restaurant/{idRestaurant}";
+	}
 }

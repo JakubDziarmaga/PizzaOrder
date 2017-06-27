@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
+import pizzaOrder.restService.model.cart.Cart;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
@@ -19,7 +20,7 @@ public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
 	
 	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
 		config.exposeIdsFor(Menu.class,Restaurant.class,User.class,Ingredients.class,Indent.class,
-				Stars.class,NonActivatedUser.class,Size.class);		//Enable to send id in JSON
+				Stars.class,NonActivatedUser.class,Size.class,Cart.class);		//Enable to send id in JSON
         
 	}
 }

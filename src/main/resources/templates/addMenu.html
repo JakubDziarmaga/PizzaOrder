@@ -9,16 +9,74 @@
 	<link rel="stylesheet" type="text/css" href="../../fontello/css/fontello.css" />
 	<link rel="icon" type="image/png" sizes="16x16" href="../../img/favicon-16x16.png"/>
 	<link href="https://fonts.googleapis.com/css?family=Dosis:200,400" rel="stylesheet"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<script>
+    //<![CDATA[
+	var visible_elements=5;	
+	
+	$(document).ready(function() {	
+		var element = $('.menu_form');
+
+		for(var i=0;i<element.length;i++){
+			if(i<visible_elements)
+				element[i].style.display="block";
+			else
+				element[i].style.display="none";
+		}
+	});
+	
+	function increase_menu_amount(){
+		
+		var element = $('.menu_form');
+		if(visible_elements == 10) return;
+		visible_elements=visible_elements+1;
+					
+		element[visible_elements-1].style.display="block";
+		
+		
+	};
+	
+	function decrease_menu_amount(deleteItem){
+		
+		if(visible_elements == 1) return;
+		visible_elements=visible_elements-1;
+		
+		var element = $('.menu_form');
+		var i = 0;
+		
+		for(; i<visible_elements;i++){
+			if(element[i].getElementsByTagName("TD")[0].getElementsByTagName("input")[0].value==deleteItem.parentElement.getElementsByTagName("TD")[0].getElementsByTagName("input")[0].value){
+				console.log("EUREKA");
+				break;
+			}
+		}
+		for(var k = i+1; k<=visible_elements;k++){
+			console.log(element[k].getElementsByTagName("TD")[0].getElementsByTagName("input")[0].value);	
+			console.log(element[k].getElementsByTagName("TD")[1].getElementsByTagName("input")[0].value);	
+	
+			element[k-1].getElementsByTagName("TD")[0].getElementsByTagName("input")[0].value = element[k].getElementsByTagName("TD")[0].getElementsByTagName("input")[0].value;
+			element[k-1].getElementsByTagName("TD")[1].getElementsByTagName("input")[0].value = element[k].getElementsByTagName("TD")[1].getElementsByTagName("input")[0].value;
+		}
+		
+		element[visible_elements].style.display="none";
+
+	};
+
+	//]]>
+	</script>
 
 </head>
 <body>
 
 <header>
 		<div id="header_container">
-			 <a th:href="@{'/'}"> 
-	 			<img id="logo" src="../../img/logo.png"/>
-				<h1>PizzaOrder</h1>
-			</a>
+			<div id="header_container_left">
+				<a th:href="@{'/'}"> 
+					<img id="logo" src="../img/logo.png" />
+					<h1>PizzaOrder</h1>
+				</a>
+			</div>
 
 			<a th:href="@{'/restaurantOwner'}">
 				<div class="icon-user">Profile</div>
@@ -31,17 +89,13 @@
 </header>
 
 <div id="container">
- 	<form method="POST" th:object="${menu}" onsubmit="return validateForm();">
+	
+	<form id="form1" method="post">
 		<table id="add_menu">
 			<tr>
-				<td><input type="text" id="menu_name" th:field="*{name}" placeholder="Name" onchange="validate_ingredients()"/></td>
+				<td><input type="text" id="menu_name" th:field="${menu.nameMenu}" placeholder="Name" onchange="validate_ingredients()"/></td>
 				<td id="menu_null_name_error">Please enter the name</td>
 				<td id="menu_length_name_error">Name must have between 3 and 20 digits</td>
-			</tr>
-			<tr>
-				<td><input type="number" id="price" th:field="*{menu.size.price}" placeholder="Price" /></td>
-				<td id="menu_null_price_error">Please enter the price</td>
-				<td id="menu_price_value_error">Price can't be negative</td>
 			</tr>
 			<tr>
 				<td>Ingredients:</td>
@@ -54,11 +108,34 @@
 				</td>
 				
 			</tr>
+			<!--
+			<tr th:each="s : ${menu.size}">
+					<td><input type="text" th:field="${s.name}" th:value="${s.name}" placeholder="Name" /></td>
+					<td><input type="number" id="price" th:field="${s.price}" placeholder="Price" /></td>
+					
+			</tr>
+			  -->
+			<tr class = "menu_form" th:each="s, rowStat: ${menu.size}">
+			  <td>
+			  		<input type="text" th:field="${menu.size[__${rowStat.index}__].name}" placeholder="Name" />
+			  </td>
+			  <td>
+			  		<input type="number" th:field="${menu.size[__${rowStat.index}__].price}" placeholder="Price" />
+			  </td>
+			  <td  id="blue_button" onclick="decrease_menu_amount(this);">
+			  </td>
+			</tr>
+			
+			<tr>
+				<td id="blue_button" onclick="increase_menu_amount();"></td>
+			</tr>
+
 			<tr>
 				<td> <input type="submit" id="blue_button" value="Add"/></td>
 			</tr>
 		</table>
 	</form>
+	
 </div>     
 <div class="socials">
 	<div class="socialdivs">

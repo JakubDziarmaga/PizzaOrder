@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import pizzaOrder.restService.model.cart.Cart;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
@@ -38,9 +39,9 @@ public class Size {
 	@JoinColumn(name = "id_menu")
 	private Menu menu;
 	
-    @OneToMany(mappedBy = "size", cascade = { CascadeType.MERGE, CascadeType.REFRESH })
-    @Fetch(value = FetchMode.SELECT)
-	private List<Indent> indent;
+	@OneToMany(mappedBy = "size", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<Cart> cart;
 	
 	public Long getId() {
 		return id;
@@ -67,11 +68,11 @@ public class Size {
 	public void setMenu(Menu menu) {
 		this.menu = menu;
 	}
-	public List<Indent> getIndent() {
-		return indent;
+	public List<Cart> getCart() {
+		return cart;
 	}
-	public void setIndent(List<Indent> indent) {
-		this.indent = indent;
+	public void setCart(List<Cart> cart) {
+		this.cart = cart;
 	}
 	
 	

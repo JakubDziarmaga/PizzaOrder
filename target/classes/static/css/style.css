@@ -55,7 +55,7 @@ header img
 	width:150px;
 	height:30px;
 	font-size:18px;
-	padding:5px;
+	padding: 5px 5px 5px 0px;
 	cursor: pointer;
 	
 }
@@ -80,7 +80,7 @@ header img
 	cursor: pointer;
 }
 
-#header_container > a
+#header_container_left > a
 {
     color: white;
 }
@@ -116,7 +116,6 @@ input
 	border 2px solid #ddd;
 	border-radius:5px;	
 	width:400px;
-	font-size: 20px;
 	padding: 5px;
 	box-sizing: border-box;
 	border: 1px solid grey;
@@ -141,7 +140,6 @@ select
 	border 2px solid #ddd;
 	border-radius:5px;	
 	width:400px;
-	font-size: 20px;
 	padding: 5px 5px 5px 0px;
 	box-sizing: border-box;
 	/*color: grey;*/
@@ -163,7 +161,11 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
 
+input[type=number] { 
+
+  width:400px;
 }
 
 
@@ -181,7 +183,6 @@ h1
 {
 	font-size:70px;
 	margin:0px;
-	padding: 0px 630px 0px 0px;
 	float:left;	
 }
 
@@ -407,15 +408,19 @@ h2
 .menu_list
 {
 	list-style-type: none;
-	font-size:30px;
-	padding:20px 40px;
+	font-size:20px;
+	padding:20px 10px;
 	margin:0;
+	width: 880px;
+	float:left;
+	
 }
 
 .menu_list > li
 {
 	padding:5px;
 	border-bottom: 1px dotted black;
+	cursor:pointer;
 }
 
 .menu_list > li:last-child
@@ -432,6 +437,7 @@ h2
 .menu_list > li:first-child
 {
 	border-bottom: 1px solid black;
+	cursor:auto;
 }
 
 .menu_list > li:hover:first-child
@@ -449,14 +455,14 @@ h2
 .menu_list > li > .ingredients
 {
 	float:left;
-	width:580px;
+	width:550px;
 	margin:5px 10px;
 }
 
 .menu_list > li > .price
 {
 	float:left;
-	width:150px;
+	width:50px;
 	margin:5px 10px;
 }
 
@@ -464,7 +470,7 @@ h2
 .menu_size > li > .add_button
 {
 	float:left;
-	width:50px;	
+	width:25px;	
 	background-color:#1076DC;
 	border-radius:5px;
 	text-align:center;
@@ -561,7 +567,7 @@ h2
 .user_order_list  > li
 {
 	float:left;
-	padding:10px;
+	padding:20px;
 }
 
 
@@ -575,6 +581,7 @@ h2
 { 
 	font-size:30px;
 	font-weight:bold;
+	width:300px;
 }
 
 
@@ -615,6 +622,7 @@ h2
 .pizza_data > .pizza_size
 {
 	font-size:22px;
+	float:left;
 }
 .pizza_data > .ingredients
 {
@@ -629,11 +637,28 @@ h2
 
 .price
 {
-	float:left;
 	font-size:20px;
-	width:70px;
+	float:left;
 }
 
+#profile_cart > .name
+{
+	float:left;
+	font-size:20px;
+	padding-right: 10px;
+}
+
+#profile_cart > .amount
+{
+	float:right;
+}
+
+.pizza_size
+{
+	float:left;
+	font-size:20px;
+	width:100px;
+}
 .date
 {
 	font-size:20px;
@@ -896,25 +921,21 @@ b
 .restaurant_order_list
 {
 	list-style-type: none;
-	font-size:30px;
-	padding: 20px 40px;
+	font-size:20px;
+	padding: 20px 10px 40px 10px;
     margin: 0;
 }
 
-.restaurant_order_list > li:first-child 
-{
-    border-bottom: 1px solid black;
-}
+
 
 .restaurant_order_list > li {
     padding: 5px;
-    border-bottom: 1px dotted black;
 }
     
 .user_info
 {
 	float:left;
-	width:320px;
+	width:200px;
 	height: 40px;
     margin: 5px 10px;
 }
@@ -923,7 +944,6 @@ b
 {
 	float:left;
 	width:320px;
-	height: 40px;
     margin: 5px 10px;
 }
 
@@ -931,7 +951,6 @@ b
 {
 	float:left;
 	width:90px;
-	height: 40px;
     margin: 5px 10px;
 	
 }
@@ -939,7 +958,7 @@ b
 .order_date
 {
 	float:left;
-	width:300px;
+	width:180px;
 	height: 40px;
     margin: 5px 10px;
 }
@@ -1076,30 +1095,151 @@ b
 
 .amount_of_unpayed_indents{
 	background-color:red;
-	float:left;
-	padding:0px 4px;
-	min-width: 4px;
-	font-size:14px;
+    float: left;
+    padding: 0px 2px;
+    width: 16px;
+    font-size: 14px;
+    text-align: center;
 }
 
 #loggedUser,#unloggedUser{
-	width:160px;
+	width:162px;
 	float:left;
 }
 
 .menu_size{
 	display:none;
 	list-style-type:none;
+	padding:0;
+	font-size:15px;
 }
 
 .size_name{
-	float:left;
-	width:200px;
+    float: left;
+    width: 250px;
+    margin: 5px 10px;
 }
 
 .size_price{
+    float: left;
+    width: 60px;
+    margin: 5px 10px;
+}
+
+.cart_container{
+	width:280px;
 	float:left;
-	width:200px;
+	padding: 20px 10px;
+	font-size:14px;
+	list-style:none;
+}
+
+.cart_container > li{
+	padding:5px;
+}
+
+
+
+.indent_details{
+	float:left;
+	width:180px;
+}
+
+.indent_name{
+	font-size:16px;
+	font-weight:800;
+}
+
+.indent_amount{
+	float:left;
+	width:10px;
+}
+
+.indent_buttons{
+	float:left;
+	width:30px;
+}
+
+.indent_price{
+	float:left;
+	width:50px;
+}
+
+.indent_button_up{
 	
+}
+
+.indent_button_down{
 	
+}
+
+.indent_sum_price{
+	float:right;
+	width:50px;
+	font-weight:800;
+	padding:5px;
+}
+
+.ingredients{
+	float:left;	
+}
+
+#red_small_button
+{
+    height: 20px;
+    width: 20px;
+    background-color:red;
+    border-radius: 5px;
+    text-align: center;
+    cursor:pointer;
+}
+
+#profile_cart
+{
+	padding:5px;
+	border-bottom: 2px solid black;
+	
+}
+
+#restaurant_owner_container_right{
+	float:left;
+    padding: 20px 10px;
+    margin: 0;
+    width: 900px;
+}
+
+#pizza_data_container{
+	width:450px;
+	float:left;
+}
+
+.pizza_size_name{
+	float:left;
+    margin: 5px 10px;
+}
+
+#header_container_left{
+	width:1038px;
+	float:left;
+}
+
+input[type=number] {-moz-appearance: textfield;}
+
+.ingredients {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.ingredients > li{
+	float:left;
+	padding: 0px 6px 0px 0px;
+}
+
+.ingredients > li:after {
+content: ",  ";
+}
+
+.ingredients > li:last-child:after {
+content: "";
 }

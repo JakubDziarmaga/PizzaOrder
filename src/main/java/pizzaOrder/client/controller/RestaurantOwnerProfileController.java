@@ -2,6 +2,8 @@ package pizzaOrder.client.controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +43,7 @@ import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
 import pizzaOrder.restService.model.restaurant.Restaurant;
+import pizzaOrder.restService.model.size.Size;
 import pizzaOrder.restService.model.users.User;
 
 @Controller
@@ -146,7 +151,15 @@ public class RestaurantOwnerProfileController extends AbstractController{
 		
 		getActualUser(model);
 
-		model.addAttribute("menu", new Menu());
+		Menu menu = new Menu();
+		Size[] size = new Size[10] ;
+		
+		Arrays.fill(size,new Size());
+		menu.setSize(Arrays.asList(size));
+		model.addAttribute("menu", menu);
+//		List <Size> size = new ArrayList<Size>();
+//		size.add(new Size());
+//		model.addAttribute("size", size);
 
 		List<Ingredients> ingredientsList = ingredientsService.getAllIngredients();
 		model.addAttribute("ingredients", ingredientsList);
@@ -162,15 +175,17 @@ public class RestaurantOwnerProfileController extends AbstractController{
 	@RequestMapping(value = "/restaurantOwner/{idRestaurant}/addmenu", method = RequestMethod.POST)
 	public String addMenu(@Valid Menu menu, BindingResult bindingResult, Model model,@PathVariable("idRestaurant") Long idRestaurant) throws URISyntaxException {
 
-		menuValidator.validate(menu, bindingResult);
-		if (bindingResult.hasErrors()) {
-			return "addMenu";
-		}
+//		menuValidator.validate(menu, bindingResult);
+//		if (bindingResult.hasErrors()) {
+//			return "addMenu";
+//		}
 		
 		restaurantService.getRestaurantById(idRestaurant);				//Check if restaurant with idRestaurant exists in db
 
-		menuService.addMenu(menu, idRestaurant);
-
+		String menuURI = menuService.addMenu(menu, idRestaurant);
+		menuService.addSizeToMenu(menu.getSize(), menuURI);
+		
+		
 		return "redirect:/restaurantOwner";
 	}
 	

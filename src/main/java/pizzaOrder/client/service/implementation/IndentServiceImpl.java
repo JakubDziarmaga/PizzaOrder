@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,6 +29,7 @@ import pizzaOrder.client.exceptionHandler.NotPermittedException;
 import pizzaOrder.client.service.interfaces.IndentService;
 import pizzaOrder.client.service.interfaces.MenuService;
 import pizzaOrder.client.service.interfaces.RestaurantService;
+import pizzaOrder.restService.model.cart.Cart;
 import pizzaOrder.restService.model.indent.Indent;
 import pizzaOrder.restService.model.ingredients.Ingredients;
 import pizzaOrder.restService.model.menu.Menu;
@@ -87,9 +89,10 @@ public class IndentServiceImpl implements IndentService {
 			defaultTemplate.getForObject("http://localhost:8080/indents/{idIndent}", Indent.class, idIndent);
 //			defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/indents/{idIndent}", Indent.class, idIndent);
 
-		} catch (HttpClientErrorException e) {
+		} catch(HttpClientErrorException e){
 			throw new IndentNotFoundException(idIndent);
 		}
+		
 	}
 	
 	/**
@@ -118,7 +121,19 @@ public class IndentServiceImpl implements IndentService {
 		checkIfIndentExists(idIndent);
 		checkIfActualUserIsOwnerOfIndent(idIndent);
 
-		halTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
+
+		
+		Collection<?> cartHal = halTemplate.getForObject("http://localhost:8080/carts/search/indent?indentId={idIndent}", PagedResources.class,idIndent).getContent();		
+		List<Cart> cartList = mapper.convertValue(cartHal, new TypeReference<List<Cart>>() {});
+		
+		for(Cart cart:cartList){
+			defaultTemplate.delete("http://localhost:8080/carts/{idIndent}", cart.getId());
+		}
+		
+		defaultTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
+		
+		
+//		halTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
 //		halTemplate.delete("https://pizzaindent.herokuapp.com/indents/{idIndent}", idIndent);
 
 	}
@@ -138,8 +153,26 @@ public class IndentServiceImpl implements IndentService {
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
 		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
 
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
+		
+		try{
+		Long idIndent = defaultTemplate.getForObject("http://localhost:8080/indents/search/indent?userId="+userId+"&restaurantId="+idRestaurant, Long.class);
+		addNewMenuToIndent(idIndent, idMenu, idSize);
+		System.out.println("BŁAD");
+		return;
+
+		}
+		catch(HttpClientErrorException e){
+			System.out.println(e.getStackTrace());
+
+			} //or HttpServerErrorException
+		
+		System.out.println("JEDEN");
+		Size size = defaultTemplate.getForObject("http://localhost:8080/size/{idSize}", Size.class,idSize);
 		Indent indent = new Indent();
-		indent.setDate(new Date());																					//add CURRENT data to entity
+		indent.setPrice(size.getPrice());
+		indent.setDate(new Date());																				
 		URI newIndentURI = defaultTemplate.postForLocation("http://localhost:8080/indents/", indent);
 //		URI newIndentURI = defaultTemplate.postForLocation("https://pizzaindent.herokuapp.com/indents/", indent);
 
@@ -149,25 +182,82 @@ public class IndentServiceImpl implements IndentService {
 //		HttpEntity<String> restaurantEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/restaurants/" + idRestaurant, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
 
-		//Posting size to indent
+		//Posting cart to indent
+		Cart cart = new Cart();
+		cart.setAmount(1);
+		cart.setPrice(size.getPrice());
+		URI newCartURI = defaultTemplate.postForLocation("http://localhost:8080/carts/", cart);
+		
+		HttpEntity<String> indentEntity = new HttpEntity<String>(newIndentURI.toString(), reqHeaders);
+		defaultTemplate.exchange(newCartURI + "/indent", HttpMethod.PUT, indentEntity, String.class);
+
+		//Posting size to cart
 		HttpEntity<String> sizeEntity = new HttpEntity<String>("http://localhost:8080/size/" + idSize, reqHeaders);
-		defaultTemplate.exchange(newIndentURI + "/size", HttpMethod.PUT, sizeEntity, String.class);
+		defaultTemplate.exchange(newCartURI + "/size", HttpMethod.PUT, sizeEntity, String.class);
 
 		
 		//Posting user to indent
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();
 //		Long userId = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}",User.class, auth.getName()).getId();
 		HttpEntity<String> userEntity = new HttpEntity<String>("http://localhost:8080/users/" + userId, reqHeaders);
 //		HttpEntity<String> userEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/users/" + userId, reqHeaders);
 		defaultTemplate.exchange(newIndentURI + "/user", HttpMethod.PUT, userEntity, String.class);
 
 		//Posting menu to indent
-		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/" + idMenu, reqHeaders);
+//		HttpEntity<String> menuEntity = new HttpEntity<String>("http://localhost:8080/menu/" + idMenu, reqHeaders);
 //		HttpEntity<String> menuEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/menu/" + idMenu, reqHeaders);
 
-		defaultTemplate.exchange(newIndentURI + "/menu", HttpMethod.PUT, menuEntity, String.class);		
+//		defaultTemplate.exchange(newIndentURI + "/menu", HttpMethod.PUT, menuEntity, String.class);	
+		
 	}
+	
+	public void addNewMenuToIndent(Long idIndent, Long idMenu, Long idSize){
+		
+		Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{indentId}", Indent.class,idIndent);
+		double indentPrice = indent.getPrice();
+		Collection<?> cartHal = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/cart", PagedResources.class,idIndent).getContent();		
+		List<Cart> cartList = mapper.convertValue(cartHal, new TypeReference<List<Cart>>() {});
+		
+		for(Cart c:cartList){
+			Size size = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}/size", Size.class, c.getId());
+			if(size.getId() == idSize){
+				int amount = c.getAmount();
+				double price = size.getPrice();
+				c.setAmount(amount+1);
+				c.setPrice(price+size.getPrice());
+				defaultTemplate.put("http://localhost:8080/carts/{idCart}", c, c.getId());
+				
+				indent.setPrice(indentPrice+size.getPrice());
+				defaultTemplate.put("http://localhost:8080/indents/{indentId}", indent, idIndent);
+
+				System.out.println("DWA");
+				return;
+			}				
+		}
+		HttpHeaders reqHeaders = new HttpHeaders();
+		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("text", "uri-list").toString());
+		reqHeaders.add(HttpHeaders.CONTENT_TYPE, new MediaType("application", "json").toString());
+		
+		System.out.println("TRZY");
+		Size size = defaultTemplate.getForObject("http://localhost:8080/size/{idSize}", Size.class, idSize);
+		double price = size.getPrice();
+		
+		Cart cart = new Cart();
+		cart.setAmount(1);
+		cart.setPrice(price);
+		URI newCartURI = defaultTemplate.postForLocation("http://localhost:8080/carts/", cart);
+		
+		HttpEntity<String> sizeEntity = new HttpEntity<String>("http://localhost:8080/size/" + idSize, reqHeaders);
+		defaultTemplate.exchange(newCartURI+"/size", HttpMethod.PUT, sizeEntity, String.class);
+		
+		HttpEntity<String> indentEntity = new HttpEntity<String>("http://localhost:8080/indents/" + idIndent, reqHeaders);
+		defaultTemplate.exchange(newCartURI+"/indent", HttpMethod.PUT, indentEntity, String.class);
+		
+		indent.setPrice(indentPrice+size.getPrice());
+		defaultTemplate.put("http://localhost:8080/indents/{indentId}", indent, idIndent);
+	}
+
 	
 	/**
 	 * @return List of restaurant which are paid
@@ -188,20 +278,36 @@ public class IndentServiceImpl implements IndentService {
 			User user = halTemplate.getForObject("http://localhost:8080/indents/{id}/user", User.class,indent.getId());
 //			User user = halTemplate.getForObject("https://pizzaindent.herokuapp.com/indents/{id}/user", User.class,indent.getId());
 
+			Collection<?> cartHal = halTemplate.getForObject("http://localhost:8080/indents/{id}/cart",PagedResources.class,indent.getId()).getContent();
+			List<Cart> cartList = mapper.convertValue(cartHal, new TypeReference<List<Cart> >() {});
+
+			for(Cart c : cartList){
+				
+				Size size = defaultTemplate.getForObject("http://localhost:8080/carts/{idCarts}/size", Size.class,c.getId());
+			
+				Menu menu = defaultTemplate.getForObject("http://localhost:8080/size/{sizeId}/menu", Menu.class,size.getId());
+				Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();		
+	
+				List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
+				menu.setIngredients(ingredients);
+				size.setMenu(menu);
+				c.setSize(size);
+			}
+			indent.setCart(cartList);
 			
 			//Get menu entity
-			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
+//			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{id}/menu", Menu.class,indent.getId());
 //			Menu menu = halTemplate.getForObject("https://pizzaindent.herokuapp.com/indents/{id}/menu", Menu.class,indent.getId());
 
 			//Get ingredients entity
-			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,menu.getId()).getContent();
+//			Collection<?> ingredientsHal =halTemplate.getForObject("http://localhost:8080/menu/{id}/ingredients", PagedResources.class,menu.getId()).getContent();
 //			Collection<?> ingredientsHal =halTemplate.getForObject("https://pizzaindent.herokuapp.com/menu/{id}/ingredients", PagedResources.class,menu.getId()).getContent();
 
-			List<Ingredients> tempIngredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients> >() {});
+//			List<Ingredients> tempIngredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients> >() {});
 			
 			//Link entities
-			menu.setIngredients(tempIngredients);
-			indent.setMenu(menu);
+//			menu.setIngredients(tempIngredients);
+//			indent.setMenu(menu);
 			indent.setUser(user);
 
 			payedIndents.add(indent);
@@ -226,22 +332,148 @@ public class IndentServiceImpl implements IndentService {
 //			Restaurant restaurant = halTemplate.getForObject("https://pizzaindent.herokuapp.com/indents/{indentId}/restaurant", Restaurant.class,indent.getId());
 			
 			//Get menu entity
-			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/menu", Menu.class,indent.getId());
+//			Menu menu = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/menu", Menu.class,indent.getId());
 //			Menu menu = halTemplate.getForObject("https://pizzaindent.herokuapp.com/indents/{indentId}/menu", Menu.class,indent.getId());
 
 			//Get ingredients entity
-			Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();		
+//			Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();		
 //			Collection<?> ingredientsHal = halTemplate.getForObject("https://pizzaindent.herokuapp.com/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();			
 
-			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
+//			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			
-			Size size = defaultTemplate.getForObject("http://localhost:8080/indents/{indentId}/size", Size.class,indent.getId());
+			Collection<?> cartHal = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/cart", PagedResources.class,indent.getId()).getContent();		
+			List<Cart> cartList = mapper.convertValue(cartHal, new TypeReference<List<Cart>>() {});
+			
+//			Collection<?> sizeHal = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/size", PagedResources.class,indent.getId()).getContent();			
+//			List<Size> sizeList = mapper.convertValue(sizeHal, new TypeReference<List<Size>>() {});
+			
+			for(Cart c : cartList){
+
+				Size size = defaultTemplate.getForObject("http://localhost:8080/carts/{idCarts}/size", Size.class,c.getId());
+			
+				Menu menu = defaultTemplate.getForObject("http://localhost:8080/size/{sizeId}/menu", Menu.class,size.getId());
+				Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();		
+
+				List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
+				menu.setIngredients(ingredients);
+				size.setMenu(menu);
+				c.setSize(size);
+			}
 			//Link entities
-			menu.setIngredients(ingredients);			
-			indent.setMenu(menu);
+//			menu.setIngredients(ingredients);			
+//			indent.setMenu(menu);
 			indent.setRestaurant(restaurant);
-			indent.setSize(size);
+			indent.setCart(cartList);
 		}
 		return indents;
+	}
+	
+	public void deleteMenuFromCart(Long idIndent, Long idCart){
+		
+		Cart cart = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}", Cart.class,idCart);
+		
+		defaultTemplate.delete("http://localhost:8080/carts/{idCart}", idCart);
+		
+		Collection<?> cartHal = halTemplate.getForObject("http://localhost:8080/indents/{idIndent}/cart", PagedResources.class,idIndent).getContent();		
+		List<Cart> cartList = mapper.convertValue(cartHal, new TypeReference<List<Cart>>() {});
+		
+		if(cartList.isEmpty()){
+			System.out.println("pusty koszyk");
+			defaultTemplate.delete("http://localhost:8080/indents/{idIndent}", idIndent);
+		}
+		else{
+			Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{idIndent}", Indent.class,idIndent);
+			double price = indent.getPrice();
+			indent.setPrice(price-cart.getPrice());
+			defaultTemplate.put("http://localhost:8080/indents/{idIndent}", indent,idIndent);
+		}
+		
+	}
+
+
+	@Override
+	public Indent getIndentsByUsernameAndRestaurant(Long idRestaurant) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth.getPrincipal() == "anonymousUser") return null;
+
+		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();	
+		try{
+			Long idIndent = defaultTemplate.getForObject("http://localhost:8080/indents/search/indent?userId="+userId+"&restaurantId="+idRestaurant, Long.class);
+			Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{indentId}", Indent.class,idIndent);
+			
+			Collection<?> cartHal = halTemplate.getForObject("http://localhost:8080/indents/{indentId}/cart", PagedResources.class,idIndent).getContent();		
+			List<Cart> cartList = mapper.convertValue(cartHal, new TypeReference<List<Cart>>() {});
+			
+			for(Cart c : cartList){
+	
+				Size size = defaultTemplate.getForObject("http://localhost:8080/carts/{idCarts}/size", Size.class,c.getId());
+			
+				Menu menu = defaultTemplate.getForObject("http://localhost:8080/size/{sizeId}/menu", Menu.class,size.getId());
+				Collection<?> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class,menu.getId()).getContent();		
+	
+				List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
+				menu.setIngredients(ingredients);
+				size.setMenu(menu);
+				c.setSize(size);
+			}
+			indent.setCart(cartList);
+			
+			return indent;
+		}
+		catch(HttpClientErrorException e){
+		return null;
+		}
+	}
+	
+	@Override
+	public void incrementMenuInCart(Long idCart) {
+
+		Size size = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}/size", Size.class,idCart);
+		Cart cart = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}", Cart.class,idCart);
+		Indent indent = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}/indent", Indent.class,idCart);
+		String indentUrl = halTemplate.getForObject("http://localhost:8080/carts/{idCart}/indent",PagedResources.class, idCart).getLink("indent").getHref();
+		
+		int amount = cart.getAmount();
+		double price = cart.getPrice();
+		
+		cart.setAmount(amount+1);
+		cart.setPrice(price + size.getPrice());		
+		defaultTemplate.put("http://localhost:8080/carts/{idCart}", cart, idCart);
+		
+		double indentPrice = indent.getPrice();
+		indent.setPrice(indentPrice + size.getPrice());
+		defaultTemplate.put(indentUrl, indent);		
+	}
+
+	@Override
+	public void decrementMenuInCart(Long idCart) {
+		Size size = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}/size", Size.class,idCart);
+		Cart cart = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}", Cart.class,idCart);
+		Indent indent = defaultTemplate.getForObject("http://localhost:8080/carts/{idCart}/indent", Indent.class,idCart);
+		String indentUrl = halTemplate.getForObject("http://localhost:8080/carts/{idCart}/indent",PagedResources.class, idCart).getLink("indent").getHref();
+
+		
+		int amount = cart.getAmount();
+		double price = cart.getPrice();
+
+		if(amount>1){
+			cart.setAmount(amount-1);
+			cart.setPrice(price - size.getPrice());
+			defaultTemplate.put("http://localhost:8080/carts/{idCart}", cart, idCart);		
+			
+			double indentPrice = indent.getPrice();
+			indent.setPrice(indentPrice - size.getPrice());
+			defaultTemplate.put(indentUrl, indent);		
+
+		}
+		else{
+			deleteMenuFromCart(indent.getId(),idCart);
+		}
+	}
+
+	@Override
+	public void changeIndentPrice(Double change) {
+		// TODO Auto-generated method stub
+		
 	}
 }

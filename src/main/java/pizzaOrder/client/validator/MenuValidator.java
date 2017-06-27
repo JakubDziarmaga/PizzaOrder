@@ -22,7 +22,7 @@ public class MenuValidator implements Validator {
 		
 		Menu menu = (Menu) target;
 
-		checkIfNameIsValid(errors, menu.getName());
+		checkIfNameIsValid(errors, menu.getNameMenu());
 //		checkPrice(errors, menu.getPrice());
 		checkIfIngredientsListIsValid(errors, menu.getIngredients());
 	}

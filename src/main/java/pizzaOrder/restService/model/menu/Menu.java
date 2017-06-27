@@ -30,7 +30,8 @@ public class Menu {
 	@Column(name="id_menu")
 	private Long id;		
 
-	private String name;
+	@Column(name="name")
+	private String nameMenu;
 	
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
@@ -42,9 +43,9 @@ public class Menu {
 	@Fetch(value = FetchMode.SELECT)
 	private List<Ingredients> ingredients;
 
-	@OneToMany(mappedBy = "menu", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	@Fetch(value = FetchMode.SELECT)
-	private List<Indent> indent;
+//	@OneToMany(mappedBy = "menu", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+//	@Fetch(value = FetchMode.SELECT)
+//	private List<Indent> indent;
 
 	@OneToMany(mappedBy = "menu", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.LAZY)
 	@Fetch(value = FetchMode.SELECT)
@@ -61,7 +62,7 @@ public class Menu {
 		this.id = id;
 		this.restaurant = restaurant;
 		this.ingredients = ingredients;
-		this.indent = indent;
+//		this.indent = indent;
 	}
 
 	//
@@ -75,12 +76,14 @@ public class Menu {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+
+
+	public String getNameMenu() {
+		return nameMenu;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNameMenu(String nameMenu) {
+		this.nameMenu = nameMenu;
 	}
 
 	public Restaurant getRestaurant() {
@@ -99,13 +102,13 @@ public class Menu {
 		this.ingredients = ingredients;
 	}
 
-	public List<Indent> getIndent() {
-		return indent;
-	}
-
-	public void setIndent(List<Indent> indent) {
-		this.indent = indent;
-	}
+//	public List<Indent> getIndent() {
+//		return indent;
+//	}
+//
+//	public void setIndent(List<Indent> indent) {
+//		this.indent = indent;
+//	}
 
 	public List<Size> getSize() {
 		return size;

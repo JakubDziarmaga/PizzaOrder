@@ -30,9 +30,12 @@
 <body>
 	<header>
 			<div id="header_container">
-			<a th:href="@{'/'}"> <img id="logo" src="../img/logo.png" />
-				<h1>PizzaOrder</h1>
-			</a>
+			<div id="header_container_left">
+				<a th:href="@{'/'}"> 
+					<img id="logo" src="../img/logo.png" />
+					<h1>PizzaOrder</h1>
+				</a>
+			</div>
 
 			<div id="unloggedUser" th:if="${actualUser} == null">
 				<div class="icon-login" onclick="show_login_form()">Login</div>
@@ -97,20 +100,16 @@
 		<li>
 			<div class="name"><h2>Name</h2></div>
 			<div class="ingredients" ><h2>Ingredients</h2></div>
-			<div class="price"><h2>Price</h2></div>
 			<div class="clear"></div>
 		</li>
 		<li th:each="menu : ${menu}" onclick="choose_size(this);">
-			<div class="name" th:text="${menu.name}">Name</div>
-			<div class="ingredients" >
-				<span th:each="ingredients : ${menu.getIngredients()}">
-					<span th:text="${ingredients.name}"></span>
-				</span>
-			</div>			
+			<div class="name" th:text="${menu.nameMenu}">Name</div>
+			<ul class="ingredients" >
+				<li th:each="ingredients : ${menu.getIngredients()}" th:text="${ingredients.name}">
+				</li>
+			</ul>			
 			<!-- <div class="price" th:text="${menu.price}+'zł'"><b>Price</b></div>		 -->
-			<div class="add_button" onclick="choose_size('${restaurant.id}');"><i class="icon-plus"></i>
 			<!-- <a th:href="@{'/addindents/'+${restaurant.id}+'/'+${menu.id}}"><i class="icon-plus"></i></a>-->
-			</div>	
 			<div class="clear"></div>
 			<ol class="menu_size">
 				<li th:each="size : ${menu.size}" >
@@ -125,7 +124,39 @@
 		</li>
 	</ol>
 	
-
+	<ol  class="cart_container">
+		<h2>Your cart:</h2>
+		<span th:if="${indent} == null">There's nothing here.</span>
+		
+		<span th:if="${indent} != null">
+		<li th:each="cart : ${indent.cart}">
+			<div class="indent_details">
+				<div class="indent_name" th:text="${cart.size.menu.nameMenu}"></div>
+				<div class="indent_name" th:text="${cart.size.name}"></div>
+				<div class="indent_ingredient">
+					<span th:each="ingredient : ${cart.size.menu.ingredients}">
+						<span th:text="${ingredient.name}"></span>
+					</span>
+				</div>
+			</div>
+			<div class="indent_amount" th:text="${cart.amount}"></div>
+			<div class="indent_buttons" >
+				<a th:href="@{'/'+${restaurant.id}+'/cart/'+${cart.id}+'/increment'}">
+					<div class="indent_button_up"><i class="icon-up-open"></i></div>
+				</a>
+				<a th:href="@{'/'+${restaurant.id}+'/cart/'+${cart.id}+'/decrement'}">
+					<div class="indent_button_down"><i class="icon-down-open"></i></div>
+				</a>
+				
+			</div>		
+					
+			<div class="indent_price" th:text="${cart.price}"></div>
+			<div class="clear"></div>
+		</li>
+		<div class="indent_sum_price" th:text="${indent.price}"></div>
+		</span>
+	</ol>
+	<div class="clear"></div>
 	
 </div>
 <div class="socials">

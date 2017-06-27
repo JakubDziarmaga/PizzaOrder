@@ -140,9 +140,12 @@
 
 	<header>
 		<div id="header_container">
-			<a th:href="@{'/'}"> <img id="logo" src="../img/logo.png" />
-				<h1>PizzaOrder</h1>
-			</a>
+			<div id="header_container_left">
+				<a th:href="@{'/'}"> 
+					<img id="logo" src="../img/logo.png" />
+					<h1>PizzaOrder</h1>
+				</a>
+			</div>
 
 			<div id="unloggedUser" th:if="${actualUser} == null">
 				<div class="icon-login" onclick="show_login_form()">Login</div>
@@ -165,8 +168,8 @@
 				<div class="clear"></div>
 			</div>
 		</div>
-		<!-- </a> -->
 	</header>
+	
 	<div id="search_background">
 		<div id="search_container">
 			<h1>Order food online</h1>

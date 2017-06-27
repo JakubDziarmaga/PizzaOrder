@@ -3,6 +3,7 @@ package pizzaOrder.restService.model.indent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,10 +13,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,7 +32,7 @@ import pizzaOrder.restService.model.restaurant.Restaurant;
 import pizzaOrder.restService.model.size.Size;
 import pizzaOrder.restService.model.stars.Stars;
 import pizzaOrder.restService.model.users.User;
-
+import pizzaOrder.restService.model.cart.Cart;
 @Entity
 public class Indent
 {
@@ -45,19 +52,21 @@ public class Indent
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_restaurant")
 	private Restaurant restaurant;
-	
+	/*
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_menu")
 	private Menu menu;	
+	*/
 	
 	@Column(name = "date_time")
-    @Temporal(TemporalType.TIMESTAMP)
+    //@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
-	//@JsonBackReference
-	@JoinColumn(name = "id_size")
-	private Size size;
+	@OneToMany(mappedBy = "indent", cascade = { CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
+	private List<Cart> cart;
+	
+	private Double price;
 	
 	@JsonIgnore
 	public String getFormattedDate(){
@@ -65,23 +74,6 @@ public class Indent
 		return df.format(date);
 	}
 	
-	
-	//
-	//CONSTRUCTORS
-	//
-	public Indent(){		
-	}
-	
-	public Indent(Long id, boolean isPaid, User user, Restaurant restaurant, Menu menu, Date date,Size size) {
-		super();
-		this.id = id;
-		this.isPaid = isPaid;
-		this.user = user;
-		this.restaurant = restaurant;
-		this.menu = menu;
-		this.date = date;
-		this.size = size;
-	}	
 	
 	//
 	//GETTERS AND SETTERS
@@ -111,12 +103,12 @@ public class Indent
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-	public Menu getMenu() {
-		return menu;
-	}
-	public void setMenu(Menu menu) {
-		this.menu = menu;
-	}
+//	public Menu getMenu() {
+//		return menu;
+//	}
+//	public void setMenu(Menu menu) {
+//		this.menu = menu;
+//	}
 	public Date getDate() {
 		return date;
 	}
@@ -124,12 +116,22 @@ public class Indent
 		this.date = dateTime;
 	}
 
-	public Size getSize() {
-		return size;
+	public List<Cart> getCart() {
+		return cart;
 	}
 
-	public void setSize(Size size) {
-		this.size = size;
+	public void setCart(List<Cart> cart) {
+		this.cart = cart;
+	}
+
+
+	public Double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}	
 
 }
