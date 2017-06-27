@@ -35,16 +35,23 @@
 				tempAmount.push(li[i].getElementsByClassName("home_star_rating")[0].getElementsByClassName("star_amount")[0].innerHTML.replace(" votes", ""));
 				tempLi.push(li[i]);
 			}
-			
+
 			tempAmount.sort(function (a, b) {  return a - b;  });
 			tempAmount.reverse();
+			
+			for(var i = 0,j=li.length;i<j-1;i++){
 
-			for(var i = 0,j=li.length;i<j;i++){
-				for(var k = i; k<j;k++){
+				for(var k = i+1; k<j;k++){
 					if(tempAmount[i]==tempLi[k].getElementsByClassName("home_star_rating")[0].getElementsByClassName("star_amount")[0].innerHTML.replace(" votes", "")){
+
 						$('ol li').eq( k ).insertBefore("ol li:eq("+i+")");
 						break;
 					}
+				}
+				
+				tempLi=[];
+				for(var l = 0;l<j;l++){
+					tempLi.push(li[l]);
 				}
 			}
 		}
@@ -67,13 +74,18 @@
 			tempRate.sort(function (a, b) {  return a - b;  });
 			tempRate.reverse();
 
-			for(var i = 0,j=li.length;i<j;i++){
-				for(var k = i; k<j;k++){
+			for(var i = 0,j=li.length;i<j-1;i++){
+				for(var k = i+1; k<j;k++){
 					if(tempRate[i]==tempLi[k].getElementsByClassName("home_star_rating")[0].getElementsByClassName("home_star_rating_top")[0].style.getPropertyValue("width").replace("%", "")){
 						$('ol li').eq( k ).insertBefore("ol li:eq("+i+")");
 						break;
 					}
 				}
+			}
+			
+			tempLi=[];
+			for(var l = 0;l<j;l++){
+				tempLi.push(li[l]);
 			}
 		}
 	//]]>
@@ -254,7 +266,7 @@
 				</div>
 				<!-- Modal Content -->
 				<div id="buttons_container">
-					<div id="white_button" onclick="show_login_form()">Zaloguj</div>
+					<div id="white_button" onclick="show_login_form()">Log in</div>
 					<div id="blue_button">Register</div>
 				</div>
 				<div id="login_content">
