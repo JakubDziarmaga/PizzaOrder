@@ -29,8 +29,8 @@ public class UserSecurityServiceImpl implements UserSecurityService {
     public URI save(NonActivatedUser user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-//        template.postForObject("https://pizzaindent.herokuapp.com/users", user, User.class);
-        return template.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
+        return template.postForLocation("https://pizzaindent.herokuapp.com/nonactivatedusers", user, NonActivatedUser.class);
+//        return template.postForLocation("http://localhost:8080/nonactivatedusers", user,NonActivatedUser.class);
     }
 
 

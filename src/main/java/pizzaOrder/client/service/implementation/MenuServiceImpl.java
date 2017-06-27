@@ -47,8 +47,8 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public void checkIfMenuExists(Long idMenu) {
 		try {
-			defaultemplate.getForObject("http://localhost:8080/menu/{idMenu}", Menu.class, idMenu);
-//			defaultemplate.getForObject("https://pizzaindent.herokuapp.com/menu/{idMenu}", Menu.class, idMenu);
+//			defaultemplate.getForObject("http://localhost:8080/menu/{idMenu}", Menu.class, idMenu);
+			defaultemplate.getForObject("https://pizzaindent.herokuapp.com/menu/{idMenu}", Menu.class, idMenu);
 
 		} catch (HttpClientErrorException e) {
 			throw new MenuNotFoundException(idMenu);
@@ -60,12 +60,12 @@ public class MenuServiceImpl implements MenuService {
 	 */
 	@Override
 	public void checkIfMenuBelongsToRestaurant(Long idRestaurant, Long idMenu) {
-		String restaurantUrl = halTemplate
-				.getForObject("http://localhost:8080/menu/{idMenu}", PagedResources.class, idMenu).getLink("restaurant")
-				.getHref();
 //		String restaurantUrl = halTemplate
-//				.getForObject("https://pizzaindent.herokuapp.com/menu/{idMenu}", PagedResources.class, idMenu).getLink("restaurant")
+//				.getForObject("http://localhost:8080/menu/{idMenu}", PagedResources.class, idMenu).getLink("restaurant")
 //				.getHref();
+		String restaurantUrl = halTemplate
+				.getForObject("https://pizzaindent.herokuapp.com/menu/{idMenu}", PagedResources.class, idMenu).getLink("restaurant")
+				.getHref();
 		if (!idRestaurant.equals(halTemplate.getForObject(restaurantUrl, Restaurant.class).getId()))
 			throw new NotPermittedException();
 	}
@@ -85,19 +85,19 @@ public class MenuServiceImpl implements MenuService {
 		tempMenu.setNameMenu(menu.getNameMenu());
 //		tempMenu.setPrice(menu.getPrice());
 		//Post new Menu
-		URI newMenuURI = defaultemplate.postForLocation("http://localhost:8080/menu/", tempMenu);
-//		URI newMenuURI = defaultemplate.postForLocation("https://pizzaindent.herokuapp.com/menu/", tempMenu);
+//		URI newMenuURI = defaultemplate.postForLocation("http://localhost:8080/menu/", tempMenu);
+		URI newMenuURI = defaultemplate.postForLocation("https://pizzaindent.herokuapp.com/menu/", tempMenu);
 
 		//Add Restaurant to Menu entity
-		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
-//		HttpEntity<String> restaurantEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/restaurants/" + idRestaurant, reqHeaders);
+//		HttpEntity<String> restaurantEntity = new HttpEntity<String>("http://localhost:8080/restaurants/" + idRestaurant, reqHeaders);
+		HttpEntity<String> restaurantEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/restaurants/" + idRestaurant, reqHeaders);
 		defaultemplate.exchange(newMenuURI +"/restaurant", HttpMethod.PUT, restaurantEntity, String.class);
 
 		//Add Ingredient to Menu entity
 		HttpEntity<String> ingredientsEntity;
 		for (Ingredients i : menu.getIngredients()) {
-			ingredientsEntity = new HttpEntity<String>("http://localhost:8080/ingredients/" + i.getId(), reqHeaders);
-//			ingredientsEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/ingredients/" + i.getId(), reqHeaders);
+//			ingredientsEntity = new HttpEntity<String>("http://localhost:8080/ingredients/" + i.getId(), reqHeaders);
+			ingredientsEntity = new HttpEntity<String>("https://pizzaindent.herokuapp.com/ingredients/" + i.getId(), reqHeaders);
 			defaultemplate.exchange(newMenuURI + "/ingredients", HttpMethod.POST, ingredientsEntity, String.class);
 		}
 
@@ -111,8 +111,8 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public List<Menu> getMenuByRestaurantId(Long idRestaurant) {
 		//Get Menu entity
-		String menuUrl = halTemplate.getForObject("http://localhost:8080/restaurants/{id}", PagedResources.class, idRestaurant).getLink("menu").getHref();
-//		String menuUrl = halTemplate.getForObject("https://pizzaindent.herokuapp.com/restaurants/{id}", PagedResources.class, idRestaurant).getLink("menu").getHref();
+//		String menuUrl = halTemplate.getForObject("http://localhost:8080/restaurants/{id}", PagedResources.class, idRestaurant).getLink("menu").getHref();
+		String menuUrl = halTemplate.getForObject("https://pizzaindent.herokuapp.com/restaurants/{id}", PagedResources.class, idRestaurant).getLink("menu").getHref();
 
 		Collection<Menu> menuHal = halTemplate.getForObject(menuUrl, PagedResources.class).getContent();
 
@@ -133,8 +133,8 @@ public class MenuServiceImpl implements MenuService {
 	 */
 	private void getIngredientsByMenu(List<Menu> menu){
 		for (Menu m : menu) {
-			Collection<Ingredients> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class, m.getId()).getContent();
-//			Collection<Ingredients> ingredientsHal = halTemplate.getForObject("https://pizzaindent.herokuapp.com/menu/{menuId}/ingredients", PagedResources.class, m.getId()).getContent();
+//			Collection<Ingredients> ingredientsHal = halTemplate.getForObject("http://localhost:8080/menu/{menuId}/ingredients", PagedResources.class, m.getId()).getContent();
+			Collection<Ingredients> ingredientsHal = halTemplate.getForObject("https://pizzaindent.herokuapp.com/menu/{menuId}/ingredients", PagedResources.class, m.getId()).getContent();
 
 			List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 			m.setIngredients(ingredients);
@@ -144,7 +144,9 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public void getSizeByMenu(List<Menu>  menu) {
 		for (Menu m : menu) {
-			Collection<Size> sizeHal = halTemplate.getForObject("http://localhost:8080/menu/{id}/size", PagedResources.class, m.getId()).getContent();
+//			Collection<Size> sizeHal = halTemplate.getForObject("http://localhost:8080/menu/{id}/size", PagedResources.class, m.getId()).getContent();
+			Collection<Size> sizeHal = halTemplate.getForObject("https://pizzaindent.herokuapp.com/menu/{id}/size", PagedResources.class, m.getId()).getContent();
+
 			List<Size> sizeList = mapper.convertValue(sizeHal, new TypeReference<List<Size>>() {});
 		
 			m.setSize(sizeList);
@@ -167,7 +169,8 @@ public class MenuServiceImpl implements MenuService {
 				continue;
 			}
 			//Post new Menu
-			URI newSizeURI = defaultemplate.postForLocation("http://localhost:8080/size/", s);
+//			URI newSizeURI = defaultemplate.postForLocation("http://localhost:8080/size/", s);
+			URI newSizeURI = defaultemplate.postForLocation("https://pizzaindent.herokuapp.com/size/", s);
 
 
 			defaultemplate.exchange(newSizeURI +"/menu", HttpMethod.PUT, menuEntity, String.class);	

@@ -31,8 +31,8 @@ public class IngredientServiceImpl implements IngredientService {
 	 */
 	@Override
 	public List<Ingredients> getAllIngredients() {
-		List<Ingredients> ingredientsHal = new ArrayList<Ingredients>(halTemplate.getForObject("http://localhost:8080/ingredients/search/asc", PagedResources.class).getContent());
-//		List<Ingredients> ingredientsHal = new ArrayList<Ingredients>(halTemplate.getForObject("https://pizzaindent.herokuapp.com/ingredients/search/asc", PagedResources.class).getContent());
+//		List<Ingredients> ingredientsHal = new ArrayList<Ingredients>(halTemplate.getForObject("http://localhost:8080/ingredients/search/asc", PagedResources.class).getContent());
+		List<Ingredients> ingredientsHal = new ArrayList<Ingredients>(halTemplate.getForObject("https://pizzaindent.herokuapp.com/ingredients/search/asc", PagedResources.class).getContent());
 
 		List<Ingredients> ingredients = mapper.convertValue(ingredientsHal, new TypeReference<List<Ingredients>>() {});
 		return ingredients;

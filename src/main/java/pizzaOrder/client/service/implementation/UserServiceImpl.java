@@ -79,10 +79,10 @@ public class UserServiceImpl implements UserService {
 		helper.setFrom("pizza0rd3r@gmail.com");
 		helper.setTo(nonActivatedUser.getMail());
 		helper.setSubject("PizzaOrder");
-//		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: https://pizzaindent.herokuapp.com/activate/"
-//				+ nonActivatedUser.getId());
-		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: http://localhost:8080/activate/"
+		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: https://pizzaindent.herokuapp.com/activate/"
 				+ nonActivatedUser.getId());
+//		helper.setText("Hello  " + nonActivatedUser.getUsername() + ". Here's your activation link: http://localhost:8080/activate/"
+//				+ nonActivatedUser.getId());
 		mailSender.send(message);
 	}
 
@@ -93,13 +93,15 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public void activateUser(Long nonActivatedUserId) {
-		User user = defaultTemplate.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
-//		User user = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
+//		User user = defaultTemplate.getForObject("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
+		User user = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", User.class,nonActivatedUserId);
 		user.setId(null);																							//id in NonActivatedUser table and in User tables should't be the same
-		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
-//		defaultTemplate.delete("https://pizzaindent.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
+//		defaultTemplate.delete("http://localhost:8080/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
+		defaultTemplate.delete("https://pizzaindent.herokuapp.com/nonactivatedusers/{nonActivatedUserId}", nonActivatedUserId);
 //		userSecurityService.save(user);
-		defaultTemplate.postForLocation("http://localhost:8080/users", user,User.class);
+//		defaultTemplate.postForLocation("http://localhost:8080/users", user,User.class);
+		defaultTemplate.postForLocation("https://pizzaindent.herokuapp.com/users", user,User.class);
+
 		securityService.autologin(user.getUsername(), user.getPassword());
 	}
 	
@@ -112,23 +114,21 @@ public class UserServiceImpl implements UserService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println(auth.getPrincipal());
 		if(auth.getPrincipal().equals("[anonymousUser]")){
-			System.out.println("KRZYCZ");
 			return null;
 		}
 		if(auth.getPrincipal().equals("anonymousUser")){
-			System.out.println("TRYBSON");
 			return null;
 		}
-		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
-//		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, auth.getName()).getId();
+//		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName()).getId();
+		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, auth.getName()).getId();
 
 	}
 
 	@Override
 	public User getUserByUsername(String username) {
 		
-		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username);
-//		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, username);
+//		return defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, username);
+		return defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, username);
 
 	}
 
@@ -140,10 +140,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void changeMail(String newMail) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName());
+//		User user = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}", User.class, auth.getName());
+		User user = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}", User.class, auth.getName());
 
 		user.setMail(newMail);
 		defaultTemplate.put("http://localhost:8080/users/{id}",user,user.getId());	
+		defaultTemplate.put("https://pizzaindent.herokuapp.com/users/{id}",user,user.getId());	
+
 	}
 
 	@Override
@@ -151,7 +154,9 @@ public class UserServiceImpl implements UserService {
 		Long id = getActualUserId();
 		if(id==null) return 0;
 		
-		Collection<Indent> indentHal = halTemplate.getForObject("http://localhost:8080/users/{id}/indent", PagedResources.class,id).getContent();
+//		Collection<Indent> indentHal = halTemplate.getForObject("http://localhost:8080/users/{id}/indent", PagedResources.class,id).getContent();
+		Collection<Indent> indentHal = halTemplate.getForObject("https://pizzaindent.herokuapp.com/users/{id}/indent", PagedResources.class,id).getContent();
+
 		List<Indent> indentList = mapper.convertValue(indentHal, new TypeReference<List<Indent>>() {});
 		
 		int amount = 0;

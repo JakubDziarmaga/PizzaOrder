@@ -51,7 +51,9 @@ public class UserValidator implements Validator {
 		
 		//Check if user with username is in NonActivatedUser table
 		try{
-			template.getForEntity("http://localhost:8080/users/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
+//			template.getForEntity("http://localhost:8080/users/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
+			template.getForEntity("https://pizzaindent.herokuapp.com/users/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
+
 			errors.rejectValue("username", "duplicatedName", new Object[]{"'username'"}, "This username is already taken");
 			return;
 		}
@@ -59,7 +61,9 @@ public class UserValidator implements Validator {
 		
 		//Check if user with username is in User table
 		try{
-			template.getForEntity("http://localhost:8080/nonactivatedusers/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
+//			template.getForEntity("http://localhost:8080/nonactivatedusers/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
+			template.getForEntity("https://pizzaindent.herokuapp.com/nonactivatedusers/search/names?username={username}", NonActivatedUser.class, user.getUsername());//.getStatusCodeValue();
+
 			errors.rejectValue("username", "duplicatedName", new Object[]{"'username'"}, "This username is already taken");
 			return;
 		}
