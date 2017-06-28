@@ -20,7 +20,9 @@
 			</div>
 			
 			<div id="unloggedUser" th:if="${actualUser} == null">
-				<div class="icon-login" onclick="klikaj('id01')">Login</div>
+				<a th:href="@{'/login'}">
+					<div class="icon-login" onclick="klikaj('id01')">Login</div>
+				</a>
 				<a th:href="@{'/registration'}">
 					<div class="icon-user">Register</div>
 				</a>

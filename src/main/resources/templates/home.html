@@ -81,12 +81,14 @@
 						break;
 					}
 				}
+				
+				tempLi=[];
+				for(var l = 0;l<j;l++){
+					tempLi.push(li[l]);
+				}
 			}
 			
-			tempLi=[];
-			for(var l = 0;l<j;l++){
-				tempLi.push(li[l]);
-			}
+			
 		}
 	//]]>
 	</script>
@@ -112,6 +114,11 @@
 						$('ol li').eq( k ).insertBefore("ol li:eq("+i+")");
 						break;
 					}
+				}
+				
+				tempLi=[];
+				for(var l = 0;l<j;l++){
+					tempLi.push(li[l]);
 				}
 			}
 		}

@@ -170,8 +170,10 @@ public class IndentServiceImpl implements IndentService {
 		}
 		catch(HttpClientErrorException e){
 			System.out.println(e.getStackTrace());
-
-			} //or HttpServerErrorException
+		}
+		catch(HttpServerErrorException e){
+			System.out.println(e.getStackTrace());
+		}
 		
 //		Size size = defaultTemplate.getForObject("http://localhost:8080/size/{idSize}", Size.class,idSize);
 		Size size = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/size/{idSize}", Size.class,idSize);
@@ -470,6 +472,9 @@ public class IndentServiceImpl implements IndentService {
 		}
 		catch(HttpClientErrorException e){
 		return null;
+		}
+		catch(HttpServerErrorException e){
+			return null;
 		}
 	}
 	
