@@ -14,7 +14,7 @@ public interface IndentRepository extends JpaRepository<Indent, Long> {
 	public Long findIndentIdByUserId(@Param("userId") Long userId);
 	
 	@RestResource(path = "indent")
-	@Query("SELECT i.id FROM Indent i where id_user=?1 and id_restaurant = ?2 and is_paid=0")
+	@Query("SELECT i.id FROM Indent i where i.user.id=?1 and i.restaurant.id = ?2 and isPaid=false")
 	public Long findIndentIdByUserIdAndRestaurantId(@Param("userId") Long userId,@Param("restaurantId") Long restaurantId);
 	
 
