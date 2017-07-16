@@ -1,0 +1,275 @@
+[33mcommit 4b714b86770013c91855c62c3274c2df0e2930fb[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun Jul 16 19:01:59 2017 +0200
+
+    Revert "Change query in indent"
+    
+    This reverts commit 1901ee855ba00724ec104c4ccb54fdb9cd00ae9e.
+
+[33mcommit 1901ee855ba00724ec104c4ccb54fdb9cd00ae9e[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun Jul 16 13:21:58 2017 +0200
+
+    Change query in indent
+
+[33mcommit 71701abe05e07222b5d9bdc174533c3ce1606ab1[m
+Merge: cfe8014 0177976
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Wed Jun 28 12:44:27 2017 +0200
+
+    Merge branch 'master' of https://github.com/JakubDziarmaga/PizzaOrder
+
+[33mcommit cfe80144a8a4c3dc9d83fd3f5aefd8b1cd56b0f8[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Wed Jun 28 10:23:31 2017 +0200
+
+    Homepage refactor
+
+[33mcommit 4d976e676708d73117aaea69f15f215413c57e9c[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Tue Jun 27 21:41:41 2017 +0200
+
+    Fix bug in sorting mechanism
+
+[33mcommit e733871c117d9d188ae07bafdc304af105c7e115[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Tue Jun 27 19:30:01 2017 +0200
+
+    change links to heroku
+
+[33mcommit de52ce208328f006c1ba3b51308e19c8c14e8a7c[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Tue Jun 27 18:51:24 2017 +0200
+
+    v2
+
+[33mcommit ae09ae3da12c92d8927b27499082b4c2aa56402c[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun Jun 11 22:13:31 2017 +0200
+
+    add stars entity
+
+[33mcommit 58dc3d2914902bd4f62a50d1d5078d1ebc32bdc7[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun Jun 4 17:07:07 2017 +0200
+
+    add stars
+
+[33mcommit 17e000d35fa36df791b4a753e568360ea6ac31f2[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sat May 27 10:38:30 2017 +0200
+
+    Add spring actuator
+
+[33mcommit 9f0a2765da81fe63d644bdca19b012cfecdc639f[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Fri May 26 23:05:54 2017 +0200
+
+    Add encrypted password to nonActivateUser
+
+[33mcommit 0485e12085aacf9ef8eb89a3ccbecf4e54684548[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Fri May 26 14:39:17 2017 +0200
+
+    add front-end validation
+
+[33mcommit 017797657c6d98d378b1df0cebefbb2f29391817[m
+Author: JakubDziarmaga <jakub_dziarmaga@o2.pl>
+Date:   Sun May 21 21:20:36 2017 +0200
+
+    Create README.md
+
+[33mcommit 8da2a398a0f06a88054b9c7d03cf5bc47e385b1a[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun May 21 16:37:31 2017 +0200
+
+    Finished frondend
+
+[33mcommit 4d7c8f1daeefb77ebe0da136947b30773fa6af0a[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Wed May 17 18:39:02 2017 +0200
+
+    add photo to user entity
+
+[33mcommit 9eeb6c0831400b73dd531b58e27e4a0fac4a1420[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 22:20:54 2017 +0200
+
+    Add sending activating mail v2
+
+[33mcommit 293f62c19a9d4e2d48b325f46b740a34988333c5[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 22:19:02 2017 +0200
+
+    Add sending activating mail v2
+
+[33mcommit b72329e678ff6f3b457fae029977e719a5fe3d90[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 22:16:55 2017 +0200
+
+    Add sending activating mail v2
+
+[33mcommit eba409e754d527cfa16516e2ae50d14f9cd48a2c[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 21:56:09 2017 +0200
+
+    Add sending activating mail
+
+[33mcommit adf531896b7346b56c0bf9884342ac850e46014b[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 21:46:38 2017 +0200
+
+    Add MailConfig
+
+[33mcommit b9d5e503f3226d905967895c5e8ed821fc8a9e8c[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 13:51:09 2017 +0200
+
+    Add heroku url v2
+
+[33mcommit c324b9f6416abeadb6a49e62aad611e6c5304ce7[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 13:40:31 2017 +0200
+
+    Add heroku url
+
+[33mcommit 312efebf331c107d9476b78f57884f1d0ba2ef10[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Mon May 15 13:15:35 2017 +0200
+
+    Add Postresql
+
+[33mcommit 7c4ea30d3ff7695fcff22c1119a151bd54a4c18e[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun May 14 19:02:55 2017 +0200
+
+    procfile
+
+[33mcommit 547a479cf2d44fb3f03596d156907fbeb1cdc03b[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun May 14 18:29:26 2017 +0200
+
+    Adjust buildpacks on Heroku
+
+[33mcommit c97d55c87e4633d3b579e32f7c4f8b67553fdcf3[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sun May 14 18:08:58 2017 +0200
+
+    first commit
+
+[33mcommit 01ef1db700c145962fa5090d66d23ba65483294d[m
+Author: COMMANDCENTRE\Jakub <jakubdziarmaga@yahoo.com>
+Date:   Sat May 13 12:00:29 2017 +0200
+
+    add homepage with login modal
+
+[33mcommit 8c8b35c17b90f83a6595f1db02819800b6dabe17[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Fri Mar 24 13:29:40 2017 +0100
+
+    Add missed access modifier
+
+[33mcommit 7ceacd874ace91992f88700840ab356022b851dc[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Tue Mar 21 19:32:44 2017 +0100
+
+    Remove unused dependencies
+
+[33mcommit 40701690e179fb4b05b0a8266f290ca27a443be2[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Tue Mar 21 17:48:43 2017 +0100
+
+    Delete unused properties in MailConfig
+
+[33mcommit 3eb7e6c8e5db854d836cde7fc5367c3c51a4165c[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Tue Mar 21 17:48:25 2017 +0100
+
+    Refactor test layer
+
+[33mcommit bc3a8c3cf9410157d95b7cd3253326326edc7e5e[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Mon Mar 20 18:47:21 2017 +0100
+
+    Add comments to template layer
+
+[33mcommit 6ae3728b463b9154abae64ec42df76849a3d26f4[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Sun Mar 19 14:22:55 2017 +0100
+
+    Add MenuValidatorTest
+
+[33mcommit d992f50dcf984ac5dcee670e4ff1a5dcda1153d3[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Sun Mar 19 13:28:18 2017 +0100
+
+    Add UserValidatorTest
+
+[33mcommit 64fc1de8e7706ed56f9af6138bade16aa64067ee[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Sat Mar 18 22:09:43 2017 +0100
+
+    Add "Name" field in Menu entity and MenuValidator
+
+[33mcommit c0ea6d811bf9b21178454ef043cc7be090280060[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Sat Mar 18 18:05:36 2017 +0100
+
+    Add checkIfPasswordEqualsPasswordConfirm to userValidator
+
+[33mcommit 32069f9a887321602c78571d829e94c70fede5b9[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Sat Mar 18 17:24:29 2017 +0100
+
+    Refactor model layer
+
+[33mcommit 5de0ae375be055fdfc7e1d8bf7153c9458b516be[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Sat Mar 18 17:06:04 2017 +0100
+
+    Refactor secure layer
+
+[33mcommit c7c7bce202b088ca5d266e645b4603fda054c447[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Fri Mar 17 19:31:25 2017 +0100
+
+    Add comments to Service layer
+
+[33mcommit 4ad22230e6323dda754f061c3c747aff21acc1ed[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Thu Mar 16 15:45:51 2017 +0100
+
+    -add accessForUser tests - refactor templates
+
+[33mcommit 5714fd62f8ed5dba1102f1fdd41bfd8d6439030d[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Wed Mar 15 19:58:00 2017 +0100
+
+    Add validation tests
+
+[33mcommit 1f3f455f8350f067e4deeea2c1b7f00df73b3c12[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Tue Mar 14 20:58:51 2017 +0100
+
+    Add UserControllerTest and UserProfileControllerTest
+
+[33mcommit 353f4bb0e72dabbea4ad7df7398edeb306274f04[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Tue Mar 14 18:03:19 2017 +0100
+
+    Add RestaurantOwnerProfileControllerTest
+
+[33mcommit 1763ebee944277c8a88e39eb85dd8fb4b0dd2cc5[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Mon Mar 13 19:22:57 2017 +0100
+
+    Add RestaurantControllerTest
+
+[33mcommit 461426663123a011b27342ab00cc9fdaf3375837[m
+Author: Jakub Dziarmaga <Jakub Dziarmaga>
+Date:   Mon Mar 13 18:28:09 2017 +0100
+
+    Add IndentServiceTest and IngredientsServiceTest
+
+[33mcommit 322993f640f4446fd5c34681b36830784d98e7c5[m
+Author: Jakub Dziarmag
