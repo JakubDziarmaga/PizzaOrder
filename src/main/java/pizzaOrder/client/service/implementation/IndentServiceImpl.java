@@ -432,15 +432,19 @@ public class IndentServiceImpl implements IndentService {
 
 	@Override
 	public Indent getIndentsByUsernameAndRestaurant(Long idRestaurant) {
+		System.out.println("getIndentsByUsernameAndRestaurant");
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.getPrincipal() == "anonymousUser") return null;
 
 //		Long userId = defaultTemplate.getForObject("http://localhost:8080/users/search/names?username={username}",User.class, auth.getName()).getId();	
 		Long userId = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/users/search/names?username={username}",User.class, auth.getName()).getId();	
-
+		System.out.println(userId);
+		
 		try{
 //			Long idIndent = defaultTemplate.getForObject("http://localhost:8080/indents/search/indent?userId="+userId+"&restaurantId="+idRestaurant, Long.class);
 			Long idIndent = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/indents/search/indent?userId="+userId+"&restaurantId="+idRestaurant, Long.class);
+			System.out.println(idIndent);
 
 //			Indent indent = defaultTemplate.getForObject("http://localhost:8080/indents/{indentId}", Indent.class,idIndent);
 			Indent indent = defaultTemplate.getForObject("https://pizzaindent.herokuapp.com/indents/{indentId}", Indent.class,idIndent);
@@ -465,9 +469,10 @@ public class IndentServiceImpl implements IndentService {
 				menu.setIngredients(ingredients);
 				size.setMenu(menu);
 				c.setSize(size);
+				System.out.println(c.getId());
 			}
 			indent.setCart(cartList);
-			
+			System.out.println("UDALO SIE");
 			return indent;
 		}
 		catch(HttpClientErrorException e){

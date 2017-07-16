@@ -5,11 +5,13 @@ import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import pizzaOrder.client.service.interfaces.UserService;
 import pizzaOrder.security.SecurityService;
 
+@Controller
 public abstract class AbstractController {
 	
 	@Autowired
